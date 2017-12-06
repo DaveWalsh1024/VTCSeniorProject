@@ -39,7 +39,7 @@ public class Play
 
         else if (playPitch.toString() == "FOULPOOPEDOUT")
         {
-            atBat.halfInning.incrementOuts();
+       //     atBat.halfInning.incrementOuts();
         }
 
         else if (playPitch.toString() == "HIT")

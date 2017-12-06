@@ -180,28 +180,31 @@
             android:layout_marginBottom="80px">
 
             <Button
-                android:name="balls"
                 android:id="@+id/balls_Button"
+                android:name="balls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ball"/>
+                android:onClick="ball"
+                android:text="Ball" />
 
             <Button
-                android:name="strikes"
                 android:id="@+id/strikes_Button"
+                android:name="strikes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Strike"/>
+                android:onClick="play"
+                android:text="Strike" />
 
             <Button
-                android:name="outs"
                 android:id="@+id/outs_Button"
+                android:name="outs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Out"/>
+                android:onClick="play"
+                android:text="Out" />
 
             <Button
                 android:name="hits"

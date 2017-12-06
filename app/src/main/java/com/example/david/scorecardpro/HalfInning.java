@@ -14,6 +14,10 @@ public class HalfInning
     public int getOuts () { return outs; }
     public int getTopOrBottom () { return  topOrBottom; }
     public Inning getInning () { return inning; }
+    public void setInning (Inning inning)
+    {
+        inning = inning;
+    }
 
     public void setTopOrBottom (int halfInningNumber)
     {
@@ -21,37 +25,15 @@ public class HalfInning
         repOk();
     }
 
-    public void incrementOuts ()
-    {
-        //If there are less than 3 outs add one to the out count
-        if (outs < 3)
-        outs++;
-
-        //This is the 3rd out so do some inning stuff
-        //
-        else
-        {
-            //If it is the top of the inning
-            if(getTopOrBottom() == 1)
-            {
-                //Make it the bottom of the inning
-                setTopOrBottom(2);
-            }
-            //If it is the bottom of the inning
-            else
-            {
-                //Set the inning to the next inning
-                getInning().incrementInningCount();
-                // Set the half inning to the top
-                setTopOrBottom(1);
-            }
-        }
-    }
-
     public void incrementRunsScored ()
     {
         runsScored++;
         repOk();
+    }
+
+    public void incrementOuts ()
+    {
+        outs++;
     }
 
     public void setBattingTeam (Team newBattingTeam)
@@ -64,6 +46,10 @@ public class HalfInning
         this.pitchingTeam = newPitchingTeam;
     }
 
+    public ArrayList getBatters ()
+    {
+        return batters;
+    }
 
     public HalfInning (Team battingTeam, Team pitchingTeam, int topOrBottom, Inning inning, BasePath basePath)
     {
@@ -77,8 +63,6 @@ public class HalfInning
 
     public void repOk()
     {
-        assert outs > -1 && outs < 3;
-        assert runsScored > -1;
         assert battingTeam != null;
         assert pitchingTeam != null;
     }

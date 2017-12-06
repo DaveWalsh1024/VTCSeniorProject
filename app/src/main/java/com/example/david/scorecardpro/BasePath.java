@@ -6,6 +6,11 @@ package com.example.david.scorecardpro;
 
 public class BasePath
 {
+    public Base getFirstBase () { return firstBase; }
+    public Base getSecondBase () { return secondBase; }
+    public Base getThirdBase () { return thirdBase; }
+    public Base getHomeBase () { return homeBase; }
+
     public Base getNextBase (Base base)
     {
         if (base.getBaseNumber() == 1)

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by jacklavallee on 11/28/17.
  */
@@ -69,17 +71,22 @@ public class ScoringActivity extends AppCompatActivity {
         homeTeamTitle.setText(homeTeamText.getText());
         awayTeamTitle.setText(awayTeamText.getText());
 
-        startInning(game);
+        while (inningCount < 7)
+        {
+            startInning(game);
+        }
     }
 
     public void startInning (Game game)
     {
        currentInning = game.getInningFromNumber(inningCount);
+       currentInning.setInningNumber(inningCount);
 
        currentTopInning = currentInning.getTopInning();
        currentTopInning.setTopOrBottom(1);
        currentTopInning.setBattingTeam(awayTeam);
        currentTopInning.setPitchingTeam(homeTeam);
+       currentTopInning.setInning(currentInning);
 
        startHalfInning(currentTopInning);
 
@@ -87,11 +94,52 @@ public class ScoringActivity extends AppCompatActivity {
        currentBottomInning.setTopOrBottom(2);
        currentBottomInning.setBattingTeam(homeTeam);
        currentBottomInning.setPitchingTeam(awayTeam);
+       currentBottomInning.setInning(currentInning);
+
+       startHalfInning(currentBottomInning);
+
+       inningCount++;
     }
+
+    BasePath basePath = new BasePath();
 
     public void startHalfInning (HalfInning halfInning)
     {
-        
+        if (halfInning.getOuts() < 3 )
+        {
+            AtBat currentBatter = new AtBat(halfInning, basePath);
+
+        }
+
+
+    }
+
+    public void ball (AtBat batter)
+    {
+        TextView ballCount = (TextView)findViewById(R.id.balls_Edit);
+
+        if (batter.getBallCount() < 4)
+        {
+            batter.incrementBalls();
+            ballCount.setText(batter.getBallCount());
+        }
+        else
+            ballCount.setText(0);
+            basePath.advanceRunner(basePath.getHomeBase(),basePath.getFirstBase());
+    }
+
+    public void strike (AtBat batter)
+    {
+        TextView strikeCount = (TextView)findViewById(R.id.strikes_Edit);
+
+        if (batter.getStrikeCount() < 3)
+        {
+            batter.incrementStrikes();
+            strikeCount.setText(batter.getStrikeCount());
+        }
+        else
+            strikeCount.setText(0);
+            batter.getHalfInning().incrementOuts();
     }
 
 

@@ -10,27 +10,21 @@ public class AtBat
 {
     public int getStrikeCount () { return strikeCount; }
     public int getBallCount () { return ballCount; }
+    public HalfInning getHalfInning () { return halfInning; }
     public BasePath getField () { return basePath; }
+    public void setHalfInning (HalfInning halfInning)
+    {
+     halfInning = halfInning;
+    }
 
     public void incrementStrikes ()
     {
-        if (strikeCount < 3)
-            strikeCount++;
-
-        else
-        {
-            halfInning.incrementOuts();
-        }
+        strikeCount++;
     }
 
     public void incrementBalls()
     {
-        if (ballCount < 4)
-            ballCount++;
-
-        else
-            return;
-        //call the advanced runner method that we need to write
+        ballCount++;
     }
 
     public AtBat (HalfInning halfInning, BasePath basePath)

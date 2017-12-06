@@ -8,16 +8,15 @@ import java.util.ArrayList;
 
 public class Inning
 {
-    public int getInningCount () { return inningCount; }
+    public int getInningCount () { return inningNumber; }
 
     public HalfInning getTopInning () { return topInning; }
 
     public HalfInning getBottomInning () { return bottomInning; }
 
-    public void incrementInningCount ()
+    public void setInningNumber (int number)
     {
-        inningCount++;
-        repOk();
+        inningNumber = number;
     }
 
 
@@ -25,7 +24,7 @@ public class Inning
 
     public Inning (int inningCount, HalfInning topInning, HalfInning bottomInning)
     {
-        this.inningCount = inningCount;
+        this.inningNumber = inningCount;
         this.halfInnings = new ArrayList<>();
         this.topInning = topInning;
         this.bottomInning = bottomInning;
@@ -35,11 +34,11 @@ public class Inning
     public void repOk()
     {
         assert topInning != null;
-        assert inningCount > 0;
+        assert inningNumber > 0;
     }
 
     private ArrayList <HalfInning> halfInnings;
-    private int inningCount;
+    private int inningNumber;
     private HalfInning topInning;
     private HalfInning bottomInning;
 }
