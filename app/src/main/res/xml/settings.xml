@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"> xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListPreference
+        android:title = "Background Color"
+        android:entries="@array/colorBackground"
+        android:entryValues="@array/colorBackground"
+        android:defaultValue="blue"
+        android:key="backgroundColor"
+        android:layout_weight="1"
+    ></ListPreference>
+
+    <ListPreference
+        android:title = "Text Color"
+        android:entries="@array/colorText"
+        android:entryValues="@array/colorText"
+        android:defaultValue="grey"
+        android:key="textColor"
+        android:layout_weight="1"
+        ></ListPreference>
+
+</PreferenceScreen>

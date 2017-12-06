@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name ="colorPrimary">#3F51B5</color>
+    <color name ="colorPrimaryDark">#303F9F</color>
+    <color name ="colorAccent">#FF4081</color>
+
+    <string-array name = "colorBackground">
+        <item name="blue" type="color" value="0xFF85C6F1">Blue</item>
+        <item name="red" type="color" value="0xFFFB4C35">Red</item>
+        <item name="orange" type="color" value="0xFFFF9436">Orange</item>
+        <item name="yellow" type="color" value="0xFFFAE965">Yellow</item>
+        <item name="green" type="color" value="0xFFC8FA65">Green</item>
+        <item name="purple" type="color" value="0xFFE482F7">Purple</item>
+        <item name="black" type="color" value="0xff000000">Black</item>
+        <item name="brown" type="color" value="0xFF6F5040">Brown</item>
+
+    </string-array>
+
+    <string-array name = "colorText">
+        <item name="darkblue" type="color" value="0xFF3F51B5">Dark Blue</item>
+        <item name="darkred" type="color" value="0xFFCC0000">Dark Red</item>
+        <item name="darkorange" type="color" value="0xFFee7600">Dark Orange</item>
+        <item name="darkyellow" type="color" value="0xFFC3A603">Dark Yellow</item>
+        <item name="darkgreen" type="color" value="0xFF669900">Dark Green</item>
+        <item name="darkpurple" type="color" value="0xFF9933CC">Dark Purple</item>
+        <item name="grey" type="color" value="0xff999999">Grey</item>
+        <item name="white" type="color" value="0xFFFFFFFF">White</item>
+    </string-array>
+
+</resources>
