@@ -23,6 +23,16 @@ public class Game extends AppCompatActivity
         return awayTeam;
     }
 
+    public void setHomeTeam (Team homeTeam)
+    {
+        homeTeam = homeTeam;
+    }
+
+    public void setAwayTeam (Team awayTeam)
+    {
+        awayTeam = awayTeam;
+    }
+
     public Date getGameDate() {
         return gameDate;
     }
@@ -57,6 +67,11 @@ public class Game extends AppCompatActivity
         }
         else
             return homeTeam;
+    }
+
+    public Inning getInningFromNumber (int number)
+    {
+        return innings.get(number);
     }
 
 

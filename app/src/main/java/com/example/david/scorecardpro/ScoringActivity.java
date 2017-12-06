@@ -43,14 +43,56 @@ public class ScoringActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    int inningCount = 1;
+    Inning currentInning = null;
+    Team homeTeam = null;
+    Team awayTeam = null;
+    HalfInning currentTopInning = null;
+    HalfInning currentBottomInning = null;
+
     public void startGame (View b)
     {
         TextView homeTeamText = (TextView)findViewById(R.id.homeTeam_Text);
         TextView awayTeamText = (TextView)findViewById(R.id.awayTeam_Text);
 
-        Team homeTeam = new Team(homeTeamText.getText().toString());
-        Team awayTeam = new Team(awayTeamText.getText().toString());
+        homeTeam = new Team(homeTeamText.getText().toString());
+        awayTeam = new Team(awayTeamText.getText().toString());
 
         Game game = new Game(homeTeam, awayTeam);
+
+        game.setHomeTeam(homeTeam);
+        game.setAwayTeam(awayTeam);
+
+        TextView homeTeamTitle = (TextView)findViewById(R.id.homeScore_View);
+        TextView awayTeamTitle = (TextView)findViewById(R.id.awayScore_View);
+
+        homeTeamTitle.setText(homeTeamText.getText());
+        awayTeamTitle.setText(awayTeamText.getText());
+
+        startInning(game);
     }
+
+    public void startInning (Game game)
+    {
+       currentInning = game.getInningFromNumber(inningCount);
+
+       currentTopInning = currentInning.getTopInning();
+       currentTopInning.setTopOrBottom(1);
+       currentTopInning.setBattingTeam(awayTeam);
+       currentTopInning.setPitchingTeam(homeTeam);
+
+       startHalfInning(currentTopInning);
+
+       currentBottomInning = currentInning.getBottomInning();
+       currentBottomInning.setTopOrBottom(2);
+       currentBottomInning.setBattingTeam(homeTeam);
+       currentBottomInning.setPitchingTeam(awayTeam);
+    }
+
+    public void startHalfInning (HalfInning halfInning)
+    {
+        
+    }
+
+
 }
