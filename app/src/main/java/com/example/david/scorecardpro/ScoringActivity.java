@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by jacklavallee on 11/28/17.
@@ -49,8 +50,42 @@ public class ScoringActivity extends AppCompatActivity {
     Inning currentInning = null;
     Team homeTeam = null;
     Team awayTeam = null;
-    HalfInning currentTopInning = null;
-    HalfInning currentBottomInning = null;
+    TeamInGame homeTeamInGame;
+    TeamInGame awayTeamInGame;
+    HalfInning currentHalfInning = null;
+    int topOrBottom = 1;
+    BasePath basePath = new BasePath();
+    int homeTeamBattingOrderPosition = 1;
+    int awayTeamBattingOrderPosition = 1;
+    int currentBattingOrderPosition;
+    ArrayList <Player> currentBattingOrder = null;
+    ArrayList <PositionsInGame> currentFieldingPositions = null;
+
+    Player player1 = new Player("David", "Walsh", 1, 22);
+    Player player2 = new Player("Jack", "Lavallee", 2, 24);
+    Player player3 = new Player("Joe", "Russell", 3, 35);
+    Player player4 = new Player("Craig", "Damon", 4, 55);
+    Player player5 = new Player ("Leslie", "Damon", 5, 50);
+    Player player6 = new Player ("Peter", "Chapin", 6, 45);
+    Player player7 = new Player ("Mike", "Hall", 7, 22);
+    Player player8 = new Player ("Matt", "Tanneberger", 8, 21);
+    Player player9 = new Player ("Jake", "Morrill", 9, 22);
+
+    ArrayList <Player> homeTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
+    ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
+
+    PositionsInGame pitching = new PositionsInGame(player1, Positions.PITCHER);
+    PositionsInGame firstBase = new PositionsInGame(player2, Positions.FIRSTBASE);
+    PositionsInGame catcher = new PositionsInGame(player3, Positions.CATCHER);
+    PositionsInGame secondBase= new PositionsInGame(player4, Positions.SECONDBASE);
+    PositionsInGame shortStop = new PositionsInGame(player5, Positions.SHORTSTOP);
+    PositionsInGame thirdBase = new PositionsInGame(player6, Positions.THIRDBASE);
+    PositionsInGame centerField = new PositionsInGame(player7, Positions.CENTERFIELD);
+    PositionsInGame rightField = new PositionsInGame(player8, Positions.RIGHTFIELD);
+    PositionsInGame leftField = new PositionsInGame(player9, Positions.LEFTFIELD);
+
+    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
+    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
 
     public void startGame (View b)
     {
@@ -60,7 +95,13 @@ public class ScoringActivity extends AppCompatActivity {
         homeTeam = new Team(homeTeamText.getText().toString());
         awayTeam = new Team(awayTeamText.getText().toString());
 
-        Game game = new Game(homeTeam, awayTeam);
+        homeTeamInGame = new TeamInGame(homeTeam);
+        awayTeamInGame = new TeamInGame(awayTeam);
+
+
+        GameType gameType = new GameType("LittleLeage", 6);
+
+        Game game = new Game(homeTeamInGame, awayTeamInGame, gameType);
 
         game.setHomeTeam(homeTeam);
         game.setAwayTeam(awayTeam);
@@ -73,45 +114,49 @@ public class ScoringActivity extends AppCompatActivity {
 
         while (inningCount < 7)
         {
-            startInning(game);
+            startScoring(game);
         }
     }
 
-    public void startInning (Game game)
+    public void startScoring (Game game)
     {
+        if (topOrBottom % 2 == 1)
+        {
+            currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, inningCount, basePath);
+            currentBattingOrder = awayTeamBattingOrder;
+            currentBattingOrderPosition = awayTeamBattingOrderPosition;
+            currentFieldingPositions = homeTeamPositions;
+        }
+
+        else
+            currentHalfInning = new HalfInning(homeTeam, awayTeam, 2, inningCount, basePath);
+            currentBattingOrder = homeTeamBattingOrder;
+            currentBattingOrderPosition = homeTeamBattingOrderPosition;
+            currentFieldingPositions = awayTeamPositions;
+
+        Inning newInning = new Inning(inningCount, null, null);
+        game.addInning(newInning);
+
        currentInning = game.getInningFromNumber(inningCount);
        currentInning.setInningNumber(inningCount);
 
-       currentTopInning = currentInning.getTopInning();
-       currentTopInning.setTopOrBottom(1);
-       currentTopInning.setBattingTeam(awayTeam);
-       currentTopInning.setPitchingTeam(homeTeam);
-       currentTopInning.setInning(currentInning);
-
-       startHalfInning(currentTopInning);
-
-       currentBottomInning = currentInning.getBottomInning();
-       currentBottomInning.setTopOrBottom(2);
-       currentBottomInning.setBattingTeam(homeTeam);
-       currentBottomInning.setPitchingTeam(awayTeam);
-       currentBottomInning.setInning(currentInning);
-
-       startHalfInning(currentBottomInning);
-
-       inningCount++;
+       startHalfInning(currentHalfInning);
     }
 
-    BasePath basePath = new BasePath();
 
-    public void startHalfInning (HalfInning halfInning)
+
+    public void startHalfInning (HalfInning currentHalfInning)
     {
-        if (halfInning.getOuts() < 3 )
+        while (currentHalfInning.getOuts() < 3)
         {
-            AtBat currentBatter = new AtBat(halfInning, basePath);
+            AtBat currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            boolean isBatterStillBatting = true;
 
+            while (isBatterStillBatting = true)
+            {
+              //  Play newPlay = new Play(currentBattingOrder.get(currentBattingOrderPosition), currentFieldingPositions.get(0), ) //need to somehow get the play pitch here
+            }
         }
-
-
     }
 
     public void ball (AtBat batter)
@@ -141,6 +186,4 @@ public class ScoringActivity extends AppCompatActivity {
             strikeCount.setText(0);
             batter.getHalfInning().incrementOuts();
     }
-
-
 }

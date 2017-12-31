@@ -33,7 +33,6 @@ public class Inning
 
     public void repOk()
     {
-        assert topInning != null;
         assert inningNumber > 0;
     }
 

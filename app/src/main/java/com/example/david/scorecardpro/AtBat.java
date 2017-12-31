@@ -27,8 +27,9 @@ public class AtBat
         ballCount++;
     }
 
-    public AtBat (HalfInning halfInning, BasePath basePath)
+    public AtBat (HalfInning halfInning, BasePath basePath, Player batter)
     {
+        this.batter = batter;
         this.halfInning = halfInning;
         this.plays= new ArrayList<>();
         this.basePath = basePath;
@@ -42,6 +43,7 @@ public class AtBat
     }
 
     HalfInning halfInning;
+    Player batter;
     private int strikeCount;
     private int ballCount;
     private ArrayList <Play> plays;

@@ -15,11 +15,11 @@ import java.util.Date;
 
 public class Game extends AppCompatActivity
 {
-    public Team getHomeTeam() {
+    public TeamInGame getHomeTeam() {
         return homeTeam;
     }
 
-    public Team getAwayTeam() {
+    public TeamInGame getAwayTeam() {
         return awayTeam;
     }
 
@@ -49,7 +49,7 @@ public class Game extends AppCompatActivity
         return awayTeamScore;
     }
 
-    public Team getGameWinner()
+    public TeamInGame getGameWinner()
     {
         if (homeTeamScore > awayTeamScore)
         {
@@ -59,7 +59,7 @@ public class Game extends AppCompatActivity
             return awayTeam;
     }
 
-    public Team getGameLooser ()
+    public TeamInGame getGameLooser ()
     {
         if (awayTeamScore > homeTeamScore )
         {
@@ -69,9 +69,14 @@ public class Game extends AppCompatActivity
             return homeTeam;
     }
 
+    public void addInning (Inning inning)
+    {
+        innings.add(innings.size(), inning);
+    }
+
     public Inning getInningFromNumber (int number)
     {
-        return innings.get(number);
+        return innings.get(number - 1);
     }
 
 
@@ -83,18 +88,20 @@ public class Game extends AppCompatActivity
         assert innings != null;
     }
 
-    public Game(Team homeTeam, Team awayTeam)
+    public Game(TeamInGame homeTeam, TeamInGame awayTeam, GameType gameType)
     {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.gameType = gameType;
         this.innings = new ArrayList<>();
         repOk();
     }
 
-    private Team homeTeam;
+    private GameType gameType;
+    private TeamInGame homeTeam;
     private int homeTeamScore;
     private int awayTeamScore;
-    private Team awayTeam;
+    private TeamInGame awayTeam;
     private Date gameDate;
     private String location;
     private ArrayList <Inning> innings;
