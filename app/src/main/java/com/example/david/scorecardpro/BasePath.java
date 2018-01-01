@@ -79,6 +79,10 @@ public class BasePath
 
     public BasePath ()
     {
+        firstBase = new Base(1);
+        secondBase = new Base(2);
+        thirdBase = new Base(3);
+        homeBase = new Base(4);
         repOk();
     }
 

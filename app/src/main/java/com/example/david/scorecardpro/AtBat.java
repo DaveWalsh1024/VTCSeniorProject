@@ -10,6 +10,7 @@ public class AtBat
 {
     public int getStrikeCount () { return strikeCount; }
     public int getBallCount () { return ballCount; }
+    public Player getPlayer () { return batter; }
     public HalfInning getHalfInning () { return halfInning; }
     public BasePath getField () { return basePath; }
     public void setHalfInning (HalfInning halfInning)
