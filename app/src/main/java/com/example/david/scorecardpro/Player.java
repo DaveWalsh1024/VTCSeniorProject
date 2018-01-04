@@ -8,46 +8,10 @@ import java.text.FieldPosition;
 
 public class Player
 {
-
-    public String getFName()
+    public String getFullName ()
     {
-        return fName;
-    }
-
-    public String getLName ()
-    {
-        return lName;
-    }
-
-    public int getNumber ()
-    {
-        return number;
-    }
-
-    public int getAge () { return age; }
-
-    public void updateFName (String newfName)
-    {
-        fName = newfName;
-        repOk();
-    }
-
-    public void updateLName (String newlName)
-    {
-        lName = newlName;
-        repOk();
-    }
-
-    public void updateAge (int newAge)
-    {
-        age = newAge;
-        repOk();
-    }
-
-    public void updateNumber (Player player, int age)
-    {
-        player.number = number;
-        repOk();
+        String fullName = new StringBuilder().append(fName).append(lName).toString();
+        return fullName;
     }
 
     public void repOk()

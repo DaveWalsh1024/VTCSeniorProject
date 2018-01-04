@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,7 +48,6 @@ public class ScoringActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    int inningCount = 1;
     Inning currentInning = null;
     Team homeTeam = null;
     Team awayTeam = null;
@@ -61,6 +62,7 @@ public class ScoringActivity extends AppCompatActivity {
     ArrayList <Player> currentBattingOrder = null;
     ArrayList <PositionsInGame> currentFieldingPositions = null;
     AtBat currentBatter = null;
+    Game game;
 
     Player player1 = new Player("David", "Walsh", 1, 22);
     Player player2 = new Player("Jack", "Lavallee", 2, 24);
@@ -88,98 +90,232 @@ public class ScoringActivity extends AppCompatActivity {
     ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
     ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
 
+    TextView homeTeamTextView;
+    TextView awayTeamTextView;
+    TextView homeTeamTitleTextView;
+    TextView awayTeamTitleTextView;
+    TextView currentBattingTeamTextView;
+    TextView currentInningTextView;
+    TextView currentBatterTextView;
+    TextView ballCountTextView;
+    TextView strikeCountTextView;
+    TextView outCountTextView;
+    TextView bottomOrTopTextView;
+
+    public void initializeTextViews ()
+    {
+        homeTeamTextView = (TextView) findViewById(R.id.homeTeam_Text);
+        awayTeamTextView = (TextView) findViewById(R.id.awayTeam_Text);
+        homeTeamTitleTextView = (TextView) findViewById(R.id.homeScore_View);
+        awayTeamTitleTextView = (TextView) findViewById(R.id.awayScore_View);
+        currentBattingTeamTextView = (TextView)findViewById(R.id.currentBattingTeam_View);
+        currentInningTextView = (TextView)findViewById(R.id.currentInning_View);
+        currentBatterTextView = (TextView)findViewById(R.id.currentBatter_View);
+        ballCountTextView = (TextView)findViewById(R.id.balls_Edit);
+        strikeCountTextView = (TextView)findViewById(R.id.strikes_Edit);
+        outCountTextView = (TextView)findViewById(R.id.outs_Edit);
+        bottomOrTopTextView = (TextView)findViewById(R.id.bottomOrTop_View);
+    }
+
     public void startGame (View b)
     {
-        TextView homeTeamText = (TextView)findViewById(R.id.homeTeam_Text);
-        TextView awayTeamText = (TextView)findViewById(R.id.awayTeam_Text);
-
-        homeTeam = new Team(homeTeamText.getText().toString());
-        awayTeam = new Team(awayTeamText.getText().toString());
+        initializeTextViews();
+        homeTeam = new Team(homeTeamTextView.getText().toString());
+        awayTeam = new Team(awayTeamTextView.getText().toString());
 
         homeTeamInGame = new TeamInGame(homeTeam);
         awayTeamInGame = new TeamInGame(awayTeam);
 
-
         GameType gameType = new GameType("LittleLeage", 6);
 
-        Game game = new Game(homeTeamInGame, awayTeamInGame, gameType);
+        game = new Game(homeTeamInGame, awayTeamInGame, gameType);
 
         game.setHomeTeam(homeTeam);
         game.setAwayTeam(awayTeam);
 
-        TextView homeTeamTitle = (TextView)findViewById(R.id.homeScore_View);
-        TextView awayTeamTitle = (TextView)findViewById(R.id.awayScore_View);
+        homeTeamTitleTextView.setText(homeTeamTextView.getText());
+        awayTeamTitleTextView.setText(awayTeamTextView.getText());
 
-        homeTeamTitle.setText(homeTeamText.getText());
-        awayTeamTitle.setText(awayTeamText.getText());
+        currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, 1, basePath);
+        setCurrentFieldingPositions();
+        setBattingAndFieldingTextView();
+        setCurrentBattingOrder();
 
-        startScoring(game);
+        currentInning= new Inning(game, 1, currentHalfInning, null);
+        setCurrentInningTextView();
+        setTopOrBottomTextView();
+        game.addInning(currentInning);
+
+        startHalfInning(currentHalfInning);
     }
-
-    public void startScoring (Game game)
-    {
-        if (topOrBottom % 2 == 1)
-        {
-            currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, inningCount, basePath);
-            currentBattingOrder = awayTeamBattingOrder;
-            currentBattingOrderPosition = awayTeamBattingOrderPosition;
-            currentFieldingPositions = homeTeamPositions;
-        }
-
-        else
-            currentHalfInning = new HalfInning(homeTeam, awayTeam, 2, inningCount, basePath);
-            currentBattingOrder = homeTeamBattingOrder;
-            currentBattingOrderPosition = homeTeamBattingOrderPosition;
-            currentFieldingPositions = awayTeamPositions;
-
-        Inning newInning = new Inning(inningCount, null, null);
-        game.addInning(newInning);
-
-       currentInning = game.getInningFromNumber(inningCount);
-       currentInning.setInningNumber(inningCount);
-
-       startHalfInning(currentHalfInning);
-    }
-
-
 
     public void startHalfInning (HalfInning currentHalfInning)
     {
-   //     while (currentHalfInning.getOuts() < 3)
-  //      {
         currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+        setCurrentBatterTextView();
+    }
 
-   //     }
+    public void setCurrentBatterTextView ()
+    {
+        currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
+    }
+
+    public void setTopOrBottomTextView ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            bottomOrTopTextView.setText("Top");
+        }
+        else
+        {
+            bottomOrTopTextView.setText("Bottom");
+        }
+    }
+
+    public void setCurrentInningTextView ()
+    {
+        currentInningTextView.setText(Integer.toString(currentInning.getInningCount()));
+    }
+
+    public void setBattingAndFieldingTextView ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            currentBattingTeamTextView.setText(awayTeam.getTeamName());
+        }
+        else
+        {
+            currentBattingTeamTextView.setText(homeTeam.getTeamName());
+        }
     }
 
     public void ball (View b)
     {
-        TextView ballCount = (TextView)findViewById(R.id.balls_Edit);
-
-        if (currentBatter.getBallCount() < 4)
+        if (currentBatter.getBallCount() < 3)
         {
+            System.out.println("Current ball count is " + currentBatter.getBallCount());
             currentBatter.incrementBalls();
-            ballCount.setText(Integer.toString(currentBatter.getBallCount()));
+            ballCountTextView.setText(Integer.toString(currentBatter.getBallCount()));
         }
         else
-            ballCount.setText(Integer.toString(0));
-            basePath.advanceRunner(basePath.getHomeBase(),basePath.getFirstBase());
+        {
+            ballCountTextView.setText(Integer.toString(0));
+            basePath.advanceRunner(basePath.getHomeBase(), basePath.getFirstBase());
             currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
-            System.out.println("New currentBatter is set");
+            setCurrentBatterTextView();
+            System.out.println("4 balls, New currentBatter is set");
+        }
     }
 
     public void strike (View b)
     {
-        TextView strikeCount = (TextView)findViewById(R.id.strikes_Edit);
-
-        if (currentBatter.getStrikeCount() < 3)
+        if (currentBatter.getStrikeCount() < 2)
         {
+            System.out.println("Current strike count is " + currentBatter.getStrikeCount());
             currentBatter.incrementStrikes();
-            strikeCount.setText(Integer.toString(currentBatter.getStrikeCount()));
+            strikeCountTextView.setText(Integer.toString(currentBatter.getStrikeCount()));
         }
         else
-            strikeCount.setText(Integer.toString(0));
-            currentBatter.getHalfInning().incrementOuts();
+        {
+            strikeCountTextView.setText(Integer.toString(0));
+            incrementOuts(b);
             currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
+            System.out.println("3 Strikes, increment outs and set new current batter");
+        }
+    }
+
+    public void setCurrentBattingOrder ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            homeTeamBattingOrderPosition = currentBattingOrderPosition;
+            currentBattingOrder = awayTeamBattingOrder;
+            currentBattingOrderPosition = awayTeamBattingOrderPosition;
+        }
+        else
+        {
+            awayTeamBattingOrderPosition = currentBattingOrderPosition;
+            currentBattingOrder = homeTeamBattingOrder;
+            currentBattingOrderPosition = homeTeamBattingOrderPosition;
+        }
+    }
+
+    public void setCurrentFieldingPositions ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            awayTeamPositions = currentFieldingPositions;
+            currentFieldingPositions = homeTeamPositions;
+        }
+        else
+        {
+            homeTeamPositions = currentFieldingPositions;
+            currentFieldingPositions = awayTeamPositions;
+        }
+    }
+
+    public void incrementBattingOrderPosition (int oldPosition)
+    {
+        if (oldPosition < 8)
+        {
+            System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
+            currentBattingOrderPosition++;
+            System.out.println("New position is " + currentBattingOrderPosition);
+        }
+
+        else
+        {
+            System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
+            currentBattingOrderPosition = 0;
+            System.out.println("New position is " + currentBattingOrderPosition);
+        }
+    }
+
+    public void incrementOuts (View b)
+    {
+        incrementBattingOrderPosition(currentBattingOrderPosition);
+
+        if (currentBatter.getHalfInning().getOuts() < 2)
+        {
+            System.out.println("Current out count is " + currentBatter.getHalfInning().getOuts());
+            currentHalfInning.incrementOuts();
+            outCountTextView.setText(Integer.toString(currentBatter.getHalfInning().getOuts()));
+            currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
+        }
+
+        else
+        {
+            System.out.println("There are now 3 outs, setting up next half inning");
+            System.out.println("Current Inning Count is " + currentInning.getInningCount());
+            strikeCountTextView.setText(Integer.toString(0));
+            ballCountTextView.setText(Integer.toString(0));
+            outCountTextView.setText(Integer.toString(0));
+
+            basePath = new BasePath();
+
+            if (currentHalfInning.topOrBottom() == 1) //currently the top of the inning
+            {
+                System.out.println("The new half inning will be the bottom of the " + currentInning.getInningCount());
+                currentHalfInning = new HalfInning(awayTeam, homeTeam, 2, currentInning.getInningCount(), basePath);
+            }
+            else
+            {
+                System.out.println("New Inning. Setting up top of the new inning. The inning number is " + currentInning.getInningCount());
+                currentInning.incrementInningNumber();
+                currentHalfInning = new HalfInning(homeTeam, awayTeam, 1, currentInning.getInningCount(), basePath);
+                currentInning = new Inning(game, currentInning.getInningCount(), currentHalfInning, null);
+                game.addInning(currentInning);
+
+                startHalfInning(currentHalfInning);
+            }
+
+            setTopOrBottomTextView();
+            setCurrentInningTextView();
+            setBattingAndFieldingTextView();
+            setCurrentFieldingPositions();
+            setCurrentBattingOrder();
+        }
     }
 }

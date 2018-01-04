@@ -8,21 +8,11 @@ import java.util.ArrayList;
 
 public class HalfInning
 {
-    public Team getBattingTeam () { return battingTeam; }
-    public Team getPitchingTeam () { return pitchingTeam; }
-    public int getRunsScored () { return runsScored; }
     public int getOuts () { return outs; }
-    public int getTopOrBottom () { return  topOrBottom; }
-    public int getInningNumber () { return inning; }
-    public void setInning (Inning inning)
-    {
-        inning = inning;
-    }
 
-    public void setTopOrBottom (int halfInningNumber)
+    public int topOrBottom ()
     {
-        topOrBottom = halfInningNumber;
-        repOk();
+        return topOrBottom;
     }
 
     public void incrementRunsScored ()
@@ -36,25 +26,6 @@ public class HalfInning
         outs++;
     }
 
-    public void setBattingTeam (Team newBattingTeam)
-    {
-        this.battingTeam = newBattingTeam;
-    }
-
-    public void setPitchingTeam (Team  newPitchingTeam)
-    {
-        this.pitchingTeam = newPitchingTeam;
-    }
-
-    public ArrayList getBatters ()
-    {
-        return batters;
-    }
-
-    public void addBatter (AtBat batter)
-    {
-        batters.add(batters.size()+1, batter);
-    }
 
     public HalfInning (Team battingTeam, Team pitchingTeam, int topOrBottom, int inning, BasePath basePath)
     {

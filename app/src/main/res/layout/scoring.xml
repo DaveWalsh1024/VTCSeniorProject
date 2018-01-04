@@ -269,6 +269,31 @@
             </TableRow>
 
         </TableLayout>
+
+        <TextView
+            android:id="@+id/currentInning_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Inning" />
+
+        <TextView
+            android:id="@+id/currentBattingTeam_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Batting Team" />
+
+        <TextView
+            android:id="@+id/currentBatter_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Batter" />
+
+        <TextView
+            android:id="@+id/bottomOrTop_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bottom or Top" />
+
     </LinearLayout>
 
     <FrameLayout

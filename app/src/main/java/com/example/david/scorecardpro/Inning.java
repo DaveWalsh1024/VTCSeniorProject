@@ -14,16 +14,16 @@ public class Inning
 
     public HalfInning getBottomInning () { return bottomInning; }
 
-    public void setInningNumber (int number)
+    public void incrementInningNumber ()
     {
-        inningNumber = number;
+        inningNumber++;
     }
 
 
 
-
-    public Inning (int inningCount, HalfInning topInning, HalfInning bottomInning)
+    public Inning (Game game, int inningCount, HalfInning topInning, HalfInning bottomInning)
     {
+        this.game = game;
         this.inningNumber = inningCount;
         this.halfInnings = new ArrayList<>();
         this.topInning = topInning;
@@ -40,4 +40,5 @@ public class Inning
     private int inningNumber;
     private HalfInning topInning;
     private HalfInning bottomInning;
+    private Game game;
 }
