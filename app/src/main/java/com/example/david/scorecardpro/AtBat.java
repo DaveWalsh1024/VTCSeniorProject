@@ -12,7 +12,6 @@ public class AtBat
     public int getBallCount () { return ballCount; }
     public Player getPlayer () { return batter; }
     public HalfInning getHalfInning () { return halfInning; }
-    public BasePath getField () { return basePath; }
     public void setHalfInning (HalfInning halfInning)
     {
      halfInning = halfInning;
@@ -33,7 +32,6 @@ public class AtBat
         this.batter = batter;
         this.halfInning = halfInning;
         this.plays= new ArrayList<>();
-        this.basePath = basePath;
         repOk();
     }
 
@@ -48,5 +46,4 @@ public class AtBat
     private int strikeCount;
     private int ballCount;
     private ArrayList <Play> plays;
-    BasePath basePath;
 }

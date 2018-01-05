@@ -2,6 +2,7 @@ package com.example.david.scorecardpro;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -101,8 +103,14 @@ public class ScoringActivity extends AppCompatActivity {
     TextView strikeCountTextView;
     TextView outCountTextView;
     TextView bottomOrTopTextView;
+    RadioButton homePlateRadioButton;
+    RadioButton firstBaseRadioButton;
+    RadioButton secondBaseRadioButton;
+    RadioButton thirdBaseRadioButton;
+    TextView homeTeamScoreTextView;
+    TextView awayTeamScoreTextView;
 
-    public void initializeTextViews ()
+    public void initializeViews ()
     {
         homeTeamTextView = (TextView) findViewById(R.id.homeTeam_Text);
         awayTeamTextView = (TextView) findViewById(R.id.awayTeam_Text);
@@ -115,11 +123,17 @@ public class ScoringActivity extends AppCompatActivity {
         strikeCountTextView = (TextView)findViewById(R.id.strikes_Edit);
         outCountTextView = (TextView)findViewById(R.id.outs_Edit);
         bottomOrTopTextView = (TextView)findViewById(R.id.bottomOrTop_View);
+        homePlateRadioButton = (RadioButton)findViewById(R.id.homePlate_Radio);
+        firstBaseRadioButton = (RadioButton)findViewById(R.id.firstBase_Radio);
+        secondBaseRadioButton = (RadioButton)findViewById(R.id.secondBase_Radio);
+        thirdBaseRadioButton = (RadioButton)findViewById(R.id.thirdBase_Radio);
+        homeTeamScoreTextView = (TextView)findViewById(R.id.homeScoreNumber_View);
+        awayTeamScoreTextView = (TextView)findViewById(R.id.awayScoreNumber_View);
     }
 
     public void startGame (View b)
     {
-        initializeTextViews();
+        initializeViews();
         homeTeam = new Team(homeTeamTextView.getText().toString());
         awayTeam = new Team(awayTeamTextView.getText().toString());
 
@@ -189,6 +203,84 @@ public class ScoringActivity extends AppCompatActivity {
         }
     }
 
+    public void walk (Base currentBase, Base nextBase)
+    {
+        if (nextBase.doesBaseHaveRunner() == false)
+        {
+            if (nextBase == basePath.getHomeBase())
+            {
+                currentHalfInning.incrementRunsScored();
+                currentBase.removeRunnerOnBase();
+                incrementRunsScored();
+            }
+
+            else
+            {
+                nextBase.setRunnerOnBase(currentBase.getRunnerOnBase());
+                currentBase.removeRunnerOnBase();
+                markBase(nextBase);
+                markBase(currentBase);
+            }
+        }
+
+        else
+        {
+            walk(nextBase, basePath.getNextBase(nextBase));
+            walk(currentBase, nextBase);
+        }
+    }
+
+    public void incrementRunsScored ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            game.incrementAwayTeamScore();
+            System.out.println("The away team score has been incremented");
+            setScoreTextView();
+        }
+        else
+        {
+            game.incrementHomeTeamScore();
+            System.out.println("The home team score has been incremented");
+            setScoreTextView();
+        }
+    }
+
+    public void setScoreTextView ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            awayTeamScoreTextView.setText(Integer.toString(game.getAwayTeamScore()));
+            System.out.println("The away team score text view has been set to " + game.getAwayTeamScore());
+        }
+        else
+        {
+            homeTeamScoreTextView.setText(Integer.toString(game.getHomeTeamScore()));
+            System.out.println("The home team score text view has been set to " + game.getHomeTeamScore());
+        }
+    }
+
+    public void markBase (Base baseToMark)
+    {
+        if (baseToMark.getBaseNumber() == 1)
+        {
+            System.out.println("First base has been toggled");
+            firstBaseRadioButton.toggle();
+        }
+
+        else if (baseToMark.getBaseNumber() == 2)
+        {
+            System.out.println("Second base has been toggled");
+            secondBaseRadioButton.toggle();
+        }
+
+        else if (baseToMark.getBaseNumber() == 3)
+        {
+            System.out.println("Third base has been toggled");
+            thirdBaseRadioButton.toggle();
+        }
+    }
+
     public void ball (View b)
     {
         if (currentBatter.getBallCount() < 3)
@@ -200,9 +292,11 @@ public class ScoringActivity extends AppCompatActivity {
         else
         {
             ballCountTextView.setText(Integer.toString(0));
-            basePath.advanceRunner(basePath.getHomeBase(), basePath.getFirstBase());
+            strikeCountTextView.setText(Integer.toString(0));
+            walk(basePath.getHomeBase(), basePath.getFirstBase());
+            incrementBattingOrderPosition(currentBattingOrderPosition);
             currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
-            setCurrentBatterTextView();
+            currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
             System.out.println("4 balls, New currentBatter is set");
         }
     }
@@ -218,6 +312,7 @@ public class ScoringActivity extends AppCompatActivity {
         else
         {
             strikeCountTextView.setText(Integer.toString(0));
+            ballCountTextView.setText(Integer.toString(0));
             incrementOuts(b);
             currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
             currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
@@ -289,9 +384,8 @@ public class ScoringActivity extends AppCompatActivity {
         {
             System.out.println("There are now 3 outs, setting up next half inning");
             System.out.println("Current Inning Count is " + currentInning.getInningCount());
-            strikeCountTextView.setText(Integer.toString(0));
-            ballCountTextView.setText(Integer.toString(0));
-            outCountTextView.setText(Integer.toString(0));
+
+            resetViews(b);
 
             basePath = new BasePath();
 
@@ -316,6 +410,32 @@ public class ScoringActivity extends AppCompatActivity {
             setBattingAndFieldingTextView();
             setCurrentFieldingPositions();
             setCurrentBattingOrder();
+        }
+    }
+
+    public void resetViews (View b)
+    {
+        strikeCountTextView.setText(Integer.toString(0));
+        ballCountTextView.setText(Integer.toString(0));
+        outCountTextView.setText(Integer.toString(0));
+        System.out.println("Strike, ball, and out count have been set to 0");
+
+        if (firstBaseRadioButton.isChecked())
+        {
+            firstBaseRadioButton.toggle();
+            System.out.println("First base radio button has been toggled");
+        }
+
+        if (secondBaseRadioButton.isChecked())
+        {
+            secondBaseRadioButton.toggle();
+            System.out.println("Second base radio button has been toggled");
+        }
+
+        if (thirdBaseRadioButton.isChecked())
+        {
+            thirdBaseRadioButton.toggle();
+            System.out.println("Third base radio button has been toggled");
         }
     }
 }

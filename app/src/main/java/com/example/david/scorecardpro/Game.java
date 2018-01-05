@@ -49,6 +49,10 @@ public class Game extends AppCompatActivity
         return awayTeamScore;
     }
 
+    public void incrementHomeTeamScore () { homeTeamScore++; }
+
+    public void incrementAwayTeamScore () { awayTeamScore++; }
+
     public TeamInGame getGameWinner()
     {
         if (homeTeamScore > awayTeamScore)

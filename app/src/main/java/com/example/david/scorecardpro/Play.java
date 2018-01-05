@@ -44,8 +44,7 @@ public class Play
 
         else if (playPitch.toString() == "HIT")
         {
-            Base homeBase = new Base(0);
-            atBat.basePath.advanceRunner(homeBase, baseHitterWentTo);
+
         }
     }
 
