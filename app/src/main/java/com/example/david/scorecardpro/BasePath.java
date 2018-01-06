@@ -32,27 +32,24 @@ public class BasePath
             return null;
     }
 
-    public void advanceRunner (Base currentBase, Base nextBase)
+    public void setRunnerOnBase (Base base, Player player)
     {
-        if (nextBase.doesBaseHaveRunner() == false)
+        if (base.getBaseNumber() == 1)
         {
-            if (nextBase == homeBase)
-            {
-                halfInning.incrementRunsScored();
-                currentBase.removeRunnerOnBase();
-            }
-
-            else
-            {
-                nextBase.setRunnerOnBase(currentBase.getRunnerOnBase());
-                currentBase.removeRunnerOnBase();
-            }
+            firstBase.setRunnerOnBase(player);
+            System.out.println("Player on first base is " + firstBase.getRunnerOnBase().getFullName());
         }
 
-        else
+        else if (base.getBaseNumber() == 2)
         {
-            advanceRunner(nextBase, getNextBase(nextBase));
-            advanceRunner(currentBase, nextBase);
+            secondBase.setRunnerOnBase(player);
+            System.out.println("Player on second base is " + secondBase.getRunnerOnBase().getFullName());
+        }
+
+        else if (base.getBaseNumber() == 3)
+        {
+            thirdBase.setRunnerOnBase(player);
+            System.out.println("Player on third base is " + thirdBase.getRunnerOnBase().getFullName());
         }
     }
 
@@ -94,7 +91,6 @@ public class BasePath
         assert homeBase != null;
     }
 
-    private HalfInning halfInning;
     private Base firstBase;
     private Base secondBase;
     private Base thirdBase;

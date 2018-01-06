@@ -27,7 +27,7 @@ public class AtBat
         ballCount++;
     }
 
-    public AtBat (HalfInning halfInning, BasePath basePath, Player batter)
+    public AtBat (HalfInning halfInning, Player batter)
     {
         this.batter = batter;
         this.halfInning = halfInning;

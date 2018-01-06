@@ -150,7 +150,7 @@ public class ScoringActivity extends AppCompatActivity {
         homeTeamTitleTextView.setText(homeTeamTextView.getText());
         awayTeamTitleTextView.setText(awayTeamTextView.getText());
 
-        currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, 1, basePath);
+        currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, 1);
         setCurrentFieldingPositions();
         setBattingAndFieldingTextView();
         setCurrentBattingOrder();
@@ -165,7 +165,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void startHalfInning (HalfInning currentHalfInning)
     {
-        currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+        currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
         setCurrentBatterTextView();
     }
 
@@ -205,6 +205,11 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void walk (Base currentBase, Base nextBase)
     {
+        System.out.println("Current base is " + currentBase.getBaseNumber());
+        System.out.println("Does current base have a runner on it = " + currentBase.doesBaseHaveRunner());
+        System.out.println("Next base is " + nextBase.getBaseNumber());
+        System.out.println("Does next base have a runner on it = " + currentBase.doesBaseHaveRunner());
+
         if (nextBase.doesBaseHaveRunner() == false)
         {
             if (nextBase == basePath.getHomeBase())
@@ -216,7 +221,7 @@ public class ScoringActivity extends AppCompatActivity {
 
             else
             {
-                nextBase.setRunnerOnBase(currentBase.getRunnerOnBase());
+                basePath.setRunnerOnBase(nextBase, currentBatter.getPlayer());
                 currentBase.removeRunnerOnBase();
                 markBase(nextBase);
                 markBase(currentBase);
@@ -227,6 +232,27 @@ public class ScoringActivity extends AppCompatActivity {
         {
             walk(nextBase, basePath.getNextBase(nextBase));
             walk(currentBase, nextBase);
+        }
+    }
+
+    public void markBase (Base baseToMark)
+    {
+        if (baseToMark.getBaseNumber() == 1)
+        {
+            System.out.println("First base has been toggled");
+            firstBaseRadioButton.setChecked(true);
+        }
+
+        else if (baseToMark.getBaseNumber() == 2)
+        {
+            System.out.println("Second base has been toggled");
+            secondBaseRadioButton.setChecked(true);
+        }
+
+        else if (baseToMark.getBaseNumber() == 3)
+        {
+            System.out.println("Third base has been toggled");
+            thirdBaseRadioButton.setChecked(true);
         }
     }
 
@@ -260,27 +286,6 @@ public class ScoringActivity extends AppCompatActivity {
         }
     }
 
-    public void markBase (Base baseToMark)
-    {
-        if (baseToMark.getBaseNumber() == 1)
-        {
-            System.out.println("First base has been toggled");
-            firstBaseRadioButton.toggle();
-        }
-
-        else if (baseToMark.getBaseNumber() == 2)
-        {
-            System.out.println("Second base has been toggled");
-            secondBaseRadioButton.toggle();
-        }
-
-        else if (baseToMark.getBaseNumber() == 3)
-        {
-            System.out.println("Third base has been toggled");
-            thirdBaseRadioButton.toggle();
-        }
-    }
-
     public void ball (View b)
     {
         if (currentBatter.getBallCount() < 3)
@@ -295,7 +300,7 @@ public class ScoringActivity extends AppCompatActivity {
             strikeCountTextView.setText(Integer.toString(0));
             walk(basePath.getHomeBase(), basePath.getFirstBase());
             incrementBattingOrderPosition(currentBattingOrderPosition);
-            currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
             currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
             System.out.println("4 balls, New currentBatter is set");
         }
@@ -314,7 +319,7 @@ public class ScoringActivity extends AppCompatActivity {
             strikeCountTextView.setText(Integer.toString(0));
             ballCountTextView.setText(Integer.toString(0));
             incrementOuts(b);
-            currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
             currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
             System.out.println("3 Strikes, increment outs and set new current batter");
         }
@@ -376,7 +381,7 @@ public class ScoringActivity extends AppCompatActivity {
             System.out.println("Current out count is " + currentBatter.getHalfInning().getOuts());
             currentHalfInning.incrementOuts();
             outCountTextView.setText(Integer.toString(currentBatter.getHalfInning().getOuts()));
-            currentBatter = new AtBat(currentHalfInning, basePath, currentBattingOrder.get(currentBattingOrderPosition));
+            currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
             currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
         }
 
@@ -392,13 +397,13 @@ public class ScoringActivity extends AppCompatActivity {
             if (currentHalfInning.topOrBottom() == 1) //currently the top of the inning
             {
                 System.out.println("The new half inning will be the bottom of the " + currentInning.getInningCount());
-                currentHalfInning = new HalfInning(awayTeam, homeTeam, 2, currentInning.getInningCount(), basePath);
+                currentHalfInning = new HalfInning(awayTeam, homeTeam, 2, currentInning.getInningCount());
             }
             else
             {
                 System.out.println("New Inning. Setting up top of the new inning. The inning number is " + currentInning.getInningCount());
                 currentInning.incrementInningNumber();
-                currentHalfInning = new HalfInning(homeTeam, awayTeam, 1, currentInning.getInningCount(), basePath);
+                currentHalfInning = new HalfInning(homeTeam, awayTeam, 1, currentInning.getInningCount());
                 currentInning = new Inning(game, currentInning.getInningCount(), currentHalfInning, null);
                 game.addInning(currentInning);
 
@@ -422,19 +427,19 @@ public class ScoringActivity extends AppCompatActivity {
 
         if (firstBaseRadioButton.isChecked())
         {
-            firstBaseRadioButton.toggle();
+            firstBaseRadioButton.setChecked(false);
             System.out.println("First base radio button has been toggled");
         }
 
         if (secondBaseRadioButton.isChecked())
         {
-            secondBaseRadioButton.toggle();
+            secondBaseRadioButton.setChecked(false);
             System.out.println("Second base radio button has been toggled");
         }
 
         if (thirdBaseRadioButton.isChecked())
         {
-            thirdBaseRadioButton.toggle();
+            thirdBaseRadioButton.setChecked(false);
             System.out.println("Third base radio button has been toggled");
         }
     }

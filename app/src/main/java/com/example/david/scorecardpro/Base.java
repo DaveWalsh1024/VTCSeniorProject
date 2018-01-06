@@ -11,13 +11,13 @@ public class Base
 
     public boolean doesBaseHaveRunner ()
     {
-        if (getRunnerOnBase() == null)
+        if (runnerOnBase == null)
         {
             return false;
         }
 
         else
-            return false;
+            return true;
     }
 
 
