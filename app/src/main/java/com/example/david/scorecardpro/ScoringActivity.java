@@ -220,28 +220,27 @@ public class ScoringActivity extends AppCompatActivity {
             if (basePath.areThereAnyRunnersOnBase() == false)
             {
                 System.out.println("Since there are no other runners on the base the batter goes to first and nothing else happens");
-                basePath.setRunnerOnBase(basePath.getFirstBase(), currentBatter.getPlayer());
+                setRunnerOnBase(basePath.getFirstBase(), currentBatter.getPlayer());
             }
 
             else
             {
                 if (basePath.getThirdBase().doesBaseHaveRunner() == true)
                 {
-                    basePath.setRunnerOnBase(basePath.getThirdBase(), basePath.getSecondBase().getRunnerOnBase());
-                    basePath.getThirdBase().removeRunnerOnBase();
+                    removeRunnerFromBase(basePath.getThirdBase());
                     incrementRunsScored();
                 }
 
                 if (basePath.getSecondBase().doesBaseHaveRunner() == true)
                 {
-                    basePath.setRunnerOnBase(basePath.getThirdBase(), basePath.getThirdBase().getRunnerOnBase());
-                    basePath.getSecondBase().removeRunnerOnBase();
+                    setRunnerOnBase(basePath.getThirdBase(), basePath.getSecondBase().getRunnerOnBase());
+                    removeRunnerFromBase(basePath.getSecondBase());
                 }
 
                 if (basePath.getFirstBase().doesBaseHaveRunner() == true)
                 {
-                    basePath.setRunnerOnBase(basePath.getSecondBase(), basePath.getFirstBase().getRunnerOnBase());
-                    basePath.getFirstBase().removeRunnerOnBase();
+                    setRunnerOnBase(basePath.getSecondBase(), basePath.getFirstBase().getRunnerOnBase());
+                    removeRunnerFromBase(basePath.getFirstBase());
                 }
             }
 
@@ -265,23 +264,20 @@ public class ScoringActivity extends AppCompatActivity {
             if (basePath.getFirstBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on first scored");
-                basePath.getFirstBase().removeRunnerOnBase();
-                unMarkBase(basePath.getFirstBase());
+                removeRunnerFromBase(basePath.getFirstBase());
                 incrementRunsScored();
             }
 
             if (basePath.getSecondBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on second scored");
-                basePath.getSecondBase().removeRunnerOnBase();
-                unMarkBase(basePath.getSecondBase());
+                removeRunnerFromBase(basePath.getSecondBase());
                 incrementRunsScored();
             }
             if (basePath.getThirdBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on third scored");
-                basePath.getThirdBase().removeRunnerOnBase();
-                unMarkBase(basePath.getThirdBase());
+                removeRunnerFromBase(basePath.getThirdBase());
                 incrementRunsScored();
             }
             incrementRunsScored();
@@ -294,32 +290,28 @@ public class ScoringActivity extends AppCompatActivity {
             if (basePath.getThirdBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on third scored!");
-                basePath.getThirdBase().removeRunnerOnBase();
-                unMarkBase(basePath.getThirdBase());
+                removeRunnerFromBase(basePath.getThirdBase());
                 incrementRunsScored();
             }
 
             if (basePath.getSecondBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on second scored!");
-                basePath.getSecondBase().removeRunnerOnBase();
-                unMarkBase(basePath.getSecondBase());
+                removeRunnerFromBase(basePath.getSecondBase());
                 incrementRunsScored();
             }
 
             if (basePath.getFirstBase().doesBaseHaveRunner() == true)
             {
                 System.out.println("The runner on first advanced to third");
-                basePath.setRunnerOnBase(basePath.getThirdBase(), basePath.getFirstBase().getRunnerOnBase());
-                markBase(basePath.getThirdBase());
-                unMarkBase(basePath.getFirstBase());
+                setRunnerOnBase(basePath.getThirdBase(), basePath.getFirstBase().getRunnerOnBase());
+                removeRunnerFromBase(basePath.getFirstBase());
                 basePath.getFirstBase().removeRunnerOnBase();
             }
 
             System.out.println("The batter advanced to second");
-            basePath.setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
-            markBase(basePath.getSecondBase());
-            basePath.getHomeBase().removeRunnerOnBase();
+            setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
+            removeRunnerFromBase(basePath.getHomeBase());
             setNewBatter(b);
         }
 
@@ -327,6 +319,18 @@ public class ScoringActivity extends AppCompatActivity {
         {
 
         }
+    }
+
+    public void setRunnerOnBase (Base base, Player player)
+    {
+        basePath.setRunnerOnBase(base, player);
+        markBase(base);
+    }
+
+    public void removeRunnerFromBase (Base base)
+    {
+        basePath.removeRunnerFromBase(base);
+        unMarkBase(base);
     }
 
     public void walk (Base currentBase, Base nextBase)
@@ -347,10 +351,8 @@ public class ScoringActivity extends AppCompatActivity {
 
             else
             {
-                basePath.setRunnerOnBase(nextBase, currentBatter.getPlayer());
-                currentBase.removeRunnerOnBase();
-                markBase(nextBase);
-                markBase(currentBase);
+                setRunnerOnBase(nextBase, currentBatter.getPlayer());
+                removeRunnerFromBase(currentBase);
             }
         }
 
@@ -380,6 +382,11 @@ public class ScoringActivity extends AppCompatActivity {
             System.out.println("Third base has un marked");
             thirdBaseRadioButton.setChecked(false);
         }
+
+        else
+        {
+            return;
+        }
     }
 
     public void markBase (Base baseToMark)
@@ -400,6 +407,11 @@ public class ScoringActivity extends AppCompatActivity {
         {
             System.out.println("Third base has been marked");
             thirdBaseRadioButton.setChecked(true);
+        }
+
+        else
+        {
+            return;
         }
     }
 

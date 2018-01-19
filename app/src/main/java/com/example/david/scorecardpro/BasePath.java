@@ -22,6 +22,11 @@ public class BasePath
             return true;
     }
 
+    public void removeRunnerFromBase (Base base)
+    {
+        base.removeRunnerOnBase();
+    }
+
     public Base getNextBase (Base base)
     {
         if (base.getBaseNumber() == 1)
