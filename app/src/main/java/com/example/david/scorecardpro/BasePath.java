@@ -11,6 +11,17 @@ public class BasePath
     public Base getThirdBase () { return thirdBase; }
     public Base getHomeBase () { return homeBase; }
 
+    public boolean areThereAnyRunnersOnBase ()
+    {
+        if (firstBase.doesBaseHaveRunner() == false && secondBase.doesBaseHaveRunner() == false && thirdBase.doesBaseHaveRunner() == false)
+        {
+            return false;
+        }
+
+        else
+            return true;
+    }
+
     public Base getNextBase (Base base)
     {
         if (base.getBaseNumber() == 1)

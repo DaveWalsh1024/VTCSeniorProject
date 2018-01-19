@@ -8,6 +8,10 @@ public class PositionsInGame
 {
     public Player getPlayer () {return player; }
     public Positions getPosition () {return position; }
+    public void setPlayer (Player newPlayer)
+    {
+        player = newPlayer;
+    }
 
     public PositionsInGame (Player player, Positions position)
     {
