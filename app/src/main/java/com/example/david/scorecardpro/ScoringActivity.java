@@ -219,7 +219,7 @@ public class ScoringActivity extends AppCompatActivity {
             System.out.println("A single");
             if (basePath.areThereAnyRunnersOnBase() == false)
             {
-                System.out.println("Since there are no other runners on the base the batter goes to first and nothing else happens");
+                System.out.println("Since there are no other runners on the bases the batter goes to first and nothing else happens");
                 setRunnerOnBase(basePath.getFirstBase(), currentBatter.getPlayer());
             }
 
@@ -249,12 +249,61 @@ public class ScoringActivity extends AppCompatActivity {
 
         else if (playString.equals("2B"))
         {
+            System.out.println("A double");
 
+            if (basePath.getThirdBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on third scored");
+                removeRunnerFromBase(basePath.getThirdBase());
+                incrementRunsScored();
+            }
+
+            if (basePath.getSecondBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on second scored");
+                removeRunnerFromBase(basePath.getSecondBase());
+                incrementRunsScored();
+            }
+
+            if (basePath.getFirstBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on first scored");
+                setRunnerOnBase(basePath.getThirdBase(), basePath.getFirstBase().getRunnerOnBase());
+                removeRunnerFromBase(basePath.getFirstBase());
+            }
+            System.out.println("The batter is now on Second base after he hit a triple");
+            setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
+            setNewBatter(b);
         }
 
         else if (playString.equals("3B"))
         {
+            System.out.println("Triple");
 
+            if (basePath.getThirdBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on third scored");
+                removeRunnerFromBase(basePath.getThirdBase());
+                incrementRunsScored();
+            }
+
+            if (basePath.getSecondBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on second scored");
+                removeRunnerFromBase(basePath.getSecondBase());
+                incrementRunsScored();
+            }
+
+
+            if (basePath.getFirstBase().doesBaseHaveRunner() == true)
+            {
+                System.out.println("The runner on first scored");
+                removeRunnerFromBase(basePath.getFirstBase());
+                incrementRunsScored();
+            }
+            System.out.println("The batter is now on Third base after he hit a triple");
+            setRunnerOnBase(basePath.getThirdBase(), currentBatter.getPlayer());
+            setNewBatter(b);
         }
 
         else if (playString.equals("HR"))
@@ -311,7 +360,6 @@ public class ScoringActivity extends AppCompatActivity {
 
             System.out.println("The batter advanced to second");
             setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
-            removeRunnerFromBase(basePath.getHomeBase());
             setNewBatter(b);
         }
 
@@ -507,6 +555,7 @@ public class ScoringActivity extends AppCompatActivity {
         strikeCountTextView.setText(Integer.toString(0));
         ballCountTextView.setText(Integer.toString(0));
         incrementBattingOrderPosition(currentBattingOrderPosition);
+        removeRunnerFromBase(basePath.getHomeBase());
         currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
         currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
         System.out.println("A new batter has been set. It is " + currentBatter.getPlayer().getFullName());
