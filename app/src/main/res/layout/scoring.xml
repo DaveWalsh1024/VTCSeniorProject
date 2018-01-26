@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,322 +9,300 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="2"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
-        android:id="@+id/pitch_fragment"
+    <TableLayout
         android:name="com.example.david.scorecardpro.PitchFragment"
-        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/pitch_fragment"
+        android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80px">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:id="@+id/homeTeam_Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Home Team" />
-
-            </TableRow>
-
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:id="@+id/awayTeam_Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Away Team" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/startGame_Button"
-                    android:name="startGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
-                    android:onClick="startGame"
-                    android:text="Start Game" />
-
-            </TableRow>
-
-        </TableLayout>
-
-
-        <TableLayout
-            android:id="@+id/score_Layout"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80px">
+            android:layout_height="match_parent" >
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10px">
+            <EditText
+                android:id="@+id/homeTeam_Text"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="3"
+                android:inputType="textPersonName"
+                android:text="Home Team"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-                <TextView
-                    android:id="@+id/homeScore_View"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Home Team:" />
+            <TextView
+                android:id="@+id/homeScore_View"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Home Team:"/>
 
-                <TextView
-                    android:id="@+id/homeScoreNumber_View"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0" />
+            <TextView
+                android:id="@+id/homeScoreNumber_View"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"/>
 
-            </TableRow>
+        </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/awayScore_View"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Away Team:" />
-
-                <TextView
-                    android:id="@+id/awayScoreNumber_View"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0" />
-
-            </TableRow>
-
-        </TableLayout>
-
-        <LinearLayout
-            android:id="@+id/ballsStrikesOuts_Layout"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80px"
-            android:orientation="horizontal">
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/awayTeam_Text"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10px"
+                android:ems="10"
+                android:layout_weight="3"
+                android:inputType="textPersonName"
+                android:text="Away Team"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
+            <TextView
+                android:id="@+id/awayScore_View"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Away Team:"/>
+
+            <TextView
+                android:id="@+id/awayScoreNumber_View"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/startGame_Button"
+                android:name="startGame"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10px"
+                android:onClick="startGame"
+                android:text="Start Game" />
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20px">
 
             <TextView
                 android:id="@+id/balls_View"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Balls:" />
+                android:text="Balls:"/>
 
             <EditText
                 android:id="@+id/balls_Edit"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0" />
+                android:gravity="center"
+                android:text="0"/>
 
             <TextView
                 android:id="@+id/strikes_View"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Strikes:" />
+                android:text="Strikes:"/>
 
             <EditText
                 android:id="@+id/strikes_Edit"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0" />
+                android:gravity="center"
+                android:text="0"/>
 
             <TextView
                 android:id="@+id/outs_View"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Outs:" />
+                android:text="Outs:"/>
 
             <EditText
                 android:id="@+id/outs_Edit"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0" />
+                android:gravity="center"
+                android:text="0"/>
 
-        </LinearLayout>
+        </TableRow>
 
-        <LinearLayout
+        <TableRow
             android:id="@+id/pitchTypeButtons_Layout"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80px"
-            android:orientation="horizontal">
+            android:layout_marginBottom="20px">
 
             <Button
                 android:id="@+id/balls_Button"
                 android:name="balls"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="ball"
-                android:text="Ball" />
+                android:text="Ball"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <Button
                 android:id="@+id/strikes_Button"
                 android:name="strikes"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="strike"
-                android:text="Strike" />
+                android:text="Strike"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <Button
                 android:id="@+id/outs_Button"
                 android:name="outs"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="play"
-                android:text="Out" />
+                android:text="Out"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <Button
                 android:id="@+id/hits_Button"
                 android:name="hits"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hit"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/homePlate_Radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home Plate"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
+            <RadioButton
+                android:id="@+id/firstBase_Radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hit" />
+                android:text="First Base"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-        </LinearLayout>
+            <RadioButton
+                android:id="@+id/secondBase_Radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Second Base" />
 
+            <RadioButton
+                android:id="@+id/thirdBase_Radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Third Base" />
 
-        <TableLayout
-            android:id="@+id/base_Layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80px"
-            android:orientation="horizontal">
+        </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioButton
-                    android:id="@+id/homePlate_Radio"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/currentInning_View"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Home Plate" />
-            </TableRow>
+                    android:text="Current Inning" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioButton
-                    android:id="@+id/firstBase_Radio"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/currentBattingTeam_View"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="First Base" />
-            </TableRow>
+                    android:text="Current Batting Team" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioButton
-                    android:id="@+id/secondBase_Radio"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/currentBatter_View"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Second Base" />
-            </TableRow>
+                    android:text="Current Batter" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioButton
-                    android:id="@+id/thirdBase_Radio"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/bottomOrTop_View"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Third Base" />
-            </TableRow>
+                    android:text="Bottom or Top" />
 
-        </TableLayout>
+                <EditText
+                    android:id="@+id/play_View"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Play" />
 
-        <TextView
-            android:id="@+id/currentInning_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current Inning" />
-
-        <TextView
-            android:id="@+id/currentBattingTeam_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current Batting Team" />
-
-        <TextView
-            android:id="@+id/currentBatter_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current Batter" />
-
-        <TextView
-            android:id="@+id/bottomOrTop_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bottom or Top" />
-
-        <EditText
-            android:id="@+id/play_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Play" />
-
-        <Button
-            android:id="@+id/playButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="play"
-            android:text="Play" />
-
-    </LinearLayout>
+                <Button
+                    android:id="@+id/playButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="play"
+                    android:text="Play" />
+    </TableLayout>
 
     <FrameLayout
         android:name="com.example.david.scorecardpro.FieldFragment"
         android:id="@+id/field_fragment"
-        android:layout_width="wrap_content"
+        android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingTop="16dp"
+        tools:context="com.example.david.scorecardpro.FieldFragment"
+        tools:showIn="@layout/scoring">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Field Fragment"/>
+            android:id="@+id/gestureName"
+            android:textSize="32dp"
+            android:text="Gesture Type"/>
 
+        <android.gesture.GestureOverlayView
+            android:id="@+id/gestures"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gestureStrokeType="single"
+            android:gestureColor="@color/colorPrimary"
+            android:gestureStrokeWidth="32"
+            android:orientation="horizontal"
+            android:eventsInterceptionEnabled="true">
 
+        </android.gesture.GestureOverlayView>
 
     </FrameLayout>
 

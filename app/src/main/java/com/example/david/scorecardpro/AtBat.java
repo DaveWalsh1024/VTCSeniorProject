@@ -12,10 +12,6 @@ public class AtBat
     public int getBallCount () { return ballCount; }
     public Player getPlayer () { return batter; }
     public HalfInning getHalfInning () { return halfInning; }
-    public void setHalfInning (HalfInning halfInning)
-    {
-     halfInning = halfInning;
-    }
 
     public void incrementStrikes ()
     {
