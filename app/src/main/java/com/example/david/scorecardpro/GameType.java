@@ -11,8 +11,8 @@ public class GameType
 
     public GameType (String name, int numInnings)
     {
-        name = name;
-        numInnings = numInnings;
+        this.name = name;
+        this.numInnings = numInnings;
         repOk();
     }
 

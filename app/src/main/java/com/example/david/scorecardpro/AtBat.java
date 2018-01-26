@@ -23,6 +23,12 @@ public class AtBat
         ballCount++;
     }
 
+    public void addPlay (Play playToAdd)
+    {
+        plays.add(playToAdd);
+    }
+
+
     public AtBat (HalfInning halfInning, Player batter)
     {
         this.batter = batter;

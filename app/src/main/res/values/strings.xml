@@ -18,4 +18,5 @@
     <string name="formula_calculator">Formula Calculator</string>
     <string name="about">About</string>
     <string name="action_settings">Settings</string>
+    <color name="white">#FFFFFF</color>
 </resources>

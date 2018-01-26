@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="davidwalshcis2730.lab5.Lab5">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -15,8 +14,8 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="10px"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>

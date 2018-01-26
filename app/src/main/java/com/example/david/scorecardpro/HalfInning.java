@@ -25,6 +25,11 @@ public class HalfInning
         outs++;
     }
 
+    public void addAtBat (AtBat atBatToAdd)
+    {
+        batters.add(atBatToAdd);
+    }
+
 
     public HalfInning (Team battingTeam, Team pitchingTeam, int topOrBottom, int inning)
     {

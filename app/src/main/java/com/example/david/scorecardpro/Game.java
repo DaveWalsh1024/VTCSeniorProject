@@ -15,14 +15,6 @@ import java.util.Date;
 
 public class Game extends AppCompatActivity
 {
-    public TeamInGame getHomeTeam() {
-        return homeTeam;
-    }
-
-    public TeamInGame getAwayTeam() {
-        return awayTeam;
-    }
-
     public void setHomeTeam (Team homeTeam)
     {
         homeTeam = homeTeam;
@@ -31,14 +23,6 @@ public class Game extends AppCompatActivity
     public void setAwayTeam (Team awayTeam)
     {
         awayTeam = awayTeam;
-    }
-
-    public Date getGameDate() {
-        return gameDate;
-    }
-
-    public String getLocation() {
-        return location;
     }
 
     public int getHomeTeamScore() {
@@ -52,6 +36,8 @@ public class Game extends AppCompatActivity
     public void incrementHomeTeamScore () { homeTeamScore++; }
 
     public void incrementAwayTeamScore () { awayTeamScore++; }
+
+    public GameType getGameType () { return gameType; }
 
     public TeamInGame getGameWinner()
     {
@@ -78,11 +64,6 @@ public class Game extends AppCompatActivity
         innings.add(innings.size(), inning);
     }
 
-    public Inning getInningFromNumber (int number)
-    {
-        return innings.get(number - 1);
-    }
-
 
     public void repOk() {
         assert homeTeam != null;
@@ -106,7 +87,5 @@ public class Game extends AppCompatActivity
     private int homeTeamScore;
     private int awayTeamScore;
     private TeamInGame awayTeam;
-    private Date gameDate;
-    private String location;
     private ArrayList <Inning> innings;
 }

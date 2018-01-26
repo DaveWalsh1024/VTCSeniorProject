@@ -3,32 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="davidwalshcis2730.lab5.Lab5">
     <item
-        android:id="@+id/standard_calculator"
+        android:id="@+id/activity_login"
         android:orderInCategory="100"
-        android:title="@string/standard_calculator"
+        android:title="LoginActivity"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/conversion_calculator"
+        android:id="@+id/activity_scoring"
         android:orderInCategory="100"
-        android:title="@string/conversion_calculator"
+        android:title="ScoringActivity"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/formula_calculator"
-        android:orderInCategory="100"
-        android:title="@string/formula_calculator"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_About"
-        android:orderInCategory="100"
-        android:title="@string/about"
-        app:showAsAction="never" />
 </menu>

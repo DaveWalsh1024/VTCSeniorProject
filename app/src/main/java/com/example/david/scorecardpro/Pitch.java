@@ -14,6 +14,7 @@ public enum Pitch
     HITBYPITCH("HITBYPITCH");
 
     private String stringValue;
+
     private Pitch(String toString)
     {
         stringValue = toString;

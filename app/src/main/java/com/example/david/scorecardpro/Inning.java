@@ -10,13 +10,19 @@ public class Inning
 {
     public int getInningCount () { return inningNumber; }
 
-    public HalfInning getTopInning () { return topInning; }
-
-    public HalfInning getBottomInning () { return bottomInning; }
-
     public void incrementInningNumber ()
     {
         inningNumber++;
+    }
+
+    public void setTopInning (HalfInning topInningToSet)
+    {
+        topInning = topInningToSet;
+    }
+
+    public void setBottomInning (HalfInning bottomInningToSet)
+    {
+        bottomInning = bottomInningToSet;
     }
 
 
@@ -25,7 +31,6 @@ public class Inning
     {
         this.game = game;
         this.inningNumber = inningCount;
-        this.halfInnings = new ArrayList<>();
         this.topInning = topInning;
         this.bottomInning = bottomInning;
         repOk();
@@ -36,7 +41,6 @@ public class Inning
         assert inningNumber > 0;
     }
 
-    private ArrayList <HalfInning> halfInnings;
     private int inningNumber;
     private HalfInning topInning;
     private HalfInning bottomInning;
