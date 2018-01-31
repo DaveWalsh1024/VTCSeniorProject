@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="davidwalshcis2730.lab5.Lab5">
     <item
-        android:id="@+id/activity_login"
+        android:id="@+id/login"
         android:orderInCategory="100"
         android:title="LoginActivity"
         app:showAsAction="never" />
@@ -12,6 +12,12 @@
         android:id="@+id/activity_scoring"
         android:orderInCategory="100"
         android:title="ScoringActivity"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about"
+        android:orderInCategory="100"
+        android:title="About"
         app:showAsAction="never" />
 
 </menu>

@@ -13,8 +13,6 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_toolbox);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,6 +33,11 @@ public class About extends AppCompatActivity {
 
             case R.id.activity_scoring:
                 go = new Intent(this,ScoringActivity.class);
+                startActivity(go);
+                return true;
+
+            case R.id.about:
+                go = new Intent(this,About.class);
                 startActivity(go);
                 return true;
         }

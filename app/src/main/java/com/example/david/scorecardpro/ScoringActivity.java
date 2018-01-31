@@ -28,9 +28,10 @@ public class ScoringActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         setContentView(R.layout.scoring);
+ //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+  //      setSupportActionBar(toolbar);
+
 
 
         _gestureName = (TextView)findViewById(R.id.gestureName);
@@ -62,7 +63,12 @@ public class ScoringActivity extends AppCompatActivity {
                 return true;
 
             case R.id.activity_scoring:
-                go = new Intent(this,ScoringActivity.class);
+            go = new Intent(this,ScoringActivity.class);
+            startActivity(go);
+            return true;
+
+            case R.id.about:
+                go = new Intent(this,About.class);
                 startActivity(go);
                 return true;
         }
@@ -804,6 +810,7 @@ public class ScoringActivity extends AppCompatActivity {
             currentFieldingPositions = awayTeamPositions;
         }
     }
+
 
     public void incrementBattingOrderPosition (int oldPosition)
     {
