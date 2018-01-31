@@ -279,6 +279,13 @@
                     android:layout_height="wrap_content"
                     android:onClick="play"
                     android:text="Play" />
+
+        <Button
+            android:id="@+id/hitByPitchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="hitByPitchHelperMethod"
+            android:text="Hit By Pitch" />
     </TableLayout>
 
     <FrameLayout

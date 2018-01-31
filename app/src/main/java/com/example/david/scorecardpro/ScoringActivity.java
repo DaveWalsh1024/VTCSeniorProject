@@ -561,6 +561,39 @@ public class ScoringActivity extends AppCompatActivity {
         unMarkBase(base);
     }
 
+    public void hitByPitchHelperMethod ()
+    {;
+        hitByPitch(basePath.getHomeBase(), basePath.getFirstBase());
+    }
+
+    public void hitByPitch (Base currentBase, Base nextBase)
+    {
+        createNewPlay("HBP");
+        System.out.println("The batter was hit by a pitch");
+
+        if (nextBase.doesBaseHaveRunner() == false)
+        {
+            if (nextBase == basePath.getHomeBase())
+            {
+                currentHalfInning.incrementRunsScored();
+                currentBase.removeRunnerOnBase();
+                incrementRunsScored();
+            }
+
+            else
+            {
+                setRunnerOnBase(nextBase, currentBatter.getPlayer());
+                removeRunnerFromBase(currentBase);
+            }
+        }
+
+        else
+        {
+            hitByPitch(nextBase, basePath.getNextBase(nextBase));
+            hitByPitch(currentBase, nextBase);
+        }
+    }
+
     public void walk (Base currentBase, Base nextBase)
     {
         System.out.println("Current base is " + currentBase.getBaseNumber());
