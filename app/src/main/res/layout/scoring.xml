@@ -10,9 +10,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:weightSum="2">
-
-
+    android:weightSum="2"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TableLayout
         android:name="com.example.david.scorecardpro.PitchFragment"
@@ -236,57 +235,50 @@
 
         </TableRow>
 
-                <TextView
-                    android:id="@+id/currentInning_View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Current Inning" />
-
-                <TextView
-                    android:id="@+id/currentBattingTeam_View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Current Batting Team" />
-
-                <TextView
-                    android:id="@+id/currentBatter_View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Current Batter" />
-
-                <TextView
-                    android:id="@+id/bottomOrTop_View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Bottom or Top" />
-
-                 <TextView
-                    android:id="@+id/lastPlay_View"
-                    android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                    android:text="Last Play" />
-
-                <EditText
-                    android:id="@+id/play_View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Play" />
-
-                <Button
-                    android:id="@+id/playButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="play"
-                    android:text="Play" />
-
-        <Button
-            android:id="@+id/hitByPitchButton"
+        <TextView
+            android:id="@+id/currentInning_View"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="hitByPitchHelperMethod"
-            android:text="Hit By Pitch" />
+            android:text="Current Inning" />
+
+        <TextView
+            android:id="@+id/currentBattingTeam_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Batting Team" />
+
+        <TextView
+            android:id="@+id/currentBatter_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Batter" />
+
+        <TextView
+            android:id="@+id/bottomOrTop_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bottom or Top" />
+
+        <TextView
+            android:id="@+id/lastPlay_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last Play" />
+
+        <EditText
+            android:id="@+id/play_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Play" />
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="play"
+            android:text="Play" />
     </TableLayout>
 
     <FrameLayout
@@ -297,6 +289,7 @@
         android:layout_weight="1"
         android:paddingTop="16dp"
         tools:context="com.example.david.scorecardpro.FieldFragment"
+        android:background="@drawable/ballfield"
         tools:showIn="@layout/scoring">
 
         <TextView
@@ -311,10 +304,154 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gestureStrokeType="single"
-            android:gestureColor="@color/colorPrimary"
+            android:gestureColor="@color/gestureColor"
             android:gestureStrokeWidth="32"
             android:orientation="horizontal"
             android:eventsInterceptionEnabled="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/catcherText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Catcher"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.82" />
+
+                <TextView
+                    android:id="@+id/pitcherText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Pitcher"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.52" />
+
+                <TextView
+                    android:id="@+id/firstBaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="FirstBase"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.87"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/secondBaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="SecondBase"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.75"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35000002" />
+
+                <TextView
+                    android:id="@+id/thirdBaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="ThirdBase"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/shortStopText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="ShortStop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35000002" />
+
+                <TextView
+                    android:id="@+id/leftFieldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="LeftField"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.15"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.120000005" />
+
+                <TextView
+                    android:id="@+id/centerFieldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="CenterField"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.100000024" />
+
+                <TextView
+                    android:id="@+id/rightFieldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="RightField"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.85"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.120000005" />
+
+            </android.support.constraint.ConstraintLayout>
 
         </android.gesture.GestureOverlayView>
 

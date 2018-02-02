@@ -79,144 +79,163 @@ public class ScoringActivity extends AppCompatActivity {
 
 
     private void hitGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
-        Log.i("Gestures","Gesture="+gesture+" with "+gesture.getStrokesCount());
-        ArrayList<GestureStroke> strokes = gesture.getStrokes();
-        for (GestureStroke stroke : strokes)
-        {
-            Log.i("Gestures","box="+stroke.computeOrientedBoundingBox().width+"x"
-                    +stroke.computeOrientedBoundingBox().height+"@"
-                    +stroke.computeOrientedBoundingBox().centerX+","
-                    +stroke.computeOrientedBoundingBox().centerY+" "
-                    +stroke.computeOrientedBoundingBox().orientation);
-            Log.i("Gestures","points="+ Arrays.toString(stroke.points));
+        _gestureName = (TextView)findViewById(R.id.gestureName);
+        gestureOverlayView = (GestureOverlayView)findViewById(R.id.gestures);
+        gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
+            @Override
+            public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
+                Log.i("Gestures", "Gesture=" + gesture + " with " + gesture.getStrokesCount());
+                ArrayList<GestureStroke> strokes = gesture.getStrokes();
+                for (GestureStroke stroke : strokes) {
+                    Log.i("Gestures", "box=" + stroke.computeOrientedBoundingBox().width + "x"
+                            + stroke.computeOrientedBoundingBox().height + "@"
+                            + stroke.computeOrientedBoundingBox().centerX + ","
+                            + stroke.computeOrientedBoundingBox().centerY + " "
+                            + stroke.computeOrientedBoundingBox().orientation);
+                    Log.i("Gestures", "points=" + Arrays.toString(stroke.points));
 
 
-            if (stroke.computeOrientedBoundingBox().height > 50)
-            {
-                _gestureName.setText("Groundball");
+                    if (stroke.computeOrientedBoundingBox().height > 50)
+                        _gestureName.setText("Groundball");
+                    else
+                        _gestureName.setText("Fly ball");
+
+                    for (int i = 0; i <= strokes.size() - 1; i++) {
+
+                        double screenHeight = gestureOverlayView.getHeight();
+                        double screenWidth = gestureOverlayView.getWidth();
+                        double centerWidth = gestureOverlayView.getWidth() * .5;
+                        double infieldY1 = gestureOverlayView.getHeight() * .7;
+                        double infieldY2 = gestureOverlayView.getHeight() * .5;
+                        double outfieldY = gestureOverlayView.getHeight() * .3;
+                        double topStroke = stroke.boundingBox.top;
+                        double bottomStroke = stroke.boundingBox.bottom;
+                        double leftStroke = stroke.boundingBox.left;
+                        double rightStroke = stroke.boundingBox.right;
+                        double infieldX1 = gestureOverlayView.getWidth() * .25;
+                        double infieldX2 = gestureOverlayView.getWidth() * .75;
+                        double outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
+                        double outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
+
+                       /* double[] pitcherZone = {infieldY2, infieldX2, infieldY1, infieldX1};
+                        double[] catcherZone = {infieldY1, outfieldX2, screenHeight, outfieldX1};
+                        double[] firstBaseZone = {outfieldY, screenWidth, infieldY1, infieldX2};
+                        double[] secondBaseZone = {outfieldY, infieldX2, infieldY2, centerWidth};
+                        double[] thirdBaseZone = {outfieldY, infieldX1, infieldY1, 0.0};
+                        double[] shortStopZone = {outfieldY, centerWidth, infieldY2, infieldX1};
+                        double[] leftFieldZone = {0.0, outfieldX1, outfieldY, 0.0};
+                        double[] centerFieldZone = {0.0, outfieldX2, outfieldY, outfieldX1};
+                        double[] rightFieldZone = {0.0, 0.0, outfieldY, outfieldX2};
+
+                        double[] gesturePositions [] = {pitcherZone, catcherZone, firstBaseZone, secondBaseZone, thirdBaseZone, shortStopZone, leftFieldZone, centerFieldZone, rightFieldZone};
+
+                        for (int j = 0; j < gesturePositions.length; j++) {
+                            if ((topStroke <= gesturePositions[j][0]) && (rightStroke <= gesturePositions[j][1]) && (topStroke > gesturePositions[j][2]) && (leftStroke <= gesturePositions[j][3])) {
+                                _gestureName.append(" to " + (j+1));
+                            }
+                        }*/
+
+
+
+                        // Outfield
+                        if (topStroke <= outfieldY) {
+
+                            // Centerfield
+                            if ((outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
+                                _gestureName.append(" to Centerfield");
+                            }
+
+                            // Leftfield
+                            else if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (outfieldX1 > leftStroke)) {
+                                _gestureName.append(" to Leftfield");
+                            }
+
+                            // Rightfield
+                            else if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (outfieldX2 < rightStroke)) {
+                                _gestureName.append(" to Rightfield");
+                            } else {
+                                _gestureName.setText("TopStroke = " + topStroke +
+                                        "\noutfieldY" + outfieldY +
+                                        "\n\nLeftStroke = " + leftStroke +
+                                        "\noutfieldX1 = " + outfieldX1 +
+                                        "\n\nRightStroke = " + rightStroke +
+                                        "\noutfieldx2 " + outfieldX2);
+                            }
+                        }
+
+
+                        // Catcher
+                        else if ((topStroke >= infieldY1) && (outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
+                            _gestureName.append(" to Catcher" +
+                                    "\nTopStroke = " + topStroke +
+                                    "\n\nLeftStroke = " + leftStroke +
+                                    "\noutfieldX1 = " + outfieldX1 +
+                                    "\n\nRightStroke = " + rightStroke +
+                                    "\noutfieldx2 " + outfieldX2);
+                        }
+
+                        // Pitcher
+                        else if ((topStroke <= infieldY1) && (topStroke >= infieldY2) && (infieldX1 < leftStroke) && (infieldX2 > rightStroke)) {
+                            _gestureName.append(" to Pitcher");
+                        }
+
+
+                        // Corner Infielders
+                        else if ((topStroke <= infieldY1) && (topStroke >= outfieldY)) {
+
+                            // FirstBase
+                            if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (infieldX2 < rightStroke)) {
+                                _gestureName.append(" to FirstBase");
+                            }
+
+                            // ThirdBase
+                            else if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (infieldX1 > leftStroke)) {
+                                _gestureName.append(" to ThirdBase");
+                            }
+
+                            else {
+                                _gestureName.setText("TopStroke = " + topStroke +
+                                        "\ninfieldY1" + infieldY1 +
+                                        "\ninfieldY2" + infieldY2 +
+                                        "\n\nLeftStroke = " + leftStroke +
+                                        "\ninfieldX1 = " + infieldX1 +
+                                        "\n\nRightStroke = " + rightStroke +
+                                        "\ninfieldx2 " + infieldX2);
+                            }
+                        }
+
+                        // Middle Infielders
+                        else if ((topStroke <= infieldY2) && (topStroke > outfieldY)) {
+                            // ShortStop
+                            if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (infieldX1 < leftStroke)) {
+                                _gestureName.append(" to ShortStop");
+                            }
+
+                            // SecondBase
+                            else if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (infieldX2 > rightStroke)) {
+                                _gestureName.append(" to SecondBase");
+                            } else {
+                                _gestureName.setText("TopStroke = " + topStroke +
+                                        "\ninfieldY2" + infieldY2 +
+                                        "\noutfieldY" + outfieldY +
+                                        "\n\nLeftStroke = " + leftStroke +
+                                        "\ninfieldX1 = " + infieldX1 +
+                                        "\n\nRightStroke = " + rightStroke +
+                                        "\ninfieldx2 " + infieldX2);
+                            }
+                        }
+
+                        // Unidentified
+                        else {
+                            _gestureName.setText("Unidentified Gesture" +
+                                    "\nTopStroke = " + topStroke +
+                                    "\nLeftStroke = " + leftStroke +
+                                    "\nRightStroke = " + rightStroke);
+                        }
+                    }
+                }
             }
-            else
-            {
-                _gestureName.setText("Fly ball");
-            }
-
-            for (int i = 0; i <= strokes.size() - 1; i++) {
-
-                double centerOverLay = gestureOverlayView.getWidth() * .5;
-                double infieldY1 = gestureOverlayView.getHeight() * .8;
-                double infieldY2 = gestureOverlayView.getHeight() * .6;
-                double outfieldY = gestureOverlayView.getHeight() * .4;
-                double topStroke = stroke.boundingBox.top;
-                double leftStroke = stroke.boundingBox.left;
-                double rightStroke = stroke.boundingBox.right;
-                double infieldX1 = gestureOverlayView.getWidth() * .25;
-                double infieldX2 = gestureOverlayView.getWidth() * .75;
-                double outfieldX1 = gestureOverlayView.getWidth() * (1/3.0);
-                double outfieldX2 = gestureOverlayView.getWidth() * (2/3.0);
-
-
-
-                // Outfield
-                if (topStroke <= outfieldY) {
-
-                    // Centerfield
-                    if ((outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
-                        _gestureName.append(" to Centerfield");
-                    }
-
-                    // Leftfield
-                    else if ((centerOverLay - leftStroke) > (rightStroke - centerOverLay) && (outfieldX1 > leftStroke)) {
-                        _gestureName.append(" to Leftfield");
-                    }
-
-                    // Rightfield
-                    else if ((centerOverLay - leftStroke) < (rightStroke - centerOverLay) && (outfieldX2 < rightStroke)) {
-                        _gestureName.append(" to Rightfield");
-                    }
-
-                    else {
-                        _gestureName.setText("TopStroke = " + topStroke +
-                                "\noutfieldY" + outfieldY +
-                                "\n\nLeftStroke = " + leftStroke +
-                                "\noutfieldX1 = " + outfieldX1 +
-                                "\n\nRightStroke = " + rightStroke +
-                                "\noutfieldx2 " + outfieldX2);
-                    }
-                }
-
-
-                // Catcher
-                else if ((topStroke >= infieldY1) && (outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
-                    _gestureName.append(" to Catcher" +
-                            "\nTopStroke = " + topStroke +
-                            "\n\nLeftStroke = " + leftStroke +
-                            "\noutfieldX1 = " + outfieldX1 +
-                            "\n\nRightStroke = " + rightStroke +
-                            "\noutfieldx2 " + outfieldX2);
-                }
-
-
-                // Corner Infielders and Pitcher
-                else if ((topStroke <= infieldY1) && (topStroke >= infieldY2)) {
-                    // Pitcher
-                    if ((infieldX1 < leftStroke) && (infieldX2 > rightStroke)) {
-                        _gestureName.append(" to Pitcher");
-                    }
-
-                    // FirstBase
-                    else if ((centerOverLay - leftStroke) < (rightStroke - centerOverLay) && (infieldX2 < rightStroke)) {
-                        _gestureName.append(" to FirstBase");
-                    }
-
-                    // ThirdBase
-                    else if ((centerOverLay - leftStroke) > (rightStroke - centerOverLay) && (infieldX1 > leftStroke)) {
-                        _gestureName.append(" to ThirdBase");
-                    }
-
-                    else {
-                        _gestureName.setText("TopStroke = " + topStroke +
-                                "\ninfieldY1" + infieldY1 +
-                                "\ninfieldY2" + infieldY2 +
-                                "\n\nLeftStroke = " + leftStroke +
-                                "\ninfieldX1 = " + infieldX1 +
-                                "\n\nRightStroke = " + rightStroke +
-                                "\ninfieldx2 " + infieldX2);
-                    }
-                }
-
-                // Middle Infielders
-
-                else if ((topStroke <= infieldY2) && (topStroke > outfieldY)) {
-                    // ShortStop
-                    if ((centerOverLay - leftStroke) > (rightStroke - centerOverLay) && (infieldX1 < leftStroke)) {
-                        _gestureName.append(" to ShortStop");
-                    }
-
-                    // SecondBase
-                    else if ((centerOverLay - leftStroke) < (rightStroke - centerOverLay) && (infieldX2 < rightStroke)) {
-                        _gestureName.append(" to SecondBase");
-                    }
-
-                    else {
-                        _gestureName.setText("TopStroke = " + topStroke +
-                                "\ninfieldY2" + infieldY2 +
-                                "\noutfieldY" + outfieldY +
-                                "\n\nLeftStroke = " + leftStroke +
-                                "\ninfieldX1 = " + infieldX1 +
-                                "\n\nRightStroke = " + rightStroke +
-                                "\ninfieldx2 " + infieldX2);
-                    }
-                }
-
-                // Unidentified
-                else {
-                    _gestureName.setText("Unidentified Gesture" +
-                            "\nTopStroke = " + topStroke +
-                            "\nLeftStroke = " + leftStroke +
-                            "\nRightStroke = " + rightStroke);
-                }
-            }
-        }
+        });
     }
 
     private int xPitch;

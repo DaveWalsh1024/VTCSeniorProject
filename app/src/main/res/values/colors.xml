@@ -4,6 +4,10 @@
     <color name ="colorPrimary">#3F51B5</color>
     <color name ="colorPrimaryDark">#303F9F</color>
     <color name ="colorAccent">#FF4081</color>
+    <color name ="fieldColor">#2D882D</color>
+    <color name ="infieldColor">#AA8739</color>
+    <color name ="baseWhite">#FFFFFF</color>
+    <color name ="gestureColor">#FF0000</color>
 
     <string-array name = "colorBackground">
         <item name="blue" type="color" value="0xFF85C6F1">Blue</item>
