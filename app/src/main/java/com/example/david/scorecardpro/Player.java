@@ -10,7 +10,7 @@ public class Player
 {
     public String getFullName ()
     {
-        String fullName = new StringBuilder().append(fName).append(lName).toString();
+        String fullName = new StringBuilder().append(fName).append(" ").append(lName).toString();
         return fullName;
     }
 

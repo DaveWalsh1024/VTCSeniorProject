@@ -1,5 +1,9 @@
 package com.example.david.scorecardpro;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +22,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jacklavallee on 11/28/17.
  */
 
 public class ScoringActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,6 +265,8 @@ public class ScoringActivity extends AppCompatActivity {
     AtBat currentBatter = null;
     Game game;
 
+    ArrayList <Play> gamePlays;
+
     Player player1 = new Player("David", "Walsh", 1, 22);
     Player player2 = new Player("Jack", "Lavallee", 2, 24);
     Player player3 = new Player("Joe", "Russell", 3, 35);
@@ -282,7 +290,7 @@ public class ScoringActivity extends AppCompatActivity {
     PositionsInGame rightField = new PositionsInGame(player8, Positions.RIGHTFIELD);
     PositionsInGame leftField = new PositionsInGame(player9, Positions.LEFTFIELD);
 
-    Field field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitching);
+ //   Field field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitching);
 
     ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
     ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
@@ -306,6 +314,15 @@ public class ScoringActivity extends AppCompatActivity {
     TextView awayTeamScoreTextView;
     TextView lastPlayTextView;
     TextView playTextView;
+    TextView pitcherFielder;
+    TextView catcherFielder;
+    TextView firstBasemenFielder;
+    TextView secondBasemenFielder;
+    TextView thirdBasemenFielder;
+    TextView shortStopFielder;
+    TextView centerFieldFielder;
+    TextView rightFieldFielder;
+    TextView leftFieldFielder;
 
     public void initializeViews ()
     {
@@ -328,6 +345,15 @@ public class ScoringActivity extends AppCompatActivity {
         awayTeamScoreTextView = (TextView)findViewById(R.id.awayScoreNumber_View);
         lastPlayTextView = (TextView)findViewById(R.id.lastPlay_View);
         playTextView = (TextView)findViewById(R.id.play_View);
+        pitcherFielder = (TextView)findViewById(R.id.pitcherText);
+        catcherFielder = (TextView)findViewById(R.id.catcherText);
+        firstBasemenFielder = (TextView)findViewById(R.id.firstBaseText);
+        secondBasemenFielder = (TextView)findViewById(R.id.secondBaseText);
+        thirdBasemenFielder = (TextView)findViewById(R.id.thirdBaseText);
+        shortStopFielder = (TextView)findViewById(R.id.shortStopText);
+        centerFieldFielder = (TextView)findViewById(R.id.centerFieldText);
+        rightFieldFielder = (TextView)findViewById(R.id.rightFieldText);
+        leftFieldFielder = (TextView)findViewById(R.id.leftFieldText);
     }
 
     public void startGame (View b)
@@ -365,8 +391,84 @@ public class ScoringActivity extends AppCompatActivity {
     public void startHalfInning (HalfInning currentHalfInning)
     {
         currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
+        setFieldTextViews();
         setCurrentBatterTextView();
     }
+
+    public void setFieldTextViews ()
+    {
+        if (currentHalfInning.topOrBottom() == 1)
+        {
+            currentFieldingPositions = homeTeamPositions;
+        }
+
+        else
+            currentFieldingPositions = awayTeamPositions;
+
+        for (int i = 0; i < currentFieldingPositions.size(); i++)
+        {
+            if (currentFieldingPositions.get(i).getPosition().toString() == "Pitcher")
+            {
+                pitcherFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The pitcher text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Catcher")
+            {
+                catcherFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The catcher text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "First Base")
+            {
+                firstBasemenFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The first basemen text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Second Base")
+            {
+                secondBasemenFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The second basemen text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Third Base")
+            {
+                thirdBasemenFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The third basemen text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Short Stop")
+            {
+                shortStopFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The short stop text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Center Field")
+            {
+                centerFieldFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The center fielder text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Right Field")
+            {
+                rightFieldFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The right fielder text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+
+            else if (currentFieldingPositions.get(i).getPosition().toString() == "Left Field")
+            {
+                leftFieldFielder.setText(currentFieldingPositions.get(i).getPlayer().getFullName());
+                System.out.println("The left fielder text view has been set to " + currentFieldingPositions.get(i).getPlayer().getFullName());
+            }
+        }
+    }
+
+    public void updatePosition (Player player, PositionsInGame position)
+    {
+        System.out.println("The position " + position.getPosition().toString() + "has been updated with the player " + player.getFullName());
+        position.setPlayer(player);
+    }
+
 
     public void setCurrentBatterTextView ()
     {
@@ -402,9 +504,17 @@ public class ScoringActivity extends AppCompatActivity {
         }
     }
 
+    @Dao
+    public interface insertPlayDao
+    {
+            @Insert
+            void insertAll(ArrayList<Play>gamePlay);
+    }
+
     public void createNewPlay (String pitch)
     {
         Play newPlay = new Play(currentBatter.getPlayer(), pitching.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter);
+        gamePlays.add(newPlay);
         currentBatter.addPlay(newPlay);
         lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
     }
