@@ -6,17 +6,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/scorecard"
         android:layout_width="752dp"
         android:layout_height="935dp"
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
-
-        <view
-            class="com.example.david.scorecardpro.ScorecardBox"
-            id="@+id/view"
-            layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

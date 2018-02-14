@@ -1,9 +1,5 @@
 package com.example.david.scorecardpro;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +18,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by jacklavallee on 11/28/17.
@@ -30,26 +25,32 @@ import java.util.List;
 
 public class ScoringActivity extends AppCompatActivity {
 
+    private GestureOverlayView gestureOverlayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scoring);
- //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-  //      setSupportActionBar(toolbar);
-
-
+        //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //      setSupportActionBar(toolbar);
 
         _gestureName = (TextView)findViewById(R.id.gestureName);
-        GestureOverlayView gestureOverlayView = (GestureOverlayView)findViewById(R.id.gestures);
+        gestureOverlayView = (GestureOverlayView)findViewById(R.id.gestures);
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             @Override
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
-                hitGesture(gestureOverlayView, gesture);
+                if (screenHeight == 0.0) {
+                    initScreenCoords();
+                    hitGesture(gestureOverlayView, gesture);
+                }
             }
-
-
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initScreenCoords();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,9 +70,9 @@ public class ScoringActivity extends AppCompatActivity {
                 return true;
 
             case R.id.activity_scoring:
-            go = new Intent(this,ScoringActivity.class);
-            startActivity(go);
-            return true;
+                go = new Intent(this,ScoringActivity.class);
+                startActivity(go);
+                return true;
 
             case R.id.about:
                 go = new Intent(this,About.class);
@@ -83,161 +84,34 @@ public class ScoringActivity extends AppCompatActivity {
     }
 
 
-
     private void hitGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
-        _gestureName = (TextView)findViewById(R.id.gestureName);
-        gestureOverlayView = (GestureOverlayView)findViewById(R.id.gestures);
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             @Override
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
                 Log.i("Gestures", "Gesture=" + gesture + " with " + gesture.getStrokesCount());
                 ArrayList<GestureStroke> strokes = gesture.getStrokes();
-                for (GestureStroke stroke : strokes) {
-                    Log.i("Gestures", "box=" + stroke.computeOrientedBoundingBox().width + "x"
-                            + stroke.computeOrientedBoundingBox().height + "@"
-                            + stroke.computeOrientedBoundingBox().centerX + ","
-                            + stroke.computeOrientedBoundingBox().centerY + " "
-                            + stroke.computeOrientedBoundingBox().orientation);
-                    Log.i("Gestures", "points=" + Arrays.toString(stroke.points));
+                GestureStroke stroke = strokes.get(strokes.size() - 1);
 
+                if (stroke.computeOrientedBoundingBox().height > 50)
+                    _gestureName.setText("Groundball");
+                else
+                    _gestureName.setText("Fly ball");
 
-                    if (stroke.computeOrientedBoundingBox().height > 50)
-                        _gestureName.setText("Groundball");
-                    else
-                        _gestureName.setText("Fly ball");
+                double topStroke = stroke.boundingBox.top;
+                double leftStroke = stroke.boundingBox.left;
+                double rightStroke = stroke.boundingBox.right;
+                double strokeX = leftStroke;
 
-                    for (int i = 0; i <= strokes.size() - 1; i++) {
+                if ((centerWidth - leftStroke) < (rightStroke - centerWidth)) {
+                    strokeX = rightStroke;
+                }
 
-                        double screenHeight = gestureOverlayView.getHeight();
-                        double screenWidth = gestureOverlayView.getWidth();
-                        double centerWidth = gestureOverlayView.getWidth() * .5;
-                        double infieldY1 = gestureOverlayView.getHeight() * .7;
-                        double infieldY2 = gestureOverlayView.getHeight() * .5;
-                        double outfieldY = gestureOverlayView.getHeight() * .3;
-                        double topStroke = stroke.boundingBox.top;
-                        double bottomStroke = stroke.boundingBox.bottom;
-                        double leftStroke = stroke.boundingBox.left;
-                        double rightStroke = stroke.boundingBox.right;
-                        double infieldX1 = gestureOverlayView.getWidth() * .25;
-                        double infieldX2 = gestureOverlayView.getWidth() * .75;
-                        double outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
-                        double outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
+                PositionsInGame[] gesturePositions = {pitcher, catcher, firstBase, secondBase, thirdBase, shortStop, leftField, centerField, rightField};
 
-                       /* double[] pitcherZone = {infieldY2, infieldX2, infieldY1, infieldX1};
-                        double[] catcherZone = {infieldY1, outfieldX2, screenHeight, outfieldX1};
-                        double[] firstBaseZone = {outfieldY, screenWidth, infieldY1, infieldX2};
-                        double[] secondBaseZone = {outfieldY, infieldX2, infieldY2, centerWidth};
-                        double[] thirdBaseZone = {outfieldY, infieldX1, infieldY1, 0.0};
-                        double[] shortStopZone = {outfieldY, centerWidth, infieldY2, infieldX1};
-                        double[] leftFieldZone = {0.0, outfieldX1, outfieldY, 0.0};
-                        double[] centerFieldZone = {0.0, outfieldX2, outfieldY, outfieldX1};
-                        double[] rightFieldZone = {0.0, 0.0, outfieldY, outfieldX2};
-
-                        double[] gesturePositions [] = {pitcherZone, catcherZone, firstBaseZone, secondBaseZone, thirdBaseZone, shortStopZone, leftFieldZone, centerFieldZone, rightFieldZone};
-
-                        for (int j = 0; j < gesturePositions.length; j++) {
-                            if ((topStroke <= gesturePositions[j][0]) && (rightStroke <= gesturePositions[j][1]) && (topStroke > gesturePositions[j][2]) && (leftStroke <= gesturePositions[j][3])) {
-                                _gestureName.append(" to " + (j+1));
-                            }
-                        }*/
-
-
-
-                        // Outfield
-                        if (topStroke <= outfieldY) {
-
-                            // Centerfield
-                            if ((outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
-                                _gestureName.append(" to Centerfield");
-                            }
-
-                            // Leftfield
-                            else if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (outfieldX1 > leftStroke)) {
-                                _gestureName.append(" to Leftfield");
-                            }
-
-                            // Rightfield
-                            else if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (outfieldX2 < rightStroke)) {
-                                _gestureName.append(" to Rightfield");
-                            } else {
-                                _gestureName.setText("TopStroke = " + topStroke +
-                                        "\noutfieldY" + outfieldY +
-                                        "\n\nLeftStroke = " + leftStroke +
-                                        "\noutfieldX1 = " + outfieldX1 +
-                                        "\n\nRightStroke = " + rightStroke +
-                                        "\noutfieldx2 " + outfieldX2);
-                            }
-                        }
-
-
-                        // Catcher
-                        else if ((topStroke >= infieldY1) && (outfieldX1 < leftStroke) && (outfieldX2 > rightStroke)) {
-                            _gestureName.append(" to Catcher" +
-                                    "\nTopStroke = " + topStroke +
-                                    "\n\nLeftStroke = " + leftStroke +
-                                    "\noutfieldX1 = " + outfieldX1 +
-                                    "\n\nRightStroke = " + rightStroke +
-                                    "\noutfieldx2 " + outfieldX2);
-                        }
-
-                        // Pitcher
-                        else if ((topStroke <= infieldY1) && (topStroke >= infieldY2) && (infieldX1 < leftStroke) && (infieldX2 > rightStroke)) {
-                            _gestureName.append(" to Pitcher");
-                        }
-
-
-                        // Corner Infielders
-                        else if ((topStroke <= infieldY1) && (topStroke >= outfieldY)) {
-
-                            // FirstBase
-                            if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (infieldX2 < rightStroke)) {
-                                _gestureName.append(" to FirstBase");
-                            }
-
-                            // ThirdBase
-                            else if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (infieldX1 > leftStroke)) {
-                                _gestureName.append(" to ThirdBase");
-                            }
-
-                            else {
-                                _gestureName.setText("TopStroke = " + topStroke +
-                                        "\ninfieldY1" + infieldY1 +
-                                        "\ninfieldY2" + infieldY2 +
-                                        "\n\nLeftStroke = " + leftStroke +
-                                        "\ninfieldX1 = " + infieldX1 +
-                                        "\n\nRightStroke = " + rightStroke +
-                                        "\ninfieldx2 " + infieldX2);
-                            }
-                        }
-
-                        // Middle Infielders
-                        else if ((topStroke <= infieldY2) && (topStroke > outfieldY)) {
-                            // ShortStop
-                            if ((centerWidth - leftStroke) > (rightStroke - centerWidth) && (infieldX1 < leftStroke)) {
-                                _gestureName.append(" to ShortStop");
-                            }
-
-                            // SecondBase
-                            else if ((centerWidth - leftStroke) < (rightStroke - centerWidth) && (infieldX2 > rightStroke)) {
-                                _gestureName.append(" to SecondBase");
-                            } else {
-                                _gestureName.setText("TopStroke = " + topStroke +
-                                        "\ninfieldY2" + infieldY2 +
-                                        "\noutfieldY" + outfieldY +
-                                        "\n\nLeftStroke = " + leftStroke +
-                                        "\ninfieldX1 = " + infieldX1 +
-                                        "\n\nRightStroke = " + rightStroke +
-                                        "\ninfieldx2 " + infieldX2);
-                            }
-                        }
-
-                        // Unidentified
-                        else {
-                            _gestureName.setText("Unidentified Gesture" +
-                                    "\nTopStroke = " + topStroke +
-                                    "\nLeftStroke = " + leftStroke +
-                                    "\nRightStroke = " + rightStroke);
-                        }
+                for (PositionsInGame pos : gesturePositions) {
+                    if (pos.containsPoint(strokeX, topStroke)) {
+                        _gestureName.append(" to " + pos.getPosition());
+                        break;
                     }
                 }
             }
@@ -265,35 +139,94 @@ public class ScoringActivity extends AppCompatActivity {
     AtBat currentBatter = null;
     Game game;
 
-    ArrayList <Play> gamePlays;
-
     Player player1 = new Player("David", "Walsh", 1, 22);
     Player player2 = new Player("Jack", "Lavallee", 2, 24);
     Player player3 = new Player("Joe", "Russell", 3, 35);
     Player player4 = new Player("Craig", "Damon", 4, 55);
-    Player player5 = new Player ("Leslie", "Damon", 5, 50);
-    Player player6 = new Player ("Peter", "Chapin", 6, 45);
-    Player player7 = new Player ("Mike", "Hall", 7, 22);
-    Player player8 = new Player ("Matt", "Tanneberger", 8, 21);
-    Player player9 = new Player ("Jake", "Morrill", 9, 22);
+    Player player5 = new Player("Leslie", "Damon", 5, 50);
+    Player player6 = new Player("Peter", "Chapin", 6, 45);
+    Player player7 = new Player("Mike", "Hall", 7, 22);
+    Player player8 = new Player("Matt", "Tanneberger", 8, 21);
+    Player player9 = new Player("Jake", "Morrill", 9, 22);
 
     ArrayList <Player> homeTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
     ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
 
-    PositionsInGame pitching = new PositionsInGame(player1, Positions.PITCHER);
-    PositionsInGame firstBase = new PositionsInGame(player2, Positions.FIRSTBASE);
-    PositionsInGame catcher = new PositionsInGame(player3, Positions.CATCHER);
-    PositionsInGame secondBase= new PositionsInGame(player4, Positions.SECONDBASE);
-    PositionsInGame shortStop = new PositionsInGame(player5, Positions.SHORTSTOP);
-    PositionsInGame thirdBase = new PositionsInGame(player6, Positions.THIRDBASE);
-    PositionsInGame centerField = new PositionsInGame(player7, Positions.CENTERFIELD);
-    PositionsInGame rightField = new PositionsInGame(player8, Positions.RIGHTFIELD);
-    PositionsInGame leftField = new PositionsInGame(player9, Positions.LEFTFIELD);
+    private void initScreenCoords() {
+        screenHeight = gestureOverlayView.getHeight();
+        screenWidth = gestureOverlayView.getWidth();
+        centerWidth = gestureOverlayView.getWidth() * .5;
+        infieldY1 = gestureOverlayView.getHeight() * .7;
+        infieldY2 = gestureOverlayView.getHeight() * .5;
+        outfieldY = gestureOverlayView.getHeight() * .3;
+        infieldX1 = gestureOverlayView.getWidth() * .25;
+        infieldX2 = gestureOverlayView.getWidth() * .75;
+        outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
+        outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
 
- //   Field field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitching);
 
-    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
-    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitching, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
+        pitcher = new PositionsInGame(player1, Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1);
+        Log.i("Gestures", "Pitcher at " + infieldY2 + ", " + infieldX2 + ", " + infieldY1 + ", " + infieldX1);
+
+        firstBase = new PositionsInGame(player2, Positions.FIRSTBASE, outfieldY, screenWidth, infieldY1, infieldX2);
+        Log.i("Gestures", "FirstBase at " + outfieldY + ", " + screenWidth + ", " + infieldY1 + ", " + infieldX2);
+
+        catcher = new PositionsInGame(player3, Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1);
+        Log.i("Gestures", "Catcher at " + infieldY1 + ", " + outfieldX2 + ", " + screenHeight + ", " + outfieldX1);
+
+        secondBase= new PositionsInGame(player4, Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth);
+        Log.i("Gestures", "SecondBase at " + outfieldY + ", " + infieldX2 + ", " + infieldY2 + ", " + centerWidth);
+
+        shortStop = new PositionsInGame(player5, Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1);
+        Log.i("Gestures", "ShortStop at " + outfieldY + ", " + centerWidth + ", " + infieldY2 + ", " + infieldX1);
+
+        thirdBase = new PositionsInGame(player6, Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0);
+        Log.i("Gestures", "ThirdBase at " + outfieldY + ", " + infieldX1 + ", " + infieldY1 + ", " + 0.0);
+
+        centerField = new PositionsInGame(player7, Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1);
+        Log.i("Gestures", "Centerfield at " + 0.0 + ", " + outfieldX2 + ", " + outfieldY + ", " + outfieldX1);
+
+        rightField = new PositionsInGame(player8, Positions.RIGHTFIELD, 0.0, screenWidth, outfieldY, outfieldX2);
+        Log.i("Gestures", "RightField at " + 0.0 + ", " + 0.0 + ", " + outfieldY + ", " + outfieldX2);
+
+        leftField = new PositionsInGame(player9, Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0);
+        Log.i("Gestures", "LeftField at " + 0.0 + ", " + outfieldX1 + ", " + outfieldY + ", " + 0.0);
+
+
+        field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitcher);
+
+        homeTeamPositions = new ArrayList<>(Arrays.asList(pitcher, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
+        awayTeamPositions = new ArrayList<>(Arrays.asList(pitcher, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
+
+    }
+
+    double screenHeight;
+    double screenWidth;
+    double centerWidth;
+    double infieldY1;
+    double infieldY2;
+    double outfieldY;
+    double infieldX1;
+    double infieldX2;
+    double outfieldX1;
+    double outfieldX2;
+
+    PositionsInGame pitcher = new PositionsInGame(player1, Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1);
+    PositionsInGame firstBase = new PositionsInGame(player2, Positions.FIRSTBASE, outfieldY, 0.0, infieldY1, infieldX2);
+    PositionsInGame catcher = new PositionsInGame(player3, Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1);
+    PositionsInGame secondBase= new PositionsInGame(player4, Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth);
+    PositionsInGame shortStop = new PositionsInGame(player5, Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1);
+    PositionsInGame thirdBase = new PositionsInGame(player6, Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0);
+    PositionsInGame centerField = new PositionsInGame(player7, Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1);
+    PositionsInGame rightField = new PositionsInGame(player8, Positions.RIGHTFIELD, 0.0, 0.0, outfieldY, outfieldX2);
+    PositionsInGame leftField = new PositionsInGame(player9, Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0);
+
+    Field field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitcher);
+
+    ArrayList <Play> gamePlays = new ArrayList<>();
+
+    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitcher, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
+    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitcher, firstBase, catcher, secondBase, shortStop, thirdBase, centerField, leftField, rightField));
 
     TextView homeTeamTextView;
     TextView awayTeamTextView;
@@ -504,16 +437,9 @@ public class ScoringActivity extends AppCompatActivity {
         }
     }
 
-    @Dao
-    public interface insertPlayDao
-    {
-            @Insert
-            void insertAll(ArrayList<Play>gamePlay);
-    }
-
     public void createNewPlay (String pitch)
     {
-        Play newPlay = new Play(currentBatter.getPlayer(), pitching.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter);
+        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter);
         gamePlays.add(newPlay);
         currentBatter.addPlay(newPlay);
         lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
