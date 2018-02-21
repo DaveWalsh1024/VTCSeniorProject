@@ -8,6 +8,7 @@
     <color name ="infieldColor">#AA8739</color>
     <color name ="baseWhite">#FFFFFF</color>
     <color name ="gestureColor">#FF0000</color>
+    <color name ="ballZoneColor">#999999</color>
 
     <string-array name = "colorBackground">
         <item name="blue" type="color" value="0xFF85C6F1">Blue</item>

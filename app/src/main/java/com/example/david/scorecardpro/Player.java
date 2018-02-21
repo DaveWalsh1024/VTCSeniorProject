@@ -14,6 +14,11 @@ public class Player
         return fullName;
     }
 
+    public String getLastName ()
+    {
+        return lName;
+    }
+
     public void repOk()
     {
         assert number > -1 && number < 100;

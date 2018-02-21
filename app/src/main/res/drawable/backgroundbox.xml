@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <shape xmlns:android="http://schemas.android.com/apk/res/android">
-        <stroke android:width="2dp"
-            android:color="#FF000000"
-            />
-        <solid android:color="#FFC0C0C0" />
-    </shape>
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/diamondinbackgroundbox"
+        />
+    <item
+        android:drawable="@drawable/backgroundboxoutline"
+        />
+</layer-list>

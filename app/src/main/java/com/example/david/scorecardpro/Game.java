@@ -49,7 +49,7 @@ public class Game extends AppCompatActivity
             return awayTeam;
     }
 
-    public TeamInGame getGameLooser ()
+    public TeamInGame getGameLoser ()
     {
         if (awayTeamScore > homeTeamScore )
         {
