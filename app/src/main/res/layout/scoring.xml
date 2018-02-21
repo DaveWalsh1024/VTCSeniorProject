@@ -12,6 +12,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="2"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
     <LinearLayout
         android:name="com.example.david.scorecardpro.PitchFragment"
         android:orientation="vertical"
@@ -94,7 +96,9 @@
                 android:layout_height="150dp"
                 android:background="@drawable/strikezone"
                 android:layout_gravity="center"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal">
+
+            </FrameLayout>
 
         </FrameLayout>
 
@@ -172,47 +176,6 @@
                     android:layout_height="wrap_content" />
             </TableRow>
 
-        </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/homePlate_Radio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Home Plate"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat" />
-
-                <RadioButton
-                    android:id="@+id/firstBase_Radio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="First Base"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <RadioButton
-                    android:id="@+id/secondBase_Radio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Second Base" />
-
-                <RadioButton
-                    android:id="@+id/thirdBase_Radio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Third Base" />
-
-            </TableRow>
         </TableLayout>
 
         <TextView
@@ -294,15 +257,81 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/onbase_first"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.81"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.59000003"
+                    android:background="@drawable/onbase_img"
+                    android:text="#"
+                    android:textColor="#ffffff"
+                    android:textSize="32dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/onbase_second"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.344"
+                    android:background="@drawable/onbase_img"
+                    android:text="#"
+                    android:textColor="#ffffff"
+                    android:textSize="32dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/onbase_third"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.19"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.59000003"
+                    android:background="@drawable/onbase_img"
+                    android:text="#"
+                    android:textColor="#ffffff"
+                    android:textSize="32dp"
+                    android:gravity="center"/>
+
+                <TextView
                     android:id="@+id/catcherText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Catcher"
+                    android:textSize="18dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -445,4 +474,6 @@
         </android.gesture.GestureOverlayView>
 
     </FrameLayout>
+
+
 </LinearLayout>

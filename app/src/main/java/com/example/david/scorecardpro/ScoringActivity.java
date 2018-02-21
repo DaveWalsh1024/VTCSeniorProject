@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 public class ScoringActivity extends AppCompatActivity {
 
     private GestureOverlayView gestureOverlayView;
+    private FrameLayout fieldLayout;
     private FrameLayout strikeLayout;
     private FrameLayout ballLayout;
 
@@ -45,12 +47,9 @@ public class ScoringActivity extends AppCompatActivity {
 
         initializeViews();
 
-        homeTeamTextView.setText(homeTeamName);
-        awayTeamTextView.setText(awayTeamName);
-
-
         _gestureName = (TextView) findViewById(R.id.gestureName);
         gestureOverlayView = (GestureOverlayView) findViewById(R.id.gestures);
+        fieldLayout = (FrameLayout) findViewById(R.id.field_fragment);
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
 
             @Override
@@ -58,7 +57,7 @@ public class ScoringActivity extends AppCompatActivity {
                 if (screenHeight == 0.0) {
                     initGestureCoordinates();
                 }
-                hitGesture(gestureOverlayView, gesture);
+                //hitGesture(gestureOverlayView);
             }
         });
 
@@ -68,13 +67,9 @@ public class ScoringActivity extends AppCompatActivity {
                 if (screenHeight == 0.0) {
                     initGestureCoordinates();
                 }
-                if (motionEvent.getY() > catcherY1 && motionEvent.getY() < catcherY2 && motionEvent.getX() > catcherX1 && motionEvent.getX() < catcherX2) {
-                    Log.i("MotionEvent X", "" + motionEvent.getX());
-                    Log.i("CatcherX1", "" + catcherX1);
-                    Log.i("CatcherX2", "" + catcherX2);
-                    Log.i("MotionEvent Y", "" + motionEvent.getY());
-                    Log.i("CatcherY1", "" + catcherY1);
-                    Log.i("CatcherY2", "" + catcherY2);
+
+                if (motionEvent.getY() > catcherY1 && motionEvent.getY() < catcherY2 && motionEvent.getX() > middleBaseX1 && motionEvent.getX() < middleBaseX2) {
+                    hitGesture(gestureOverlayView);
                 }
                 else {
                     gestureOverlayView.cancelGesture();
@@ -97,9 +92,6 @@ public class ScoringActivity extends AppCompatActivity {
             }
         });
 
-        _pitchName = (TextView) findViewById(R.id.pitchName);
-        ballLayout = (FrameLayout) findViewById(R.id.ballZoneLayout);
-        strikeLayout = (FrameLayout) findViewById(R.id.strikeZoneLayout);
         ballLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent ev) {
@@ -124,6 +116,11 @@ public class ScoringActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        RunnerView runner = new RunnerView(this, 11);
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
+        layout.setMargins((int) screenWidth, (int) secondBasePos, (int) screenWidth, (int) (screenHeight - secondBasePos));
+        fieldLayout.addView(runner, layout);
     }
 
 
@@ -163,15 +160,13 @@ public class ScoringActivity extends AppCompatActivity {
     }
 
 
-    private void hitGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
+    private void hitGesture(GestureOverlayView gestureOverlayView /*, Gesture gesture*/) {
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             @Override
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
 
-                //Log.i("Gestures", "Gesture=" + gesture + " with " + gesture.getStrokesCount());
                 ArrayList<GestureStroke> strokes = gesture.getStrokes();
                 GestureStroke stroke = strokes.get(strokes.size() - 1);
-
 
                 if (stroke.computeOrientedBoundingBox().height > 50)
                     _gestureName.setText("Groundball");
@@ -198,9 +193,57 @@ public class ScoringActivity extends AppCompatActivity {
         });
     }
 
+    public boolean runnerMove(RunnerView rv, int dx, int dy) {
+        int left = rv.getLeft() + dx;
+        int top = rv.getTop() + dy;
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
+        layout.setMargins((int) left, (int)top, (int) screenWidth-(left+rv.width), (int) screenHeight-(top+rv.height));
+        fieldLayout.updateViewLayout(rv, layout);
+        return true;
+    }
 
-    private int xPitch;
-    private int yPitch;
+    public void snapToBase(RunnerView rv)
+    {
+        int left = rv.getLeft();
+        int top = rv.getTop();
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
+        if (top > catcherY1 && top < catcherY2 && left > middleBaseX1 && left < middleBaseX2) {
+            Log.i("snapToBase", "X: " + rv.getLeft());
+            Log.i("snapToBase", "Y: " + rv.getTop());
+            layout.setMargins((int) screenWidth, (int) catcherBase, (int) screenWidth, (int) (screenHeight - catcherBase));
+            fieldLayout.updateViewLayout(rv, layout);
+        }
+
+        else if (top > outfieldY && top < secondBaseY && left > middleBaseX1 && left < middleBaseX2) {
+            Log.i("snapToBase", "X: " + rv.getLeft());
+            Log.i("snapToBase", "Y: " + rv.getTop());
+            layout.setMargins((int) screenWidth, (int) secondBasePos, (int) screenWidth, (int) (screenHeight - secondBasePos));
+            fieldLayout.updateViewLayout(rv, layout);
+        }
+
+        else if (top > cornerBaseY1 && top < cornerBaseY2 && left > gestureOverlayView.getWidth() * .20 && left < gestureOverlayView.getWidth() * .30) {
+            Log.i("snapToBase", "X: " + rv.getLeft());
+            Log.i("snapToBase", "Y: " + rv.getTop());
+            layout.setMargins((int) screenWidth, (int) secondBasePos, (int) screenWidth, (int) (screenHeight - secondBasePos));
+            fieldLayout.updateViewLayout(rv, layout);
+        }
+
+        else if (top > outfieldY && top < secondBaseY && left > gestureOverlayView.getWidth() * .70 && left < gestureOverlayView.getWidth() * .80) {
+            Log.i("snapToBase", "X: " + rv.getLeft());
+            Log.i("snapToBase", "Y: " + rv.getTop());
+            layout.setMargins((int) screenWidth, (int) secondBasePos, (int) screenWidth, (int) (screenHeight - secondBasePos));
+            fieldLayout.updateViewLayout(rv, layout);
+        }
+
+        else {
+            Log.i("snapToBase", "Not in ranges");
+            Log.i("snapToBase", "X: " + rv.getLeft());
+            Log.i("snapToBase", "Y: " + rv.getTop());
+        }
+
+    }
+
+
     private TextView _gestureName;
     private TextView _pitchName;
 
@@ -239,13 +282,20 @@ public class ScoringActivity extends AppCompatActivity {
         centerWidth = gestureOverlayView.getWidth() * .5;
         catcherY1 = gestureOverlayView.getHeight() * .8;
         catcherY2 = gestureOverlayView.getHeight() * .9;
-        catcherX1 = gestureOverlayView.getWidth() * .45;
-        catcherX2 = gestureOverlayView.getWidth() * .55;
+        catcherBase = gestureOverlayView.getHeight() * .85;
+        middleBaseX1 = gestureOverlayView.getWidth() * .45;
+        middleBaseX2 = gestureOverlayView.getWidth() * .55;
+        cornerBaseY1 = gestureOverlayView.getHeight() * .63;
+        cornerBaseY2 = gestureOverlayView.getHeight() * .53;
         infieldY1 = gestureOverlayView.getHeight() * .7;
         infieldY2 = gestureOverlayView.getHeight() * .5;
+        secondBaseY = gestureOverlayView.getHeight() * .4;
+        secondBasePos = gestureOverlayView.getHeight() * .35;
         outfieldY = gestureOverlayView.getHeight() * .3;
         infieldX1 = gestureOverlayView.getWidth() * .25;
         infieldX2 = gestureOverlayView.getWidth() * .75;
+        thirdbaseX = gestureOverlayView.getWidth() * .15;
+        firstbaseX = gestureOverlayView.getWidth() * .85;
         outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
         outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
 
@@ -292,13 +342,20 @@ public class ScoringActivity extends AppCompatActivity {
     double centerWidth;
     double catcherY1;
     double catcherY2;
+    double catcherBase;
     double infieldY1;
     double infieldY2;
+    double secondBaseY;
+    double secondBasePos;
     double outfieldY;
     double infieldX1;
     double infieldX2;
-    double catcherX1;
-    double catcherX2;
+    double middleBaseX1;
+    double middleBaseX2;
+    double cornerBaseY1;
+    double cornerBaseY2;
+    double thirdbaseX;
+    double firstbaseX;
     double outfieldX1;
     double outfieldX2;
 
@@ -332,14 +389,13 @@ public class ScoringActivity extends AppCompatActivity {
     RadioButton out1Button;
     RadioButton out2Button;
     TextView bottomOrTopTextView;
-    RadioButton homePlateRadioButton;
-    RadioButton firstBaseRadioButton;
-    RadioButton secondBaseRadioButton;
-    RadioButton thirdBaseRadioButton;
     TextView homeTeamScoreTextView;
     TextView awayTeamScoreTextView;
     TextView lastPlayTextView;
     TextView playTextView;
+    TextView onBaseFirst;
+    TextView onBaseSecond;
+    TextView onBaseThird;
     TextView pitcherTextView;
     TextView catcherTextView;
     TextView firstBasemenTextView;
@@ -355,8 +411,8 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void initializeViews ()
     {
-        homeTeamTextView = (TextView) findViewById(R.id.homeScore_View);
-        awayTeamTextView = (TextView) findViewById(R.id.awayScore_View);
+        homeTeamTitleTextView = (TextView) findViewById(R.id.homeScore_View);
+        awayTeamTitleTextView = (TextView) findViewById(R.id.awayScore_View);
         currentBattingTeamTextView = (TextView)findViewById(R.id.currentBattingTeam_View);
         currentInningTextView = (TextView)findViewById(R.id.currentInning_View);
         currentBatterTextView = (TextView)findViewById(R.id.currentBatter_View);
@@ -368,14 +424,15 @@ public class ScoringActivity extends AppCompatActivity {
         out1Button = (RadioButton)findViewById(R.id.out1);
         out2Button = (RadioButton)findViewById(R.id.out2);
         bottomOrTopTextView = (TextView)findViewById(R.id.bottomOrTop_View);
-        homePlateRadioButton = (RadioButton)findViewById(R.id.homePlate_Radio);
-        firstBaseRadioButton = (RadioButton)findViewById(R.id.firstBase_Radio);
-        secondBaseRadioButton = (RadioButton)findViewById(R.id.secondBase_Radio);
-        thirdBaseRadioButton = (RadioButton)findViewById(R.id.thirdBase_Radio);
         homeTeamScoreTextView = (TextView)findViewById(R.id.homeScoreNumber_View);
         awayTeamScoreTextView = (TextView)findViewById(R.id.awayScoreNumber_View);
         lastPlayTextView = (TextView)findViewById(R.id.lastPlay_View);
         playTextView = (TextView)findViewById(R.id.play_View);
+        onBaseFirst = (TextView)findViewById(R.id.onbase_first);
+        onBaseSecond = (TextView)findViewById(R.id.onbase_second);
+        onBaseThird = (TextView)findViewById(R.id.onbase_third);
+        ballLayout = (FrameLayout)findViewById(R.id.ballZoneLayout);
+        strikeLayout = (FrameLayout)findViewById(R.id.strikeZoneLayout);
         pitcherTextView = (TextView)findViewById(R.id.pitcherText);
         catcherTextView = (TextView)findViewById(R.id.catcherText);
         firstBasemenTextView = (TextView)findViewById(R.id.firstBaseText);
@@ -817,19 +874,22 @@ public class ScoringActivity extends AppCompatActivity {
         if (baseToUnMark.getBaseNumber() == 1)
         {
             System.out.println("First base has been un marked");
-            firstBaseRadioButton.setChecked(false);
+            onBaseFirst.setVisibility(View.INVISIBLE);
+            //onBaseFirstText.setVisibility(View.INVISIBLE);
         }
 
         else if (baseToUnMark.getBaseNumber() == 2)
         {
             System.out.println("Second base has been un marked");
-            secondBaseRadioButton.setChecked(false);
+            onBaseSecond.setVisibility(View.INVISIBLE);
+            //onBaseSecondText.setVisibility(View.INVISIBLE);
         }
 
         else if (baseToUnMark.getBaseNumber() == 3)
         {
             System.out.println("Third base has un marked");
-            thirdBaseRadioButton.setChecked(false);
+            onBaseThird.setVisibility(View.INVISIBLE);
+            //onBaseThirdText.setVisibility(View.INVISIBLE);
         }
 
         else
@@ -843,19 +903,22 @@ public class ScoringActivity extends AppCompatActivity {
         if (baseToMark.getBaseNumber() == 1)
         {
             System.out.println("First base has been marked");
-            firstBaseRadioButton.setChecked(true);
+            onBaseFirst.setVisibility(View.VISIBLE);
+            //onBaseFirstText.setVisibility(View.VISIBLE);
         }
 
         else if (baseToMark.getBaseNumber() == 2)
         {
             System.out.println("Second base has been marked");
-            secondBaseRadioButton.setChecked(true);
+            onBaseSecond.setVisibility(View.VISIBLE);
+            //onBaseSecondText.setVisibility(View.VISIBLE);
         }
 
         else if (baseToMark.getBaseNumber() == 3)
         {
             System.out.println("Third base has been marked");
-            thirdBaseRadioButton.setChecked(true);
+            onBaseThird.setVisibility(View.VISIBLE);
+            //onBaseThirdText.setVisibility(View.VISIBLE);
         }
 
         else
@@ -1149,25 +1212,10 @@ public class ScoringActivity extends AppCompatActivity {
         strike2Button.setChecked(false);
         out1Button.setChecked(false);
         out2Button.setChecked(false);
+        onBaseFirst.setVisibility(View.INVISIBLE);
+        onBaseSecond.setVisibility(View.INVISIBLE);
+        onBaseThird.setVisibility(View.INVISIBLE);
 
         System.out.println("Strike, ball, and out count have been set to 0");
-
-        if (firstBaseRadioButton.isChecked())
-        {
-            firstBaseRadioButton.setChecked(false);
-            System.out.println("First base radio button has been toggled");
-        }
-
-        if (secondBaseRadioButton.isChecked())
-        {
-            secondBaseRadioButton.setChecked(false);
-            System.out.println("Second base radio button has been toggled");
-        }
-
-        if (thirdBaseRadioButton.isChecked())
-        {
-            thirdBaseRadioButton.setChecked(false);
-            System.out.println("Third base radio button has been toggled");
-        }
     }
 }
