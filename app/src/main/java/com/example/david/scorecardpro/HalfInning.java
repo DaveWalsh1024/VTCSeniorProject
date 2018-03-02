@@ -25,6 +25,10 @@ public class HalfInning
         outs++;
     }
 
+    public int getInningNumber() { return inning; }
+
+    public ArrayList<AtBat> getBatters () { return batters; }
+
     public void addAtBat (AtBat atBatToAdd)
     {
         batters.add(atBatToAdd);

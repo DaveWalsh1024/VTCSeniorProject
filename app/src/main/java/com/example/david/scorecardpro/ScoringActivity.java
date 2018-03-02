@@ -471,6 +471,12 @@ public class ScoringActivity extends AppCompatActivity {
         game.setHomeTeam(homeTeam);
         game.setAwayTeam(awayTeam);
 
+        game.getHomeTeam().setBattingOrder(homeTeamBattingOrder);
+        game.getAwayTeam().setBattingOrder(awayTeamBattingOrder);
+
+        game.getHomeTeam().setPositions(homeTeamPositions);
+        game.getAwayTeam().setPositions(awayTeamPositions);
+
         currentHalfInning = new HalfInning(awayTeam, homeTeam, 1, 1);
         setCurrentFieldingPositions();
         setBattingAndFieldingTextView();
@@ -631,7 +637,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void createNewPlay (String pitch)
     {
-        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, game.getPlays().size() + 1);
+        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, game.getPlays().size() + 1);
         game.addPlay(newPlay);
         lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
     }
@@ -800,6 +806,19 @@ public class ScoringActivity extends AppCompatActivity {
 
         playTextView.setText("");
     }
+
+    public void advanceRunner (Base startingBase, Base newBase)
+    {
+        if (newBase.doesBaseHaveRunner() == true)
+        {
+            return;
+        }
+
+        else
+            newBase.setRunnerOnBase(startingBase.getRunnerOnBase());
+            startingBase.removeRunnerOnBase();
+    }
+
 
     public void setRunnerOnBase (Base base, Player player)
     {
@@ -1000,6 +1019,7 @@ public class ScoringActivity extends AppCompatActivity {
         }
         else
         {
+            currentBatter.incrementBalls();
             createNewPlay("BALL");
             System.out.println("Ball");
             System.out.println("4 balls, New currentBatter is set");
@@ -1033,6 +1053,7 @@ public class ScoringActivity extends AppCompatActivity {
         }
         else
         {
+            currentBatter.incrementStrikes();
             createNewPlay("STRIKE");
             System.out.println("Strike");
             System.out.println("3 Strikes, increment outs and set new current batter");
@@ -1146,7 +1167,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void incrementOuts ()
     {
-        incrementBattingOrderPosition(currentBattingOrderPosition);
+  //      incrementBattingOrderPosition(currentBattingOrderPosition);
 
         if (currentBatter.getHalfInning().getOuts() < 2)
         {
@@ -1224,9 +1245,6 @@ public class ScoringActivity extends AppCompatActivity {
         strike2Button.setChecked(false);
         out1Button.setChecked(false);
         out2Button.setChecked(false);
-        onBaseFirst.setVisibility(View.INVISIBLE);
-        onBaseSecond.setVisibility(View.INVISIBLE);
-        onBaseThird.setVisibility(View.INVISIBLE);
 
         System.out.println("Strike, ball, and out count have been set to 0");
     }

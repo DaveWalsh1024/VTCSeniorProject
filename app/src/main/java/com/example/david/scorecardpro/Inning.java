@@ -20,6 +20,10 @@ public class Inning
         topInning = topInningToSet;
     }
 
+    public HalfInning getTopInning () { return topInning; }
+
+    public HalfInning getBottomInning () { return bottomInning; }
+
     public void setBottomInning (HalfInning bottomInningToSet)
     {
         bottomInning = bottomInningToSet;

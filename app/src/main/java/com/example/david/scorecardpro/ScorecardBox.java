@@ -41,13 +41,41 @@ public class ScorecardBox extends View
         bgLinePaint.setColor(0xff808080);
         bgLinePaint.setStrokeWidth(6);
 
-        strikeAndBallBoxPaint = new Paint();
-        strikeAndBallBoxPaint.setColor(0xff808080);
-        strikeAndBallBoxPaint.setStrokeWidth(1);
+        strikeBoxPaint1 = new Paint();
+        strikeBoxPaint1.setColor(0xff000000);
+        strikeBoxPaint1.setStrokeWidth(3);
+        strikeBoxPaint1.setStyle(Paint.Style.STROKE);
+
+        strikeBoxPaint2 = new Paint();
+        strikeBoxPaint2.setColor(0xff000000);
+        strikeBoxPaint2.setStrokeWidth(3);
+        strikeBoxPaint2.setStyle(Paint.Style.STROKE);
+
+        ballBoxPaint1 = new Paint();
+        ballBoxPaint1.setColor(0xff000000);
+        ballBoxPaint1.setStrokeWidth(3);
+        ballBoxPaint1.setStyle(Paint.Style.STROKE);
+
+        ballBoxPaint2 = new Paint();
+        ballBoxPaint2.setColor(0xff000000);
+        ballBoxPaint2.setStrokeWidth(3);
+        ballBoxPaint2.setStyle(Paint.Style.STROKE);
+
+        ballBoxPaint3 = new Paint();
+        ballBoxPaint3.setColor(0xff000000);
+        ballBoxPaint3.setStrokeWidth(3);
+        ballBoxPaint3.setStyle(Paint.Style.STROKE);
+
 
         centerText = null;
         bottomRightText = null;
         runScoreIndicator = false;
+        strike1 = false;
+        strike2 =false;
+        ball1 = false;
+        ball2 = false;
+        ball3 = false;
+
         setBackgroundResource(R.drawable.backgroundboxoutline);
     }
 
@@ -134,6 +162,12 @@ public class ScorecardBox extends View
         bottomRightText = argument;
     }
 
+    public void setBall1 () { ball1 = true; }
+    public void setBall2 () { ball2 = true; }
+    public void setBall3 () { ball3 = true; }
+    public void setStrike1 () { strike1 = true; }
+    public void setStrike2 () {strike2 = true; }
+
     //fill diamond
     public void runScoreIndicator (boolean argument)
     {
@@ -152,10 +186,16 @@ public class ScorecardBox extends View
         canvas.drawLine(w - pad, h / 2, w / 2, h - pad, bgLinePaint);
         canvas.drawLine(w / 2, h - pad, pad, h / 2, bgLinePaint);
 
-        canvas.drawRect(0, 0, h/6, w/8, strikeAndBallBoxPaint);
+        canvas.drawRect(0, 0, h/6, w/8, ballBoxPaint1); //ball 1
+        canvas.drawRect(h/6, 0, h/4 + 8, w/8, ballBoxPaint2); //ball 2
+        canvas.drawRect(h/4 + 8, 0, h/3 + 15, w/8, ballBoxPaint3); //ball 3
+
+        canvas.drawRect(w - 40, 0, w-20, w/8, strikeBoxPaint1); //strike 1
+        canvas.drawRect(w - 20, 0, w, w/8, strikeBoxPaint2); //strike 2
 
         if (centerText != null)
         {
+            System.out.println("We've reached center text");
             Rect bounds = new Rect();
             centerTextPaint.getTextBounds(centerText, 0, centerText.length(), bounds);
             float x = (w - bounds.width()) / 2;
@@ -175,11 +215,12 @@ public class ScorecardBox extends View
 
         if (homeFirst == true)
         {
-            canvas.drawLine(w / 2, pad, w - pad, h / 2, linePaint);
+            canvas.drawLine(w - pad, h / 2, w / 2, h - pad, linePaint);
         }
 
         if (firstSecond == true)
         {
+            canvas.drawLine(w / 2, pad, w - pad, h / 2, linePaint);
             canvas.drawLine(w - pad, h / 2, w / 2, h - pad, linePaint);
         }
 
@@ -191,6 +232,31 @@ public class ScorecardBox extends View
         if (thirdHome == true)
         {
             canvas.drawLine(pad, h / 2, w / 2, pad, linePaint);
+        }
+
+        if (ball1 == true)
+        {
+            ballBoxPaint1.setStyle(Paint.Style.FILL);
+        }
+
+        if (ball2 == true)
+        {
+            ballBoxPaint2.setStyle(Paint.Style.FILL);
+        }
+
+        if (ball3 == true)
+        {
+            ballBoxPaint3.setStyle(Paint.Style.FILL);
+        }
+
+        if (strike1 == true)
+        {
+            strikeBoxPaint1.setStyle(Paint.Style.FILL);
+        }
+
+        if (strike2 == true)
+        {
+            strikeBoxPaint2.setStyle(Paint.Style.FILL);
         }
     }
 
@@ -211,5 +277,14 @@ public class ScorecardBox extends View
 
     private Paint bgLinePaint;
 
-    private Paint strikeAndBallBoxPaint;
+    private boolean ball1;
+    private boolean ball2;
+    private boolean ball3;
+    private boolean strike1;
+    private boolean strike2;
+    private Paint strikeBoxPaint1;
+    private Paint strikeBoxPaint2;
+    private Paint ballBoxPaint1;
+    private Paint ballBoxPaint2;
+    private Paint ballBoxPaint3;
 }

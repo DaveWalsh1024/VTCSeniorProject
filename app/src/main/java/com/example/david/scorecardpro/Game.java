@@ -73,6 +73,11 @@ public class Game extends AppCompatActivity
 
     public ArrayList<Play> getPlays () { return plays; }
 
+    public TeamInGame getHomeTeam () { return homeTeam; }
+
+    public TeamInGame getAwayTeam () { return awayTeam; }
+
+
 
     public void repOk() {
         assert homeTeam != null;
