@@ -41,6 +41,10 @@ public class ScorecardBox extends View
         bgLinePaint.setColor(0xff808080);
         bgLinePaint.setStrokeWidth(6);
 
+        strikeAndBallBoxPaint = new Paint();
+        strikeAndBallBoxPaint.setColor(0xff808080);
+        strikeAndBallBoxPaint.setStrokeWidth(1);
+
         centerText = null;
         bottomRightText = null;
         runScoreIndicator = false;
@@ -148,6 +152,8 @@ public class ScorecardBox extends View
         canvas.drawLine(w - pad, h / 2, w / 2, h - pad, bgLinePaint);
         canvas.drawLine(w / 2, h - pad, pad, h / 2, bgLinePaint);
 
+        canvas.drawRect(0, 0, h/6, w/8, strikeAndBallBoxPaint);
+
         if (centerText != null)
         {
             Rect bounds = new Rect();
@@ -204,4 +210,6 @@ public class ScorecardBox extends View
     private Paint linePaint;
 
     private Paint bgLinePaint;
+
+    private Paint strikeAndBallBoxPaint;
 }

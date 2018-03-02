@@ -440,6 +440,17 @@ public class ScoringActivity extends AppCompatActivity {
         rightFielderTextView = (TextView)findViewById(R.id.rightFieldText);
     }
 
+    public void viewScorecard (View b)
+    {
+        Intent i = new Intent(this, ScorecardActivity.class);
+
+        int idToPass = 1;
+
+        i.putExtra("ID to Pass", idToPass);
+
+        startActivity(i);
+    }
+
     public void startGame (Intent i)
     {
         initializeViews();
@@ -620,8 +631,8 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void createNewPlay (String pitch)
     {
-        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter);
-        currentBatter.addPlay(newPlay);
+        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, game.getPlays().size() + 1);
+        game.addPlay(newPlay);
         lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
     }
 

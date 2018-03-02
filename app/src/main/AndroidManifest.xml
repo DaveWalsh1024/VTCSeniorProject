@@ -12,6 +12,10 @@
             android:name=".ScoringActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".ScorecardActivity"
+            android:label="ScorecardPro">
+        </activity>
         <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

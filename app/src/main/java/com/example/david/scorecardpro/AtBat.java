@@ -23,17 +23,13 @@ public class AtBat
         ballCount++;
     }
 
-    public void addPlay (Play playToAdd)
-    {
-        plays.add(playToAdd);
-    }
+
 
 
     public AtBat (HalfInning halfInning, Player batter)
     {
         this.batter = batter;
         this.halfInning = halfInning;
-        this.plays= new ArrayList<>();
         repOk();
     }
 
@@ -47,5 +43,4 @@ public class AtBat
     Player batter;
     private int strikeCount;
     private int ballCount;
-    private ArrayList <Play> plays;
 }

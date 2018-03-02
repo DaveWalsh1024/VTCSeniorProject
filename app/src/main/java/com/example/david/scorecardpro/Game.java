@@ -15,6 +15,8 @@ import java.util.Date;
 
 public class Game extends AppCompatActivity
 {
+    public static Game getById (int id) { return mostRecentGame; }
+
     public void setHomeTeam (Team homeTeam)
     {
         homeTeam = homeTeam;
@@ -64,6 +66,13 @@ public class Game extends AppCompatActivity
         innings.add(innings.size(), inning);
     }
 
+    public void addPlay (Play playToAdd)
+    {
+        plays.add(playToAdd);
+    }
+
+    public ArrayList<Play> getPlays () { return plays; }
+
 
     public void repOk() {
         assert homeTeam != null;
@@ -79,13 +88,20 @@ public class Game extends AppCompatActivity
         this.awayTeam = awayTeam;
         this.gameType = gameType;
         this.innings = new ArrayList<>();
+        mostRecentGame = this;
+        this.plays= new ArrayList<>();
         repOk();
     }
 
+    public ArrayList<Inning> getInnings () { return innings; }
+
+    private ScorecardBox scorecardBox;
     private GameType gameType;
     private TeamInGame homeTeam;
     private int homeTeamScore;
     private int awayTeamScore;
     private TeamInGame awayTeam;
+    private static Game mostRecentGame;
     private ArrayList <Inning> innings;
+    private ArrayList <Play> plays;;
 }

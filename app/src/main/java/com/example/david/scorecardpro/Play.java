@@ -15,15 +15,18 @@ public class Play
 
     public Pitch getPlayPitch () { return playPitch; }
 
+    public String getPlayText () { return playText; }
+
     public AtBat getAtBat () { return atBat; }
 
-    public Play(Player batter, Player pitcher, Pitch playPitch, String playText, AtBat atBat)
+    public Play(Player batter, Player pitcher, Pitch playPitch, String playText, AtBat atBat, int playId)
     {
         this.batter = batter;
         this.pitcher = pitcher;
         this.playPitch = playPitch;
         this.playText = playText;
         this.atBat = atBat;
+        this.playId = playId;
         repOk();
     }
 
@@ -39,5 +42,6 @@ public class Play
     private Pitch playPitch;
     private String playText;
     private AtBat atBat;
+    private int playId;
 
 }

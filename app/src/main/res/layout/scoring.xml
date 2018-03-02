@@ -30,16 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <EditText
-                    android:id="@+id/homeTeam_Text"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:layout_weight="3"
-                    android:inputType="textPersonName"
-                    android:text="Home Team"
-                    android:textAppearance="@style/TextAppearance.AppCompat" />
-
                 <TextView
                     android:id="@+id/homeScore_View"
                     android:layout_width="0px"
@@ -61,17 +51,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <EditText
-                    android:id="@+id/awayTeam_Text"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
-                    android:ems="10"
-                    android:layout_weight="3"
-                    android:inputType="textPersonName"
-                    android:text="Away Team"
-                    android:textAppearance="@style/TextAppearance.AppCompat" />
-
                 <TextView
                     android:id="@+id/awayScore_View"
                     android:layout_width="0px"
@@ -92,19 +71,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <Button
-                    android:id="@+id/startGame_Button"
-                    android:name="startGame"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
-                    android:onClick="startGame"
-                    android:text="Start Game" />
-
             </TableRow>
 
         </TableLayout>
+
+        <Button
+            android:id="@+id/scorecard_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="viewScorecard"
+            android:text="View Scorecard" />
 
         <TextView
             android:id="@+id/pitchName"
@@ -253,6 +229,7 @@
             android:layout_height="wrap_content"
             android:onClick="play"
             android:text="Play" />
+
     </LinearLayout>
 
     <FrameLayout
