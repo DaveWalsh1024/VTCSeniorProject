@@ -77,6 +77,17 @@ public class Game extends AppCompatActivity
 
     public TeamInGame getAwayTeam () { return awayTeam; }
 
+    public int topOrBottom () { return topOrBottom; }
+
+    public void setCurrentlyTopOfInning ()
+    {
+        topOrBottom = 1;
+    }
+
+    public void setCurrentlyBottomOfInning ()
+    {
+        topOrBottom = 2;
+    }
 
 
     public void repOk() {
@@ -92,6 +103,7 @@ public class Game extends AppCompatActivity
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.gameType = gameType;
+        topOrBottom = 1;
         this.innings = new ArrayList<>();
         mostRecentGame = this;
         this.plays= new ArrayList<>();
@@ -100,7 +112,6 @@ public class Game extends AppCompatActivity
 
     public ArrayList<Inning> getInnings () { return innings; }
 
-    private ScorecardBox scorecardBox;
     private GameType gameType;
     private TeamInGame homeTeam;
     private int homeTeamScore;
@@ -108,5 +119,6 @@ public class Game extends AppCompatActivity
     private TeamInGame awayTeam;
     private static Game mostRecentGame;
     private ArrayList <Inning> innings;
+    private int topOrBottom;
     private ArrayList <Play> plays;;
 }

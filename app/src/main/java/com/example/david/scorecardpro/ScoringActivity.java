@@ -18,8 +18,6 @@ import android.gesture.GestureStroke;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -96,11 +94,11 @@ public class ScoringActivity extends AppCompatActivity {
         ballLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent ev) {
-                Log.i("Strike Coordinate", "Left = " + strikeLayout.getLeft());
-                Log.i("Strike Coordinate", "Right = " + strikeLayout.getRight());
-                Log.i("Strike Coordinate", "Top = " + strikeLayout.getTop());
-                Log.i("Strike Coordinate", "Left = " + strikeLayout.getBottom());
-                Log.i("Pitch", "Location " + ev.getX() + ", " + ev.getY());
+     //           Log.i("Strike Coordinate", "Left = " + strikeLayout.getLeft());
+      //          Log.i("Strike Coordinate", "Right = " + strikeLayout.getRight());
+       //         Log.i("Strike Coordinate", "Top = " + strikeLayout.getTop());
+        //        Log.i("Strike Coordinate", "Left = " + strikeLayout.getBottom());
+         //       Log.i("Pitch", "Location " + ev.getX() + ", " + ev.getY());
 
                 switch (ev.getActionMasked()) {
                     case MotionEvent.ACTION_UP: {
@@ -208,34 +206,34 @@ public class ScoringActivity extends AppCompatActivity {
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
 
         if (top > catcherY1 && top < catcherY2 && right > middleBaseX1 && left < middleBaseX2) {
-            Log.i("snapToBase", "HomePlate");
+      //      Log.i("snapToBase", "HomePlate");
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY));
             fieldLayout.updateViewLayout(rv, layout);
         }
 
         else if (top > outfieldY && top < secondBaseY && right > middleBaseX1 && left < middleBaseX2) {
-            Log.i("snapToBase", "SecondBase");
+         //   Log.i("snapToBase", "SecondBase");
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
             fieldLayout.updateViewLayout(rv, layout);
         }
 
         else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .20 && left < gestureOverlayView.getWidth() * .30) {
-            Log.i("snapToBase", "ThirdBase");
+       //     Log.i("snapToBase", "ThirdBase");
             layout.setMargins((int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2));
             fieldLayout.updateViewLayout(rv, layout);
         }
 
         else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .70 && left < gestureOverlayView.getWidth() * .80) {
-            Log.i("snapToBase", "FirstBase");
+     //       Log.i("snapToBase", "FirstBase");
             layout.setMargins((int)(gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1);
             fieldLayout.updateViewLayout(rv, layout);
         }
 
         else {
-            Log.i("snapToBase", "Not in ranges");
-            Log.i("snapToBase", "Left X: " + rv.getLeft());
-            Log.i("snapToBase", "Right X: " + rv.getRight());
-            Log.i("snapToBase", "Y: " + rv.getTop());
+   //         Log.i("snapToBase", "Not in ranges");
+    //        Log.i("snapToBase", "Left X: " + rv.getLeft());
+     //       Log.i("snapToBase", "Right X: " + rv.getRight());
+      //      Log.i("snapToBase", "Y: " + rv.getTop());
             layout.setMargins(left, top, right, bottom);
             fieldLayout.updateViewLayout(rv, layout);
         }
@@ -261,6 +259,7 @@ public class ScoringActivity extends AppCompatActivity {
     ArrayList <PositionsInGame> currentFieldingPositions = null;
     AtBat currentBatter = null;
     Game game;
+    Play currentPlay;
 
     Player player1 = new Player("David", "Walsh", 1, 22);
     Player player2 = new Player("Jack", "Lavallee", 2, 24);
@@ -273,7 +272,7 @@ public class ScoringActivity extends AppCompatActivity {
     Player player9 = new Player("Jake", "Morrill", 9, 22);
 
     ArrayList <Player> homeTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
-    ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
+    ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player9, player8, player7, player6, player5, player4, player3, player2, player1));
 
     private void initGestureCoordinates() {
         screenHeight = gestureOverlayView.getHeight();
@@ -303,31 +302,31 @@ public class ScoringActivity extends AppCompatActivity {
 
 
         pitcher = new PositionsInGame(player1, Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1);
-        Log.i("Gestures", "Pitcher at " + infieldY2 + ", " + infieldX2 + ", " + infieldY1 + ", " + infieldX1);
+   //     Log.i("Gestures", "Pitcher at " + infieldY2 + ", " + infieldX2 + ", " + infieldY1 + ", " + infieldX1);
 
         firstBase = new PositionsInGame(player2, Positions.FIRSTBASE, outfieldY, screenWidth, infieldY1, infieldX2);
-        Log.i("Gestures", "FirstBase at " + outfieldY + ", " + screenWidth + ", " + infieldY1 + ", " + infieldX2);
+   //     Log.i("Gestures", "FirstBase at " + outfieldY + ", " + screenWidth + ", " + infieldY1 + ", " + infieldX2);
 
         catcher = new PositionsInGame(player3, Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1);
-        Log.i("Gestures", "Catcher at " + infieldY1 + ", " + outfieldX2 + ", " + screenHeight + ", " + outfieldX1);
+      //  Log.i("Gestures", "Catcher at " + infieldY1 + ", " + outfieldX2 + ", " + screenHeight + ", " + outfieldX1);
 
         secondBase= new PositionsInGame(player4, Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth);
-        Log.i("Gestures", "SecondBase at " + outfieldY + ", " + infieldX2 + ", " + infieldY2 + ", " + centerWidth);
+    //    Log.i("Gestures", "SecondBase at " + outfieldY + ", " + infieldX2 + ", " + infieldY2 + ", " + centerWidth);
 
         shortStop = new PositionsInGame(player5, Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1);
-        Log.i("Gestures", "ShortStop at " + outfieldY + ", " + centerWidth + ", " + infieldY2 + ", " + infieldX1);
+   //     Log.i("Gestures", "ShortStop at " + outfieldY + ", " + centerWidth + ", " + infieldY2 + ", " + infieldX1);
 
         thirdBase = new PositionsInGame(player6, Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0);
-        Log.i("Gestures", "ThirdBase at " + outfieldY + ", " + infieldX1 + ", " + infieldY1 + ", " + 0.0);
+  //      Log.i("Gestures", "ThirdBase at " + outfieldY + ", " + infieldX1 + ", " + infieldY1 + ", " + 0.0);
 
         centerField = new PositionsInGame(player7, Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1);
-        Log.i("Gestures", "Centerfield at " + 0.0 + ", " + outfieldX2 + ", " + outfieldY + ", " + outfieldX1);
+  //      Log.i("Gestures", "Centerfield at " + 0.0 + ", " + outfieldX2 + ", " + outfieldY + ", " + outfieldX1);
 
         rightField = new PositionsInGame(player8, Positions.RIGHTFIELD, 0.0, screenWidth, outfieldY, outfieldX2);
-        Log.i("Gestures", "RightField at " + 0.0 + ", " + 0.0 + ", " + outfieldY + ", " + outfieldX2);
+ //       Log.i("Gestures", "RightField at " + 0.0 + ", " + 0.0 + ", " + outfieldY + ", " + outfieldX2);
 
         leftField = new PositionsInGame(player9, Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0);
-        Log.i("Gestures", "LeftField at " + 0.0 + ", " + outfieldX1 + ", " + outfieldY + ", " + 0.0);
+   //     Log.i("Gestures", "LeftField at " + 0.0 + ", " + outfieldX1 + ", " + outfieldY + ", " + 0.0);
 
 
         field = new Field(firstBase, secondBase, thirdBase, shortStop, centerField, leftField, rightField, catcher, pitcher);
@@ -440,21 +439,32 @@ public class ScoringActivity extends AppCompatActivity {
         rightFielderTextView = (TextView)findViewById(R.id.rightFieldText);
     }
 
-    public void viewScorecard (View b)
+    public void viewHomeScorecard (View b)
     {
-        Intent i = new Intent(this, ScorecardActivity.class);
+        Intent homeScorecard = new Intent(this, HomeTeamScorecardActivity.class);
 
         int idToPass = 1;
 
-        i.putExtra("ID to Pass", idToPass);
+        homeScorecard.putExtra("ID to Pass", idToPass);
 
-        startActivity(i);
+        startActivity(homeScorecard);
+    }
+
+    public void viewAwayScorecard (View b)
+    {
+        Intent awayScorecard = new Intent(this, AwayTeamScorecardActivity.class);
+
+        int idToPass = 1;
+
+        awayScorecard.putExtra("ID to Pass", idToPass);
+
+        startActivity(awayScorecard);
     }
 
     public void startGame (Intent i)
     {
         initializeViews();
-        Log.i("scorecard", "Start game was called");
+ //       Log.i("scorecard", "Start game was called");
         homeTeamName = i.getStringExtra("Home Team");
         awayTeamName = i.getStringExtra("Away Team");
 
@@ -637,9 +647,43 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void createNewPlay (String pitch)
     {
-        Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, game.getPlays().size() + 1);
-        game.addPlay(newPlay);
-        lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
+        if (topOrBottom == 1)
+        {
+            Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 1, game.getPlays().size() + 1);
+            currentPlay = newPlay;
+            game.addPlay(newPlay);
+            lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
+        }
+
+        else
+        {
+            Play newPlay = new Play(currentBatter.getPlayer(), pitcher.getPlayer(), Pitch.valueOf(pitch), playTextView.getText().toString(), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 2, game.getPlays().size() + 1);
+            currentPlay = newPlay;
+            game.addPlay(currentPlay);
+            lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = " + playTextView.getText().toString());
+
+        }
+    }
+
+    public void newRunnerAction (Boolean out, Base startingBase, Base endingBase, Player runner)
+    {
+        if (topOrBottom == 1) {
+            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, awayTeamBattingOrder.indexOf(runner) + 1);
+
+            System.out.println("=====================================");
+            System.out.println("Batting Order Position = " + currentBattingOrderPosition + " Current Batter is = " + currentBatter.getPlayer().getFullName());
+            System.out.println("Starting Base = " + startingBase.getBaseNumber() + " Ending Base = " + endingBase.getBaseNumber());
+            System.out.println("Runner is " + runner.getFullName() + " Current Batting Order Position = " + awayTeamBattingOrder.indexOf(runner) + 1);
+            System.out.println("=====================================");
+
+            currentPlay.addRunnerEvent(newRunnerEvent);
+        }
+
+        if (topOrBottom == 2) {
+            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, homeTeamBattingOrder.indexOf(runner) + 1);
+            currentPlay.addRunnerEvent(newRunnerEvent);
+        }
+   //     System.out.println("A new runner action has been created!");
     }
 
     public void play ()
@@ -648,14 +692,14 @@ public class ScoringActivity extends AppCompatActivity {
 
         String playString = playTextView.getText().toString();
 
-        System.out.println("The play string is " + playString);
+   //     System.out.println("The play string is " + playString);
 
         if (playString.equals("1B"))
         {
             System.out.println("A single");
             if (basePath.areThereAnyRunnersOnBase() == false)
             {
-                System.out.println("Since there are no other runners on the bases the batter goes to first and nothing else happens");
+    //            System.out.println("Since there are no other runners on the bases the batter goes to first and nothing else happens");
                 setRunnerOnBase(basePath.getFirstBase(), currentBatter.getPlayer());
             }
 
@@ -685,29 +729,29 @@ public class ScoringActivity extends AppCompatActivity {
 
         else if (playString.equals("2B"))
         {
-            System.out.println("A double");
+     //       System.out.println("A double");
 
             if (basePath.getThirdBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on third scored");
+        //        System.out.println("The runner on third scored");
                 removeRunnerFromBase(basePath.getThirdBase());
                 incrementRunsScored();
             }
 
             if (basePath.getSecondBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on second scored");
+    //            System.out.println("The runner on second scored");
                 removeRunnerFromBase(basePath.getSecondBase());
                 incrementRunsScored();
             }
 
             if (basePath.getFirstBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on first scored");
+      //          System.out.println("The runner on first scored");
                 setRunnerOnBase(basePath.getThirdBase(), basePath.getFirstBase().getRunnerOnBase());
                 removeRunnerFromBase(basePath.getFirstBase());
             }
-            System.out.println("The batter is now on Second base after he hit a triple");
+      //      System.out.println("The batter is now on Second base after he hit a triple");
             setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
             setNewBatter(/*b*/);
         }
@@ -737,31 +781,31 @@ public class ScoringActivity extends AppCompatActivity {
                 removeRunnerFromBase(basePath.getFirstBase());
                 incrementRunsScored();
             }
-            System.out.println("The batter is now on Third base after he hit a triple");
+    //        System.out.println("The batter is now on Third base after he hit a triple");
             setRunnerOnBase(basePath.getThirdBase(), currentBatter.getPlayer());
             setNewBatter(/*b*/);
         }
 
         else if (playString.equals("HR"))
         {
-            System.out.println("Homerun!");
+   //         System.out.println("Homerun!");
 
             if (basePath.getFirstBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on first scored");
+    //            System.out.println("The runner on first scored");
                 removeRunnerFromBase(basePath.getFirstBase());
                 incrementRunsScored();
             }
 
             if (basePath.getSecondBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on second scored");
+       //         System.out.println("The runner on second scored");
                 removeRunnerFromBase(basePath.getSecondBase());
                 incrementRunsScored();
             }
             if (basePath.getThirdBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on third scored");
+        //        System.out.println("The runner on third scored");
                 removeRunnerFromBase(basePath.getThirdBase());
                 incrementRunsScored();
             }
@@ -771,30 +815,30 @@ public class ScoringActivity extends AppCompatActivity {
 
         else if (playString.equals("GRD"))
         {
-            System.out.println("Ground roll double!");
+        //    System.out.println("Ground roll double!");
             if (basePath.getThirdBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on third scored!");
+         //       System.out.println("The runner on third scored!");
                 removeRunnerFromBase(basePath.getThirdBase());
                 incrementRunsScored();
             }
 
             if (basePath.getSecondBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on second scored!");
+        //        System.out.println("The runner on second scored!");
                 removeRunnerFromBase(basePath.getSecondBase());
                 incrementRunsScored();
             }
 
             if (basePath.getFirstBase().doesBaseHaveRunner() == true)
             {
-                System.out.println("The runner on first advanced to third");
+         //       System.out.println("The runner on first advanced to third");
                 setRunnerOnBase(basePath.getThirdBase(), basePath.getFirstBase().getRunnerOnBase());
                 removeRunnerFromBase(basePath.getFirstBase());
                 basePath.getFirstBase().removeRunnerOnBase();
             }
 
-            System.out.println("The batter advanced to second");
+        //    System.out.println("The batter advanced to second");
             setRunnerOnBase(basePath.getSecondBase(), currentBatter.getPlayer());
             setNewBatter(/*b*/);
         }
@@ -840,7 +884,7 @@ public class ScoringActivity extends AppCompatActivity {
     public void hitByPitch (Base currentBase, Base nextBase)
     {
         createNewPlay("HBP");
-        System.out.println("The batter was hit by a pitch");
+    //    System.out.println("The batter was hit by a pitch");
 
         if (nextBase.doesBaseHaveRunner() == false)
         {
@@ -865,52 +909,49 @@ public class ScoringActivity extends AppCompatActivity {
         }
     }
 
-    public void walk (Base currentBase, Base nextBase)
+    public void walk ()
     {
-        System.out.println("Current base is " + currentBase.getBaseNumber());
-        System.out.println("Does current base have a runner on it = " + currentBase.doesBaseHaveRunner());
-        System.out.println("Next base is " + nextBase.getBaseNumber());
-        System.out.println("Does next base have a runner on it = " + currentBase.doesBaseHaveRunner());
+        advanceBase(currentBatter.getPlayer(), basePath.getHomeBase(), basePath.getFirstBase());
 
-        if (nextBase.doesBaseHaveRunner() == false)
-        {
-            if (nextBase == basePath.getHomeBase())
-            {
-                currentHalfInning.incrementRunsScored();
-                currentBase.removeRunnerOnBase();
-                incrementRunsScored();
-            }
-
-            else
-            {
-                setRunnerOnBase(nextBase, currentBatter.getPlayer());
-                removeRunnerFromBase(currentBase);
-            }
-        }
-
-        else
-        {
-            walk(nextBase, basePath.getNextBase(nextBase));
-            walk(currentBase, nextBase);
-        }
+        currentPlay.setPlayText("BB");
     }
+
+    public void advanceBase (Player player, Base currentBase, Base nextBase)
+    {
+        if (nextBase.doesBaseHaveRunner())
+        {
+            advanceBase(nextBase.getRunnerOnBase(), nextBase , basePath.getNextBase(nextBase));
+        }
+
+        if (nextBase == basePath.getHomeBase())
+        {
+            currentHalfInning.incrementRunsScored();
+            currentBase.removeRunnerOnBase();
+            incrementRunsScored();
+        }
+
+        newRunnerAction(false, currentBase, nextBase, player);
+        removeRunnerFromBase(currentBase);
+        setRunnerOnBase(nextBase, player);
+    }
+
 
     public void unMarkBase (Base baseToUnMark)
     {
         if (baseToUnMark.getBaseNumber() == 1)
         {
-            System.out.println("First base has been unmarked");
+    //        System.out.println("First base has been unmarked");
 
         }
 
         else if (baseToUnMark.getBaseNumber() == 2)
         {
-            System.out.println("Second base has been unmarked");
+   //         System.out.println("Second base has been unmarked");
         }
 
         else if (baseToUnMark.getBaseNumber() == 3)
         {
-            System.out.println("Third base has unmarked");
+  //          System.out.println("Third base has unmarked");
         }
 
         else
@@ -931,7 +972,7 @@ public class ScoringActivity extends AppCompatActivity {
             FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
             layout.setMargins((int)(gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1);
             fieldLayout.addView(runner1, layout);
-            System.out.println("First base has been marked");
+    //        System.out.println("First base has been marked");
         }
 
         else if (baseToMark.getBaseNumber() == 2)
@@ -940,7 +981,7 @@ public class ScoringActivity extends AppCompatActivity {
             FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
             fieldLayout.addView(runner2, layout);
-            System.out.println("Second base has been marked");
+     //       System.out.println("Second base has been marked");
         }
 
         else if (baseToMark.getBaseNumber() == 3)
@@ -949,7 +990,7 @@ public class ScoringActivity extends AppCompatActivity {
             FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
             layout.setMargins((int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2));
             fieldLayout.addView(runner3, layout);
-            System.out.println("Third base has been marked");
+     //       System.out.println("Third base has been marked");
         }
 
         else
@@ -963,13 +1004,13 @@ public class ScoringActivity extends AppCompatActivity {
         if (currentHalfInning.topOrBottom() == 1)
         {
             game.incrementAwayTeamScore();
-            System.out.println("The away team score has been incremented");
+     //       System.out.println("The away team score has been incremented");
             setScoreTextView();
         }
         else
         {
             game.incrementHomeTeamScore();
-            System.out.println("The home team score has been incremented");
+    //        System.out.println("The home team score has been incremented");
             setScoreTextView();
         }
     }
@@ -979,12 +1020,12 @@ public class ScoringActivity extends AppCompatActivity {
         if (currentHalfInning.topOrBottom() == 1)
         {
             awayTeamScoreTextView.setText(Integer.toString(game.getAwayTeamScore()));
-            System.out.println("The away team score text view has been set to " + game.getAwayTeamScore());
+     //       System.out.println("The away team score text view has been set to " + game.getAwayTeamScore());
         }
         else
         {
             homeTeamScoreTextView.setText(Integer.toString(game.getHomeTeamScore()));
-            System.out.println("The home team score text view has been set to " + game.getHomeTeamScore());
+    //        System.out.println("The home team score text view has been set to " + game.getHomeTeamScore());
         }
     }
 
@@ -994,19 +1035,19 @@ public class ScoringActivity extends AppCompatActivity {
         {
             currentBatter.incrementBalls();
             createNewPlay("BALL");
-            System.out.println("Ball");
-            System.out.println("Current ball count is " + currentBatter.getBallCount());
+   //         System.out.println("Ball");
+    //        System.out.println("Current ball count is " + currentBatter.getBallCount());
             if (currentBatter.getBallCount() == 1) {
-                Log.i("Balls", "" + currentBatter.getBallCount());
+    //            Log.i("Balls", "" + currentBatter.getBallCount());
                 ball1Button.setChecked(true);
             }
             else if (currentBatter.getBallCount() == 2) {
-                Log.i("Balls", "" + currentBatter.getBallCount());
+     //           Log.i("Balls", "" + currentBatter.getBallCount());
                 ball1Button.setChecked(true);
                 ball2Button.setChecked(true);
             }
             else if (currentBatter.getBallCount() == 3) {
-                Log.i("Balls", "" + currentBatter.getBallCount());
+        //        Log.i("Balls", "" + currentBatter.getBallCount());
                 ball1Button.setChecked(true);
                 ball2Button.setChecked(true);
                 ball3Button.setChecked(true);
@@ -1021,9 +1062,9 @@ public class ScoringActivity extends AppCompatActivity {
         {
             currentBatter.incrementBalls();
             createNewPlay("BALL");
-            System.out.println("Ball");
-            System.out.println("4 balls, New currentBatter is set");
-            walk(basePath.getHomeBase(), basePath.getFirstBase());
+      //      System.out.println("Ball");
+      //      System.out.println("4 balls, New currentBatter is set");
+            walk();
             setNewBatter();
         }
     }
@@ -1034,19 +1075,19 @@ public class ScoringActivity extends AppCompatActivity {
         {
             currentBatter.incrementStrikes();
             createNewPlay("STRIKE");
-            System.out.println("Strike");
-            System.out.println("Current strike count is " + currentBatter.getStrikeCount());
+    //        System.out.println("Strike");
+    //        System.out.println("Current strike count is " + currentBatter.getStrikeCount());
             if (currentBatter.getStrikeCount() == 1) {
-                Log.i("Strikes", "" + currentBatter.getStrikeCount());
+       //         Log.i("Strikes", "" + currentBatter.getStrikeCount());
                 strike1Button.setChecked(true);
             }
             else if (currentBatter.getStrikeCount() == 2) {
-                Log.i("Strikes", "" + currentBatter.getStrikeCount());
+       //         Log.i("Strikes", "" + currentBatter.getStrikeCount());
                 strike1Button.setChecked(true);
                 strike2Button.setChecked(true);
             }
             else {
-                Log.i("Strikes", "" + currentBatter.getStrikeCount());
+       //         Log.i("Strikes", "" + currentBatter.getStrikeCount());
                 strike1Button.setChecked(false);
                 strike2Button.setChecked(false);
             }
@@ -1055,8 +1096,9 @@ public class ScoringActivity extends AppCompatActivity {
         {
             currentBatter.incrementStrikes();
             createNewPlay("STRIKE");
-            System.out.println("Strike");
-            System.out.println("3 Strikes, increment outs and set new current batter");
+            currentPlay.setPlayText("K");
+      //      System.out.println("Strike");
+     //       System.out.println("3 Strikes, increment outs and set new current batter");
             out();
         }
     }
@@ -1066,8 +1108,8 @@ public class ScoringActivity extends AppCompatActivity {
         createNewPlay("FOUL");
         if (currentBatter.getStrikeCount() < 2)
         {
-            System.out.println("Foul ball");
-            System.out.println("Current strike count is " + currentBatter.getStrikeCount());
+    //        System.out.println("Foul ball");
+    //        System.out.println("Current strike count is " + currentBatter.getStrikeCount());
             currentBatter.incrementStrikes();
             if (currentBatter.getStrikeCount() == 1) {
                 strike1Button.setChecked(true);
@@ -1086,8 +1128,8 @@ public class ScoringActivity extends AppCompatActivity {
     public void out ()
     {
         incrementOuts();
-        System.out.println("Out");
-        System.out.println("Current out count is " + currentHalfInning.getOuts());
+   //     System.out.println("Out");
+  //      System.out.println("Current out count is " + currentHalfInning.getOuts());
         if (currentHalfInning.getOuts() == 1) {
             out1Button.setChecked(true);
         }
@@ -1114,7 +1156,7 @@ public class ScoringActivity extends AppCompatActivity {
         removeRunnerFromBase(basePath.getHomeBase());
         currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
         currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
-        System.out.println("A new batter has been set. It is " + currentBatter.getPlayer().getFullName());
+  //      System.out.println("A new batter has been set. It is " + currentBatter.getPlayer().getFullName());
     }
 
     public void setCurrentBattingOrder ()
@@ -1152,16 +1194,16 @@ public class ScoringActivity extends AppCompatActivity {
     {
         if (oldPosition < 8)
         {
-            System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
+   //         System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
             currentBattingOrderPosition++;
-            System.out.println("New position is " + currentBattingOrderPosition);
+  //          System.out.println("New position is " + currentBattingOrderPosition);
         }
 
         else
         {
-            System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
+    //        System.out.println("Batting Order Position has been incremented. Position before incrementation = " + currentBattingOrderPosition);
             currentBattingOrderPosition = 0;
-            System.out.println("New position is " + currentBattingOrderPosition);
+    //        System.out.println("New position is " + currentBattingOrderPosition);
         }
     }
 
@@ -1171,7 +1213,7 @@ public class ScoringActivity extends AppCompatActivity {
 
         if (currentBatter.getHalfInning().getOuts() < 2)
         {
-            System.out.println("Current out count is " + currentBatter.getHalfInning().getOuts());
+    //        System.out.println("Current out count is " + currentBatter.getHalfInning().getOuts());
             currentHalfInning.incrementOuts();
             currentBatter = new AtBat(currentHalfInning, currentBattingOrder.get(currentBattingOrderPosition));
             currentBatterTextView.setText(currentBatter.getPlayer().getFullName());
@@ -1179,8 +1221,8 @@ public class ScoringActivity extends AppCompatActivity {
 
         else
         {
-            System.out.println("There are now 3 outs, setting up next half inning");
-            System.out.println("Current Inning Count is " + currentInning.getInningCount());
+      //      System.out.println("There are now 3 outs, setting up next half inning");
+      //      System.out.println("Current Inning Count is " + currentInning.getInningCount());
 
             resetInGameViews();
 
@@ -1188,26 +1230,30 @@ public class ScoringActivity extends AppCompatActivity {
 
             if (currentHalfInning.topOrBottom() == 1) //currently the top of the inning
             {
-                System.out.println("The new half inning will be the bottom of the " + currentInning.getInningCount());
+                game.setCurrentlyBottomOfInning();
+        //        System.out.println("The new half inning will be the bottom of the " + currentInning.getInningCount());
                 currentInning.setTopInning(currentHalfInning);
                 currentHalfInning = new HalfInning(awayTeam, homeTeam, 2, currentInning.getInningCount());
+                topOrBottom = 2;
             }
             else
             {
-                System.out.println("Game type number of innings = " + game.getGameType().getNumInnings());
-                System.out.println("Current innning = " + currentInning.getInningCount());
+       //         System.out.println("Game type number of innings = " + game.getGameType().getNumInnings());
+       //         System.out.println("Current innning = " + currentInning.getInningCount());
                 if (currentInning.getInningCount() == game.getGameType().getNumInnings())
                 {
-                    System.out.println("The game is over since the max innings have been reached!");
+            //        System.out.println("The game is over since the max innings have been reached!");
                     endGame();
                 }
                 else
                 {
-                    System.out.println("New Inning. Setting up top of the new inning. The inning number is " + currentInning.getInningCount());
+                    game.setCurrentlyTopOfInning();
+            //        System.out.println("New Inning. Setting up top of the new inning. The inning number is " + currentInning.getInningCount());
                     currentInning.setBottomInning(currentHalfInning);
                     currentInning.incrementInningNumber();
                     currentHalfInning = new HalfInning(homeTeam, awayTeam, 1, currentInning.getInningCount());
                     currentInning = new Inning(game, currentInning.getInningCount(), currentHalfInning, null);
+                    topOrBottom = 1;
                     game.addInning(currentInning);
 
                     startHalfInning(currentHalfInning);
@@ -1228,7 +1274,7 @@ public class ScoringActivity extends AppCompatActivity {
         resetInGameViews();
 
         Context context = getApplicationContext();
-        System.out.println("The winner of the game is " + game.getGameWinner().toString());
+   //     System.out.println("The winner of the game is " + game.getGameWinner().toString());
         CharSequence text = "The winner of the game is " + game.getGameWinner().toString();
         int duration = Toast.LENGTH_SHORT;
 
@@ -1246,6 +1292,6 @@ public class ScoringActivity extends AppCompatActivity {
         out1Button.setChecked(false);
         out2Button.setChecked(false);
 
-        System.out.println("Strike, ball, and out count have been set to 0");
+   //     System.out.println("Strike, ball, and out count have been set to 0");
     }
 }

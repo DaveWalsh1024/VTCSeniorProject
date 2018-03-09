@@ -17,16 +17,18 @@ import android.widget.TextView;
 
 public class ScorecardBox extends View
 {
-    public ScorecardBox (Context cdx)
+    public ScorecardBox (Context cdx, int inning, int battingOrder)
     {
         super (cdx);
 
         setMinimumHeight(50);
 
         centerTextPaint = new Paint();
+        centerTextPaint.setTextSize(16);
         centerTextPaint.setColor(0xff000000);
 
         bottomRightTextPaint = new Paint ();
+        centerTextPaint.setTextSize(32);
         centerTextPaint.setColor(0xff000000);
 
         runScoreIndicatorPaint =  new Paint();
@@ -76,7 +78,60 @@ public class ScorecardBox extends View
         ball2 = false;
         ball3 = false;
 
+        this.inning = inning;
+        this.battingOrder = battingOrder;
+
         setBackgroundResource(R.drawable.backgroundboxoutline);
+    }
+
+    public String toString ()
+    {
+        return "Box for " + inning + " , " + battingOrder;
+    }
+
+    public void setBall (int n)
+    {
+        if (n == 1)
+        {
+            setBall1();
+        }
+
+        if (n == 2)
+        {
+            setBall1();
+            setBall2();
+        }
+
+        if (n == 3)
+        {
+            setBall1();
+            setBall2();
+            setBall3();
+        }
+    }
+
+    public int getInning ()
+    {
+        return inning;
+    }
+
+    public int getBattingOrder ()
+    {
+        return battingOrder;
+    }
+
+    public void setStrike (int n)
+    {
+        if (n == 1)
+        {
+            setStrike1();
+        }
+
+        if (n == 2)
+        {
+            setStrike1();
+            setStrike2();
+        }
     }
 
     public void drawBaseLine (int startingBase, int endingBase)
@@ -287,4 +342,7 @@ public class ScorecardBox extends View
     private Paint ballBoxPaint1;
     private Paint ballBoxPaint2;
     private Paint ballBoxPaint3;
+
+    private final int inning;
+    private final int battingOrder;
 }

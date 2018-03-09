@@ -23,7 +23,31 @@ public class Play
 
     public AtBat getAtBat () { return atBat; }
 
-    public Play(Player batter, Player pitcher, Pitch playPitch, String playText, AtBat atBat, int inningNumber, int lineupNumber, int playId)
+    public int getTopOrBottom () { return topOrBottom; }
+
+    public void setPlayText (String newText)
+    {
+        playText = newText;
+    }
+
+    public void addRunnerEvent (RunnerEvent runnerEvent) { runnerEvents.add(runnerEvent);}
+
+    public boolean areThereRunnerEvents ()
+    {
+        if (runnerEvents.size() == 0)
+        {
+            return false;
+        }
+
+        else
+            {
+            return true;
+        }
+    }
+
+    public ArrayList<RunnerEvent> getRunnerEvents () {return runnerEvents;}
+
+    public Play(Player batter, Player pitcher, Pitch playPitch, String playText, AtBat atBat, int inningNumber, int lineupNumber, int topOrBottom, int playId)
     {
         this.batter = batter;
         this.pitcher = pitcher;
@@ -32,7 +56,9 @@ public class Play
         this.atBat = atBat;
         this.inningNumber = inningNumber;
         this.lineupNumber = lineupNumber;
+        this.topOrBottom = topOrBottom;
         this.playId = playId;
+        this.runnerEvents = new ArrayList<>();
         repOk();
     }
 
@@ -50,6 +76,8 @@ public class Play
     private AtBat atBat;
     private int inningNumber;
     private int lineupNumber;
+    private int topOrBottom;
     private int playId;
+    private ArrayList <RunnerEvent> runnerEvents;
 
 }

@@ -19,6 +19,12 @@ public class Player
         return lName;
     }
 
+    public String getLastNameWithNumber ()
+    {
+        String lastNameWithNumber = new StringBuilder().append(lName).append(" #").append(number).toString();
+        return lastNameWithNumber;
+    }
+
     public void repOk()
     {
         assert number > -1 && number < 100;

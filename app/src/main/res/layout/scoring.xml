@@ -73,14 +73,25 @@
 
             </TableRow>
 
-        </TableLayout>
+            <TableRow>
 
-        <Button
-            android:id="@+id/scorecard_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="viewScorecard"
-            android:text="View Scorecard" />
+                <Button
+                    android:id="@+id/homeScorecard_Button"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="viewHomeScorecard"
+                    android:text="Home Scorecard" />
+
+                <Button
+                    android:id="@+id/awayScorecard_Button"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="viewAwayScorecard"
+                    android:text="Away Scorecard" />
+
+            </TableRow>
+
+        </TableLayout>
 
         <TextView
             android:id="@+id/pitchName"

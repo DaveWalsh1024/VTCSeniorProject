@@ -13,7 +13,11 @@
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".ScorecardActivity"
+            android:name=".HomeTeamScorecardActivity"
+            android:label="ScorecardPro">
+        </activity>
+        <activity
+            android:name=".AwayTeamScorecardActivity"
             android:label="ScorecardPro">
         </activity>
         <activity android:name=".StartupActivity">

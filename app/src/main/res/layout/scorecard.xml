@@ -39,6 +39,8 @@
                         <TextView android:text="7" android:ems="5" android:gravity="center" android:textStyle="bold"/>
                         <TextView android:text="8" android:ems="5" android:gravity="center" android:textStyle="bold"/>
                         <TextView android:text="9" android:ems="5" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:text="10" android:ems="5" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:text="11" android:ems="5" android:gravity="center" android:textStyle="bold"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
