@@ -28,4 +28,12 @@ public enum Positions
     {
         return stringValue;
     }
+
+    public void flyBallTo(Game game) {
+
+    }
+
+    public void groundBallTo(Game game) {
+
+    }
 }

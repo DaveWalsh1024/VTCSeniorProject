@@ -19,12 +19,6 @@ public class Player
         return lName;
     }
 
-    public String getLastNameWithNumber ()
-    {
-        String lastNameWithNumber = new StringBuilder().append(lName).append(" #").append(number).toString();
-        return lastNameWithNumber;
-    }
-
     public void repOk()
     {
         assert number > -1 && number < 100;
@@ -37,12 +31,50 @@ public class Player
         this.lName = lName;
         this.number = number;
         this.age = age;
+        this.base = null;
+        this.rv = null;
         repOk();
+    }
+
+    public void noLongerOnBase(Base base) {
+        if (this.base != base) {
+            return;
+        }
+
+        if (rv != null) {
+            rv.setBase(null);
+            rv = null;
+        }
+
+        base = null;
+
+    }
+
+    public void nowOnBase(Base newBase) {
+        if (rv == null) {
+            rv = new RunnerView(this);
+        }
+        rv.setBase(newBase);
+        base = newBase;
+    }
+
+    public Base getCurrentBase() {
+        return base;
+    }
+
+    public void setRv(RunnerView newRv) {
+        this.rv = newRv;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     private String fName;
     private String lName;
     private int number;
     private int age;
+    private Base base;
+    private RunnerView rv;
 
 }

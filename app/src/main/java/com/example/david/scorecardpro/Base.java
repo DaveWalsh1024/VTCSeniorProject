@@ -33,6 +33,8 @@ public class Base
         repOk();
     }
 
+
+
     public Base (int number)
     {
         this.baseNumber = number;

@@ -51,9 +51,9 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             totalBatterCountAwayTeam = totalBatterCountAwayTeam + game.getInnings().get(l).getTopInning().getBatters().size();
         }
 
-        int i;
-        int j;
-        for (i = 1; i <= 9; i++) {
+        int batter;
+        int inning;
+        for (batter = 1; batter <= 9; batter++) {
             //batter is outer
             tr = new TableRow(this);
             ScorecardBox scorecardBox;
@@ -61,15 +61,15 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
-            tv.setText(game.getHomeTeam().getBattingOrder().get(i - 1).getLastNameWithNumber());
+ //           tv.setText(game.getAwayTeam().getBattingOrder().get(batter).getLastName());
 
             tv.setTextSize(16);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
             tr.addView(tv);
 
-            for (j = 1; j <= 11; j++) {
+            for (inning = 1; inning <= 11; inning++) {
                 //inning is inner
-                scorecardBox = new ScorecardBox(this, j, i);
+                scorecardBox = new ScorecardBox(this, inning, batter);
                 linearLayoutParams = new TableRow.LayoutParams(100, 100);
                 tr.addView(scorecardBox, linearLayoutParams);
                 scorecardBoxes.add(scorecardBox);

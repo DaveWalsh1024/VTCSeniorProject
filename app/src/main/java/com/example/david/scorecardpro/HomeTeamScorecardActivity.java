@@ -40,24 +40,20 @@ public class HomeTeamScorecardActivity extends AppCompatActivity {
 
     ArrayList<ScorecardBox> scorecardBoxes = new ArrayList<>();
 
-    public void fillTable()
-    {
+    public void fillTable() {
         TableRow tr;
 
-        TableLayout tl = (TableLayout)findViewById(R.id.scorecardTable);
+        TableLayout tl = (TableLayout) findViewById(R.id.scorecardTable);
 
         int totalBatterCountHomeTeam = 0;
 
-        for (int l = 0; l < game.getInnings().size(); l++)
-        {
-            System.out.println("==========================");
+        for (int l = 0; l < game.getInnings().size(); l++) {
             totalBatterCountHomeTeam = totalBatterCountHomeTeam + game.getInnings().get(l).getTopInning().getBatters().size();
         }
 
         int batter;
         int inning;
-        for (batter=0; batter<= 8; batter++)
-        {
+        for (batter = 1; batter <= 9; batter++) {
             //batter is outer
             tr = new TableRow(this);
             ScorecardBox scorecardBox;
@@ -65,49 +61,67 @@ public class HomeTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
-            tv.setText(game.getHomeTeam().getBattingOrder().get(batter).getLastNameWithNumber());
+            //           tv.setText(game.getAwayTeam().getBattingOrder().get(batter).getLastName());
 
             tv.setTextSize(16);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
             tr.addView(tv);
-            System.out.println("The scorecard was created");
 
-            for (inning = 0; inning <= 10; inning++) {
+            for (inning = 1; inning <= 11; inning++) {
                 //inning is inner
                 scorecardBox = new ScorecardBox(this, inning, batter);
                 linearLayoutParams = new TableRow.LayoutParams(100, 100);
                 tr.addView(scorecardBox, linearLayoutParams);
+                scorecardBoxes.add(scorecardBox);
+            }
+        }
 
-                System.out.println("Game plays array size is " + game.getPlays().size());
-                for (int k = 0; k < game.getPlays().size(); k++) {
-                    System.out.println("Top or bottom = " + game.getPlays().get(k).getTopOrBottom());
-                    if (game.getPlays().get(k).getTopOrBottom() == 2)
-                    {
-                        for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
-                        {
-                            String playPitch = game.getPlays().get(k).getPlayPitch().toString();
+        System.out.println("Game plays array size is " + game.getPlays().size());
+        for (int k = 0; k < game.getPlays().size(); k++)
+        {
+            System.out.println("Top or bottom = " + game.getPlays().get(k).getTopOrBottom());
+            if (game.getPlays().get(k).getTopOrBottom() == 2)
+            {
+                ScorecardBox newScorecardBox = findScoreCardBox(game.getPlays().get(k).getInningNumber(), game.getPlays().get(k).getLineupNumber());
+                String playPitch = game.getPlays().get(k).getPlayPitch().toString();
 
-                            if (playPitch.equals("BALL"))
-                            {
-                                scorecardBox.setBall(game.getPlays().get(k).getAtBat().getBallCount());
-                                System.out.println("Ball is being marked the ball count is " + game.getPlays().get(k).getAtBat().getBallCount());
-                            }
-
-                            if (playPitch.equals("STRIKE"))
-                            {
-                                scorecardBox.setStrike(game.getPlays().get(k).getAtBat().getStrikeCount());
-                                System.out.println("Strike is being marked the strike count is " + game.getPlays().get(k).getAtBat().getStrikeCount());
-                            }
-
-                            re.updateScorecardBox(scorecardBox);
-                        }
-                    }
-                    scorecardBoxes.add(scorecardBox);
+                if (playPitch.equals("BALL")) {
+                    System.out.println("Ball is being marked the ball count is " + game.getPlays().get(k).getAtBat().getBallCount());
+                    newScorecardBox.setBall(game.getPlays().get(k).getAtBat().getBallCount());
                 }
+
+                if (playPitch.equals("STRIKE")) {
+                    System.out.println("Strike is being marked the strike count is " + game.getPlays().get(k).getAtBat().getStrikeCount());
+                    newScorecardBox.setStrike(game.getPlays().get(k).getAtBat().getStrikeCount());
+                }
+
+                if (game.getPlays().get(k).getPlayText() != null)
+                {
+                    newScorecardBox.centerText(game.getPlays().get(k).getPlayText());
+                }
+
+                for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
+                {
+                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton()));
+                }
+
             }
         }
 
         Log.i("Box" , "created" + scorecardBoxes.size() + "boxes");
+    }
+
+    public ScorecardBox findScoreCardBox (int inning, int battingOrder)
+    {
+        for (ScorecardBox scorecardBox : scorecardBoxes)
+        {
+            if (scorecardBox.getInning() == inning && scorecardBox.getBattingOrder() == battingOrder)
+            {
+                return scorecardBox;
+            }
+        }
+
+        return null;
     }
 
     int gameId = 1;

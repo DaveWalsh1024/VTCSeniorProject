@@ -226,21 +226,6 @@
             android:layout_height="wrap_content"
             android:text="Last Play" />
 
-        <EditText
-            android:id="@+id/play_View"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Play" />
-
-        <Button
-            android:id="@+id/playButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="play"
-            android:text="Play" />
-
     </LinearLayout>
 
     <FrameLayout
@@ -275,31 +260,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/catcherText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/catcherFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="4dp"
                     android:text="Catcher"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.82" />
 
-                <TextView
-                    android:id="@+id/pitcherText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/pitcherFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="Pitcher"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -307,15 +298,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.52" />
 
-                <TextView
-                    android:id="@+id/firstBaseText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/firstBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="FirstBase"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -323,15 +317,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/secondBaseText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/secondBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="SecondBase"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -340,15 +337,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.35000002" />
 
-                <TextView
-                    android:id="@+id/thirdBaseText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/thirdBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="ThirdBase"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -356,15 +356,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/shortStopText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/shortStopFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="ShortStop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -373,14 +376,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.35000002" />
 
-                <TextView
-                    android:id="@+id/leftFieldText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/leftFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="LeftField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -389,15 +395,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.120000005" />
 
-                <TextView
-                    android:id="@+id/centerFieldText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/centerFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="CenterField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -405,15 +414,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.100000024" />
 
-                <TextView
-                    android:id="@+id/rightFieldText"
+                <com.example.david.scorecardpro.FieldView
+                    android:id="@+id/rightFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:background="@color/ballZoneColor"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:text="RightField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

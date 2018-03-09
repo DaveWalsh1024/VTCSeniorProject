@@ -15,6 +15,7 @@ import java.util.Date;
 
 public class Game extends AppCompatActivity
 {
+
     public static Game getById (int id) { return mostRecentGame; }
 
     public void setHomeTeam (Team homeTeam)
