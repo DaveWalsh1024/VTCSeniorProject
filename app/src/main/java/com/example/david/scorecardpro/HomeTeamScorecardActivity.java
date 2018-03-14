@@ -102,7 +102,7 @@ public class HomeTeamScorecardActivity extends AppCompatActivity {
 
                 for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
                 {
-                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton()));
+                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton() - 1));
                 }
 
             }

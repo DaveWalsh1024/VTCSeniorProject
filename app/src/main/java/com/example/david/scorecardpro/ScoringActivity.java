@@ -623,6 +623,12 @@ public class ScoringActivity extends AppCompatActivity {
         homeTeamInGame = new TeamInGame(homeTeam);
         awayTeamInGame = new TeamInGame(awayTeam);
 
+        homeTeamInGame.setBattingOrder(homeTeamBattingOrder);
+        awayTeamInGame.setBattingOrder(awayTeamBattingOrder);
+
+        homeTeamInGame.setPositions(homeTeamPositions);
+        awayTeamInGame.setPositions(awayTeamPositions);
+
         GameType gameType = new GameType("Little League", 6);
 
         game = new Game(homeTeamInGame, awayTeamInGame, gameType);
@@ -658,10 +664,10 @@ public class ScoringActivity extends AppCompatActivity {
 
     Play currentPlay;
 
-    public void newRunnerAction (Boolean out, Base startingBase, Base endingBase, Player runner)
+    public void newRunnerAction (Boolean out, Base startingBase, Base endingBase, Player runner, boolean scored)
     {
         if (topOrBottom == 1) {
-            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, awayTeamBattingOrder.indexOf(runner) + 1);
+            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, awayTeamBattingOrder.indexOf(runner) + 1, scored);
 
             System.out.println("=====================================");
             System.out.println("Batting Order Position = " + currentBattingOrderPosition + " Current Batter is = " + currentBatter.getPlayer().getFullName());
@@ -673,7 +679,7 @@ public class ScoringActivity extends AppCompatActivity {
         }
 
         if (topOrBottom == 2) {
-            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, homeTeamBattingOrder.indexOf(runner) + 1);
+            RunnerEvent newRunnerEvent = new RunnerEvent(currentInning.getInningCount(), currentBattingOrderPosition, currentBatter, out, startingBase, endingBase, runner, homeTeamBattingOrder.indexOf(runner) + 1, scored);
             currentPlay.addRunnerEvent(newRunnerEvent);
         }
         //     System.out.println("A new runner action has been created!");
@@ -691,11 +697,11 @@ public class ScoringActivity extends AppCompatActivity {
         startingBase.removeRunnerOnBase();
     }
 
-    public void createNewPlay (String pitch)
+    public void createNewPlay (String pitch, boolean out)
     {
         if (topOrBottom == 1)
         {
-            Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), pitch, currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 1, game.getPlays().size() + 1);
+            Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 1, game.getPlays().size() + 1, out);
             currentPlay = newPlay;
             game.addPlay(newPlay);
             lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = ");
@@ -703,17 +709,15 @@ public class ScoringActivity extends AppCompatActivity {
 
         else
         {
-            Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), pitch, currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 2, game.getPlays().size() + 1);
+            Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 2, game.getPlays().size() + 1, out);
             currentPlay = newPlay;
             game.addPlay(currentPlay);
             lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = ");
-
         }
     }
 
     public void walk ()
     {
-        currentPlay.setPlayText("BB");
         advanceBase(currentBatter.getPlayer(), basePath.getHomeBase(), basePath.getFirstBase());
     }
 
@@ -726,14 +730,18 @@ public class ScoringActivity extends AppCompatActivity {
 
         if (nextBase == basePath.getHomeBase())
         {
+            newRunnerAction(false, currentBase, nextBase, player, true);
             currentHalfInning.incrementRunsScored();
             currentBase.removeRunnerOnBase();
             incrementRunsScored();
         }
 
-        newRunnerAction(false, currentBase, nextBase, player);
-        removeRunnerFromBase(currentBase);
-        basePath.setRunnerOnBase(nextBase, player);
+        else
+        {
+            newRunnerAction(false, currentBase, nextBase, player, false);
+            removeRunnerFromBase(currentBase);
+            basePath.setRunnerOnBase(nextBase, player);
+        }
     }
 
     public void setTopOrBottomTextView ()
@@ -907,7 +915,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void play ()
     {
-        createNewPlay("HIT");
+    //    createNewPlay("INPLAY");
 
         String playString = playTextView.getText().toString();
 
@@ -1083,7 +1091,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void hitByPitch (Base currentBase, Base nextBase)
     {
-        createNewPlay("HBP");
+  //      createNewPlay("HBP");
         System.out.println("The batter was hit by a pitch");
 
         if (nextBase.doesBaseHaveRunner() == false)
@@ -1106,36 +1114,6 @@ public class ScoringActivity extends AppCompatActivity {
         {
             hitByPitch(nextBase, basePath.getNextBase(nextBase));
             hitByPitch(currentBase, nextBase);
-        }
-    }
-
-    public void walk (Base currentBase, Base nextBase)
-    {
-        System.out.println("Current base is " + currentBase.getBaseNumber());
-        System.out.println("Does current base have a runner on it = " + currentBase.doesBaseHaveRunner());
-        System.out.println("Next base is " + nextBase.getBaseNumber());
-        System.out.println("Does next base have a runner on it = " + currentBase.doesBaseHaveRunner());
-
-        if (nextBase.doesBaseHaveRunner() == false)
-        {
-            if (nextBase == basePath.getHomeBase())
-            {
-                currentHalfInning.incrementRunsScored();
-                currentBase.removeRunnerOnBase();
-                incrementRunsScored();
-            }
-
-            else
-            {
-                basePath.setRunnerOnBase(nextBase, currentBatter.getPlayer());
-                removeRunnerFromBase(currentBase);
-            }
-        }
-
-        else
-        {
-            walk(nextBase, basePath.getNextBase(nextBase));
-            walk(currentBase, nextBase);
         }
     }
 
@@ -1192,7 +1170,7 @@ public class ScoringActivity extends AppCompatActivity {
         if (currentBatter.getBallCount() < 3)
         {
             currentBatter.incrementBalls();
-            createNewPlay("BALL");
+            createNewPlay("BALL", false);
             System.out.println("Ball");
             System.out.println("Current ball count is " + currentBatter.getBallCount());
             if (currentBatter.getBallCount() == 1) {
@@ -1218,10 +1196,11 @@ public class ScoringActivity extends AppCompatActivity {
         }
         else
         {
-            createNewPlay("BALL");
+            createNewPlay("BALL",false);
+            currentPlay.setPlayText("BB");
             System.out.println("Ball");
             System.out.println("4 balls, New currentBatter is set");
-            walk(basePath.getHomeBase(), basePath.getFirstBase());
+            walk();
             setNewBatter();
         }
     }
@@ -1231,7 +1210,7 @@ public class ScoringActivity extends AppCompatActivity {
         if (currentBatter.getStrikeCount() < 2)
         {
             currentBatter.incrementStrikes();
-            createNewPlay("STRIKE");
+            createNewPlay("STRIKE", false);
             System.out.println("Strike");
             System.out.println("Current strike count is " + currentBatter.getStrikeCount());
             if (currentBatter.getStrikeCount() == 1) {
@@ -1251,7 +1230,8 @@ public class ScoringActivity extends AppCompatActivity {
         }
         else
         {
-            createNewPlay("STRIKE");
+            currentBatter.incrementStrikes();
+            createNewPlay("STRIKE", true);
             currentPlay.setPlayText("K");
             System.out.println("Strike");
             System.out.println("3 Strikes, increment outs and set new current batter");
@@ -1261,7 +1241,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void foul ()
     {
-        createNewPlay("FOUL");
+    //    createNewPlay("FOUL");
         if (currentBatter.getStrikeCount() < 2)
         {
             System.out.println("Foul ball");
@@ -1365,7 +1345,7 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void incrementOuts ()
     {
-        incrementBattingOrderPosition(currentBattingOrderPosition);
+  //      incrementBattingOrderPosition(currentBattingOrderPosition);
 
         if (currentBatter.getHalfInning().getOuts() < 2)
         {

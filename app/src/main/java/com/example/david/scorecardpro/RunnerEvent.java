@@ -25,11 +25,18 @@ public class RunnerEvent
 
     public int getRunnerBattingOrderPosiiton () { return runnerBattingOrderPosiiton; }
 
+    public boolean scored () { return scored; }
+
     public void updateScorecardBox (ScorecardBox scorecardBox)
     {
         if (out)
         {
             return;
+        }
+
+        if (scored)
+        {
+            scorecardBox.setRunScoreIndicatorTrue();
         }
 
         if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 1)
@@ -94,7 +101,7 @@ public class RunnerEvent
 
     }
 
-    public RunnerEvent (int currentInning, int currentBattingOrderPosition, AtBat currentBatter, boolean out, Base startingBase, Base endingBase, Player runner, int runnerBattingOrderPosiiton)
+    public RunnerEvent (int currentInning, int currentBattingOrderPosition, AtBat currentBatter, boolean out, Base startingBase, Base endingBase, Player runner, int runnerBattingOrderPosiiton, boolean scored)
     {
         this.currentInning = currentInning;
         this.currentBattingOrderPosition = currentBattingOrderPosition;
@@ -104,6 +111,7 @@ public class RunnerEvent
         this.endingBase = endingBase;
         this.runner = runner;
         this.runnerBattingOrderPosiiton = runnerBattingOrderPosiiton;
+        this.scored = scored;
     }
 
     private int currentInning;
@@ -113,5 +121,6 @@ public class RunnerEvent
     private Base startingBase;
     private Base endingBase;
     private Player runner;
+    private boolean scored;
     private int runnerBattingOrderPosiiton;
 }

@@ -32,6 +32,8 @@ public class Play
 
     public void addRunnerEvent (RunnerEvent runnerEvent) { runnerEvents.add(runnerEvent);}
 
+    public boolean getOut () { return out; }
+
     public boolean areThereRunnerEvents ()
     {
         if (runnerEvents.size() == 0)
@@ -47,17 +49,18 @@ public class Play
 
     public ArrayList<RunnerEvent> getRunnerEvents () {return runnerEvents;}
 
-    public Play(Player batter, Player pitcher, Pitch playPitch, String playText, AtBat atBat, int inningNumber, int lineupNumber, int topOrBottom, int playId)
+    public Play(Player batter, Player pitcher, Pitch playPitch, AtBat atBat, int inningNumber, int lineupNumber, int topOrBottom, int playId, boolean out )
     {
         this.batter = batter;
         this.pitcher = pitcher;
         this.playPitch = playPitch;
-        this.playText = playText;
+        this.playText = " ";
         this.atBat = atBat;
         this.inningNumber = inningNumber;
         this.lineupNumber = lineupNumber;
         this.topOrBottom = topOrBottom;
         this.playId = playId;
+        this.out = out;
         this.runnerEvents = new ArrayList<>();
         repOk();
     }
@@ -77,6 +80,7 @@ public class Play
     private int inningNumber;
     private int lineupNumber;
     private int topOrBottom;
+    private boolean out;
     private int playId;
     private ArrayList <RunnerEvent> runnerEvents;
 

@@ -24,15 +24,15 @@ public class ScorecardBox extends View
         setMinimumHeight(50);
 
         centerTextPaint = new Paint();
-        centerTextPaint.setTextSize(16);
-        centerTextPaint.setColor(0xff000000);
-
-        bottomRightTextPaint = new Paint ();
         centerTextPaint.setTextSize(32);
         centerTextPaint.setColor(0xff000000);
 
+        bottomRightTextPaint = new Paint ();
+        bottomRightTextPaint.setTextSize(24);
+        bottomRightTextPaint.setColor(0xff000000);
+
         runScoreIndicatorPaint =  new Paint();
-        runScoreIndicatorPaint.setColor(0xff000000);
+        runScoreIndicatorPaint.setColor(0xffff0000);
         runScoreIndicatorPaint.setStyle(Paint.Style.FILL);
 
         linePaint = new Paint();
@@ -132,6 +132,12 @@ public class ScorecardBox extends View
             setStrike1();
             setStrike2();
         }
+
+        if (n == 3)
+        {
+            setStrike1();
+            setStrike2();
+        }
     }
 
     public void drawBaseLine (int startingBase, int endingBase)
@@ -211,7 +217,6 @@ public class ScorecardBox extends View
         centerText = argument;
     }
 
-    //bottom right text
     public void bottomRightText (String argument)
     {
         bottomRightText = argument;
@@ -224,7 +229,7 @@ public class ScorecardBox extends View
     public void setStrike2 () {strike2 = true; }
 
     //fill diamond
-    public void runScoreIndicator (boolean argument)
+    public void setRunScoreIndicatorTrue ()
     {
         runScoreIndicator = true;
     }
@@ -260,56 +265,62 @@ public class ScorecardBox extends View
 
         if (bottomRightText != null)
         {
-            canvas.drawText(bottomRightText, canvas.getHeight() - 5, canvas.getWidth() - 5, bottomRightTextPaint);
+            System.out.println("We've reached bottom right text");
+            Rect bounds = new Rect();
+            bottomRightTextPaint.getTextBounds(bottomRightText, 0, bottomRightText.length(), bounds);
+            float x = (w - bounds.width()) - 15;
+            float y = (h - bounds.height()) + bounds.height() - 10;
+            canvas.drawText(bottomRightText, x, y , bottomRightTextPaint);
         }
 
-        if (runScoreIndicator == true)
+        if (runScoreIndicator)
         {
-            canvas.drawCircle(w/2, h/2, w/8, runScoreIndicatorPaint);
+            canvas.drawCircle(w/2, h/2, w/4, runScoreIndicatorPaint);
+            canvas.drawCircle(w/2 + 45, h/2, w/10, runScoreIndicatorPaint);
+            canvas.drawCircle(w/2 - 45, h/2, w/10, runScoreIndicatorPaint);
         }
 
-        if (homeFirst == true)
+        if (homeFirst)
         {
             canvas.drawLine(w - pad, h / 2, w / 2, h - pad, linePaint);
         }
 
-        if (firstSecond == true)
+        if (firstSecond)
         {
             canvas.drawLine(w / 2, pad, w - pad, h / 2, linePaint);
-            canvas.drawLine(w - pad, h / 2, w / 2, h - pad, linePaint);
         }
 
-        if (secondThird == true)
+        if (secondThird)
         {
-            canvas.drawLine(w / 2, h - pad, pad, h / 2, linePaint);
+            canvas.drawLine(w / 2, pad, pad, h / 2, linePaint);
         }
 
-        if (thirdHome == true)
+        if (thirdHome)
         {
-            canvas.drawLine(pad, h / 2, w / 2, pad, linePaint);
+            canvas.drawLine(pad, h / 2, w / 2, h - pad, linePaint);
         }
 
-        if (ball1 == true)
+        if (ball1)
         {
             ballBoxPaint1.setStyle(Paint.Style.FILL);
         }
 
-        if (ball2 == true)
+        if (ball2)
         {
             ballBoxPaint2.setStyle(Paint.Style.FILL);
         }
 
-        if (ball3 == true)
+        if (ball3)
         {
             ballBoxPaint3.setStyle(Paint.Style.FILL);
         }
 
-        if (strike1 == true)
+        if (strike1)
         {
             strikeBoxPaint1.setStyle(Paint.Style.FILL);
         }
 
-        if (strike2 == true)
+        if (strike2)
         {
             strikeBoxPaint2.setStyle(Paint.Style.FILL);
         }

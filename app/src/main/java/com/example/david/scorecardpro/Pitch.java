@@ -8,7 +8,7 @@ public enum Pitch
 {
     STRIKE("STRIKE"),
     BALL("BALL"),
-    HIT("HIT"),
+    INPLAY("INPLAY"),
     FOUL("FOUL"),
     FOULPOPPEDOUT("FOULPOOPEDOUT"),
     HITBYPITCH("HITBYPITCH");

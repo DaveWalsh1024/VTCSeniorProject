@@ -61,7 +61,7 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
- //           tv.setText(game.getAwayTeam().getBattingOrder().get(batter).getLastName());
+            tv.setText(game.getAwayTeam().getBattingOrder().get(batter - 1).getLastName());
 
             tv.setTextSize(16);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -83,6 +83,10 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             if (game.getPlays().get(k).getTopOrBottom() == 1)
             {
                 ScorecardBox newScorecardBox = findScoreCardBox(game.getPlays().get(k).getInningNumber(), game.getPlays().get(k).getLineupNumber());
+
+                System.out.println("Inning number = " + game.getPlays().get(k).getInningNumber());
+                System.out.println("Lineup number = " + game.getPlays().get(k).getLineupNumber());
+
                 String playPitch = game.getPlays().get(k).getPlayPitch().toString();
 
                 if (playPitch.equals("BALL")) {
@@ -97,14 +101,22 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
 
                 if (game.getPlays().get(k).getPlayText() != null)
                 {
-                    newScorecardBox.centerText(game.getPlays().get(k).getPlayText());
+                    if (game.getPlays().get(k).getOut())
+                    {
+                        newScorecardBox.centerText(game.getPlays().get(k).getPlayText());
+                    }
+
+                    else
+                    {
+                        newScorecardBox.bottomRightText(game.getPlays().get(k).getPlayText());
+                    }
+
                 }
 
                 for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
                 {
-                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton()));
+                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton() - 1));
                 }
-
             }
         }
 
