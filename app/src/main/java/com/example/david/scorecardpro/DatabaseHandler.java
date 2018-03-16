@@ -61,10 +61,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             cv.put("Batter", newPlay.getBatter().getFullName());
             cv.put("Inning", newPlay.getInningNumber());
-            cv.put("Balls", AtBat.getBallCount());
+    //        cv.put("Balls", AtBat.getBallCount());
             cv.put("Pitcher", newPlay.getPitcher().getFullName());
             cv.put("PlayPitch", String.valueOf(newPlay.getPlayPitch()));
-            cv.put("Strikes", AtBat.getStrikeCount());
+     //       cv.put("Strikes", AtBat.getStrikeCount());
 
             db.insert(DATABASE_NAME, null, cv);
         } catch (Exception ex) {
