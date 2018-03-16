@@ -32,6 +32,8 @@ public class ScoringActivity extends AppCompatActivity {
     private FrameLayout strikeLayout;
     private FrameLayout ballLayout;
 
+    DatabaseHandler db = new DatabaseHandler(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ public class ScoringActivity extends AppCompatActivity {
             }
         });
         RunnerView.setScoringActivity(this);
+        db.clearTable();
     }
 
 
@@ -329,7 +332,7 @@ public class ScoringActivity extends AppCompatActivity {
             fieldLayout.addView(rv, layout);
         }
         else if (base.getBaseNumber() == 2) {
-            layout.setMargins(secondBaseCoords[0], secondBaseCoords[1], secondBaseCoords[2], secondBaseCoords[4]);
+            layout.setMargins(secondBaseCoords[0], secondBaseCoords[1], secondBaseCoords[2], secondBaseCoords[3]);
             fieldLayout.addView(rv, layout);
         }
         else if (base.getBaseNumber() == 3) {
@@ -704,6 +707,7 @@ public class ScoringActivity extends AppCompatActivity {
             Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 1, game.getPlays().size() + 1, out);
             currentPlay = newPlay;
             game.addPlay(newPlay);
+            db.toDB(newPlay);
             lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = ");
         }
 
@@ -712,6 +716,7 @@ public class ScoringActivity extends AppCompatActivity {
             Play newPlay = new Play(currentBatter.getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), currentBatter, currentInning.getInningCount(), currentBattingOrderPosition, 2, game.getPlays().size() + 1, out);
             currentPlay = newPlay;
             game.addPlay(currentPlay);
+            db.toDB(newPlay);
             lastPlayTextView.setText("Batter = " + newPlay.getBatter().getFullName() + " Pitcher = " + newPlay.getPitcher().getFullName() + " Pitch = " + newPlay.getPlayPitch().toString() + " Play Text = ");
         }
     }
