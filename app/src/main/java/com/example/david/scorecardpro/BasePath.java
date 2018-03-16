@@ -53,19 +53,16 @@ public class BasePath
         if (base.getBaseNumber() == 1)
         {
             firstBase.setRunnerOnBase(player);
-            System.out.println("Player on first base is " + firstBase.getRunnerOnBase().getFullName());
         }
 
         else if (base.getBaseNumber() == 2)
         {
             secondBase.setRunnerOnBase(player);
-            System.out.println("Player on second base is " + secondBase.getRunnerOnBase().getFullName());
         }
 
         else if (base.getBaseNumber() == 3)
         {
             thirdBase.setRunnerOnBase(player);
-            System.out.println("Player on third base is " + thirdBase.getRunnerOnBase().getFullName());
         }
     }
 

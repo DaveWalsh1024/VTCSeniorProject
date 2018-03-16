@@ -90,6 +90,13 @@ public class Game extends AppCompatActivity
         topOrBottom = 2;
     }
 
+    public AtBat getCurrentBatter () { return currentBatter; }
+
+    public void setCurrentBatter (AtBat currentBatter)
+    {
+        this.currentBatter = currentBatter;
+    }
+
 
     public void repOk() {
         assert homeTeam != null;
@@ -121,5 +128,6 @@ public class Game extends AppCompatActivity
     private static Game mostRecentGame;
     private ArrayList <Inning> innings;
     private int topOrBottom;
-    private ArrayList <Play> plays;;
+    private ArrayList <Play> plays;
+    private AtBat currentBatter;
 }

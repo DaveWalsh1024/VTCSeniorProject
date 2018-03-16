@@ -51,6 +51,7 @@ public class Player
     }
 
     public void nowOnBase(Base newBase) {
+        System.out.println("We hit nowOnBase!");
         if (rv == null) {
             rv = new RunnerView(this);
         }

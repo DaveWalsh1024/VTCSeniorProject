@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class AtBat
 {
-    public static int getStrikeCount () { return strikeCount; }
-    public static int getBallCount () { return ballCount; }
+    public int getStrikeCount () { return strikeCount; }
+    public int getBallCount () { return ballCount; }
     public Player getPlayer () { return batter; }
     public HalfInning getHalfInning () { return halfInning; }
 
@@ -41,6 +41,6 @@ public class AtBat
 
     HalfInning halfInning;
     Player batter;
-    private static int strikeCount;
-    private static int ballCount;
+    private int strikeCount;
+    private int ballCount;
 }

@@ -98,6 +98,7 @@ public class RunnerView extends AppCompatTextView implements View.OnTouchListene
     }
 
     public void setBase(Base newBase) {
+        System.out.println("We hit setBase!");
         if (newBase == null) {
             currentActivity.removeFromBase(this);
         }

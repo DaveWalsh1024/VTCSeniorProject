@@ -23,7 +23,17 @@ public class Base
 
     public void setRunnerOnBase (Player player)
     {
-        runnerOnBase = player;
+        if (runnerOnBase != null) {
+            runnerOnBase.noLongerOnBase(this);
+        }
+
+        if (player != null) {
+            player.nowOnBase(this);
+
+        }
+        else {
+
+        }
         repOk();
     }
 
@@ -32,8 +42,6 @@ public class Base
         runnerOnBase = null;
         repOk();
     }
-
-
 
     public Base (int number)
     {
