@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ballZoneColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="168dp"
+        android:layout_marginRight="168dp">
+
+        <TextView
+            android:id="@+id/scorecardProText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:text="ScorecardPro"
+            android:textSize="32dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/gameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Start Game"
+            android:background="@color/gestureColor"
+            android:textColor="@color/baseWhite"/>
+
+        <Button
+            android:id="@+id/startSeasonButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Start Season"
+            android:background="@color/gestureColor"
+            android:textColor="@color/baseWhite"/>
+
+        <Button
+            android:id="@+id/resumeSeasonButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Resume Season"
+            android:background="@color/gestureColor"
+            android:textColor="@color/baseWhite"/>
+
+        <Button
+            android:id="@+id/teamButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Create Team"
+            android:background="@color/gestureColor"
+            android:textColor="@color/baseWhite"/>
+
+        <Button
+            android:id="@+id/optionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Options"
+            android:background="@color/gestureColor"
+            android:textColor="@color/baseWhite"/>
+
+    </LinearLayout>
+
+</LinearLayout>
