@@ -29,14 +29,25 @@ public enum Positions
         return stringValue;
     }
 
-    public void flyBallTo(Game game)
+    public void flyBallTo(Game game, boolean isHit)
     {
-        Play play = game.createNewPlay("INPLAY", true);
-        play.setPlayText("F" + getPositionNumber());
+
+        Play play = game.createNewPlay("INPLAY", !isHit);
+
+        if (isHit) {
+            game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
+            play.setPlayText("S" + getPositionNumber());
+            game.setNewBatter();
+        }
+        else {
+            play.setPlayText("F" + getPositionNumber());
+            game.out();
+        }
 
     }
 
-    public void groundBallTo(Game game) {
+    public void groundBallTo(Game game, boolean isHit) {
+
 
     }
 

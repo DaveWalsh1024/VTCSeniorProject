@@ -119,18 +119,23 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         RunnerView.setScoringActivity(this);
  //       db.clearTable();
 
-        pitcherPosition = new PositionsInGame(Game.player1, Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1);
-        firstBasePosition = new PositionsInGame(Game.player2, Positions.FIRSTBASE, outfieldY, 0.0, infieldY1, infieldX2);
-        catcherPosition = new PositionsInGame(Game.player3, Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1);
-        secondBasePosition = new PositionsInGame(Game.player4, Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth);
-        shortStopPosition = new PositionsInGame(Game.player5, Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1);
-        thirdBasePosition = new PositionsInGame(Game.player6, Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0);
-        centerFieldPosition = new PositionsInGame(Game.player7, Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1);
-        rightFieldPosition = new PositionsInGame(Game.player8, Positions.RIGHTFIELD, 0.0, 0.0, outfieldY, outfieldX2);
-        leftFieldPosition = new PositionsInGame(Game.player9, Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0);
-
     }
 
+    private void initRegions() {
+        regions = new FieldRegion[]{
+                new FieldRegion(Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1),
+                new FieldRegion(Positions.FIRSTBASE, outfieldY, screenWidth, infieldY1, infieldX2),
+                new FieldRegion(Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1),
+                new FieldRegion(Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth),
+                new FieldRegion(Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1),
+                new FieldRegion(Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0),
+                new FieldRegion(Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1),
+                new FieldRegion(Positions.RIGHTFIELD, 0.0, screenWidth, outfieldY, outfieldX2),
+                new FieldRegion(Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0)
+        };
+    }
+
+    private FieldRegion[] regions;
 
     public void onResume() {
         super.onResume();
@@ -199,7 +204,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                     strokeX = rightStroke;
                 }
 
-                PositionsInGame[] gesturePositions = {pitcherPosition, catcherPosition, firstBasePosition, secondBasePosition, thirdBasePosition, shortStopPosition, leftFieldPosition, centerFieldPosition, rightFieldPosition};
                 FieldView[] fieldViews = {pitcherFieldView, catcherFieldView, firstBaseFieldView, secondBaseFieldView, thirdBaseFieldView, shortStopFieldView, leftFieldView, centerFieldView, rightFieldView};
 
                 boolean handled = false;
@@ -208,7 +212,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                     if (fv.containsPoint(strokeX, topStroke)) {
                         if (isFlyBall) {
                             fv.flyBallTo(game);
-                            game.out();
                         }
                         else {
                             fv.groundBallTo(game);
@@ -220,9 +223,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 }
 
                 if (!handled) {
-                    for (PositionsInGame pos : gesturePositions) {
-                        if (pos.containsPoint(strokeX, topStroke)) {
-                            _gestureName.append(" to " + pos.getPosition().toString());
+                    for (FieldRegion reg : regions) {
+                        if (reg.containsPoint(strokeX, topStroke)) {
+                            Log.i("strokeX", "" + strokeX);
+                            Log.i("topStroke", "" + topStroke);
+                            if (isFlyBall) {
+                                reg.getPosition().flyBallTo(game, true);
+                            }
+                            else {
+                                reg.getPosition().groundBallTo(game, true);
+                            }
+                            _gestureName.append(" to " + reg.getPosition().toString());
                             break;
                         }
                     }
@@ -395,7 +406,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             Log.i("moveToBase", "Base Number out of bounds");
         }
 
-        advanceRunner(oldBase, newBase);
+        game.advanceBase(rv.getPlayer(), oldBase, newBase);
         rv.setBase(newBase);
     }
 
@@ -435,33 +446,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
         outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
 
-
-        pitcherPosition = new PositionsInGame(Game.player1, Positions.PITCHER, infieldY2, infieldX2, infieldY1, infieldX1);
-        //Log.i("Gestures", "Pitcher at " + infieldY2 + ", " + infieldX2 + ", " + infieldY1 + ", " + infieldX1);
-
-        firstBasePosition = new PositionsInGame(Game.player2, Positions.FIRSTBASE, outfieldY, screenWidth, infieldY1, infieldX2);
-        //Log.i("Gestures", "FirstBase at " + outfieldY + ", " + screenWidth + ", " + infieldY1 + ", " + infieldX2);
-
-        catcherPosition = new PositionsInGame(Game.player3, Positions.CATCHER, infieldY1, outfieldX2, screenHeight, outfieldX1);
-        //Log.i("Gestures", "Catcher at " + infieldY1 + ", " + outfieldX2 + ", " + screenHeight + ", " + outfieldX1);
-
-        secondBasePosition = new PositionsInGame(Game.player4, Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth);
-        //Log.i("Gestures", "SecondBase at " + outfieldY + ", " + infieldX2 + ", " + infieldY2 + ", " + centerWidth);
-
-        shortStopPosition = new PositionsInGame(Game.player5, Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1);
-        //Log.i("Gestures", "ShortStop at " + outfieldY + ", " + centerWidth + ", " + infieldY2 + ", " + infieldX1);
-
-        thirdBasePosition = new PositionsInGame(Game.player6, Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0);
-        //Log.i("Gestures", "ThirdBase at " + outfieldY + ", " + infieldX1 + ", " + infieldY1 + ", " + 0.0);
-
-        centerFieldPosition = new PositionsInGame(Game.player7, Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1);
-        //Log.i("Gestures", "Centerfield at " + 0.0 + ", " + outfieldX2 + ", " + outfieldY + ", " + outfieldX1);
-
-        rightFieldPosition = new PositionsInGame(Game.player8, Positions.RIGHTFIELD, 0.0, screenWidth, outfieldY, outfieldX2);
-        //Log.i("Gestures", "RightField at " + 0.0 + ", " + 0.0 + ", " + outfieldY + ", " + outfieldX2);
-
-        leftFieldPosition = new PositionsInGame(Game.player9, Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0);
-        //Log.i("Gestures", "LeftField at " + 0.0 + ", " + outfieldX1 + ", " + outfieldY + ", " + 0.0);
+        initRegions();
     }
 
     double screenHeight;
@@ -486,16 +471,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     double firstBaseX;
     double outfieldX1;
     double outfieldX2;
-
-    static PositionsInGame pitcherPosition;
-    static PositionsInGame firstBasePosition;
-    static PositionsInGame catcherPosition;
-    static PositionsInGame secondBasePosition;
-    static PositionsInGame shortStopPosition;
-    static PositionsInGame thirdBasePosition;
-    static PositionsInGame centerFieldPosition;
-    static PositionsInGame rightFieldPosition;
-    static PositionsInGame leftFieldPosition;
 
     TextView homeTeamTitleTextView;
     TextView awayTeamTitleTextView;
@@ -595,6 +570,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         setCurrentBattingOrder();
 
+        setFieldTextViews();
+
         game.setCurrentInning( new Inning(game, 1, getCurrentHalfInning(), null));
 
         game.addInning(getCurrentInning());
@@ -632,166 +609,153 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         return game.getCurrentBattingOrderPosition();
     }
 
-    public void advanceRunner (Base startingBase, Base newBase)
-    {
-        System.out.println("Advance runner was called!");
-        if (newBase.doesBaseHaveRunner() == true)
-        {
-            return;
-        }
-
-        else
-            newBase.setRunnerOnBase(startingBase.getRunnerOnBase());
-            startingBase.removeRunnerOnBase();
-    }
-
     private Inning getCurrentInning() {
         return game.getCurrentInning();
     }
 
 
-    /*
+
     public void setFieldTextViews()
     {
         if (game.getTopOrBottom() == 1)
         {
-            for (int i = 0; i < homeTeamPositions.size(); i ++)
+            for (int i = 0; i < game.homeTeamPositions.size(); i ++)
             {
-                if (homeTeamPositions.get(i).getPosition().toString() == "Pitcher")
+                if (game.homeTeamPositions.get(i).getPosition().toString() == "Pitcher")
                 {
-                    pitcherFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    pitcherFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    pitcherFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    pitcherFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    pitcherFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    pitcherFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Catcher")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Catcher")
                 {
-                    catcherFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    catcherFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    catcherFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    catcherFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    catcherFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    catcherFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "First Base")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "First Base")
                 {
-                    firstBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    firstBaseFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    firstBaseFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    firstBaseFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    firstBaseFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    firstBaseFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Second Base")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Second Base")
                 {
-                    secondBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    secondBaseFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    secondBaseFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    secondBaseFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    secondBaseFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    secondBaseFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Short Stop")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Short Stop")
                 {
-                    shortStopFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    shortStopFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    shortStopFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    shortStopFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    shortStopFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    shortStopFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Third Base")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Third Base")
                 {
-                    thirdBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    thirdBaseFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    thirdBaseFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    thirdBaseFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    thirdBaseFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    thirdBaseFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Center Field")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Center Field")
                 {
-                    centerFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    centerFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    centerFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    centerFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    centerFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    centerFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Right Field")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Right Field")
                 {
-                    rightFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    rightFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    rightFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    rightFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    rightFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    rightFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (homeTeamPositions.get(i).getPosition().toString() == "Left Field")
+                else if (game.homeTeamPositions.get(i).getPosition().toString() == "Left Field")
                 {
-                    leftFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    leftFieldView.setPlayer(homeTeamPositions.get(i).getPlayer());
-                    leftFieldView.setText(homeTeamPositions.get(i).getPlayer().getLastName());
+                    leftFieldView.setPositions(game.homeTeamPositions.get(i).getPosition());
+                    leftFieldView.setPlayer(game.homeTeamPositions.get(i).getPlayer());
+                    leftFieldView.setText(game.homeTeamPositions.get(i).getPlayer().getLastName());
                 }
             }
         }
         else
         {
-            for (int i = 0; i < awayTeamPositions.size(); i ++)
+            for (int i = 0; i < game.awayTeamPositions.size(); i ++)
             {
-                if (awayTeamPositions.get(i).getPosition().toString() == "Pitcher")
+                if (game.awayTeamPositions.get(i).getPosition().toString() == "Pitcher")
                 {
-                    pitcherFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    pitcherFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    pitcherFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    pitcherFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    pitcherFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    pitcherFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Catcher")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Catcher")
                 {
-                    catcherFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    catcherFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    catcherFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    catcherFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    catcherFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    catcherFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "First Base")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "First Base")
                 {
-                    firstBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    firstBaseFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    firstBaseFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    firstBaseFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    firstBaseFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    firstBaseFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Second Base")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Second Base")
                 {
-                    secondBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    secondBaseFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    secondBaseFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    secondBaseFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    secondBaseFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    secondBaseFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Short Stop")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Short Stop")
                 {
-                    shortStopFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    shortStopFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    shortStopFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    shortStopFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    shortStopFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    shortStopFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Third Base")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Third Base")
                 {
-                    thirdBaseFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    thirdBaseFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    thirdBaseFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    thirdBaseFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    thirdBaseFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    thirdBaseFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Center Field")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Center Field")
                 {
-                    centerFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    centerFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    centerFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    centerFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    centerFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    centerFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Right Field")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Right Field")
                 {
-                    rightFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    rightFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    rightFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    rightFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    rightFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    rightFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
 
-                else if (awayTeamPositions.get(i).getPosition().toString() == "Left Field")
+                else if (game.awayTeamPositions.get(i).getPosition().toString() == "Left Field")
                 {
-                    leftFieldView.setPositions(homeTeamPositions.get(i).getPosition());
-                    leftFieldView.setPlayer(awayTeamPositions.get(i).getPlayer());
-                    leftFieldView.setText(awayTeamPositions.get(i).getPlayer().getLastName());
+                    leftFieldView.setPositions(game.awayTeamPositions.get(i).getPosition());
+                    leftFieldView.setPlayer(game.awayTeamPositions.get(i).getPlayer());
+                    leftFieldView.setText(game.awayTeamPositions.get(i).getPlayer().getLastName());
                 }
             }
         }
     }
 
-         */
+
 
     public void setScoreTextView ()
     {
@@ -962,6 +926,45 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         strike2Button.setChecked(false);
         out1Button.setChecked(false);
         out2Button.setChecked(false);
+    }
+
+    private static class FieldRegion {
+        private double topCoordinate;
+        private double rightCoordinate;
+        private double bottomCoordinate;
+        private double leftCoordinate;
+        private Positions position;
+
+
+        public FieldRegion (Positions position, double topCoordinate, double rightCoordinate, double bottomCoordinate, double leftCoordinate) {
+            this.position = position;
+            this.topCoordinate = topCoordinate;
+            this.rightCoordinate = rightCoordinate;
+            this.bottomCoordinate = bottomCoordinate;
+            this.leftCoordinate = leftCoordinate;
+        }
+
+        public Positions getPosition () {return position; }
+
+        public boolean containsPoint(double x, double y) {
+            /*Log.i("strokeX", "" + x);
+            Log.i("topStroke", "" + y);
+            Log.i("Gestures", "Checking Contains " + this.getPosition() + " " + topCoordinate + ", " + rightCoordinate + ", " + bottomCoordinate + ", " + leftCoordinate + "\n");
+            */
+            if (x < leftCoordinate) {
+                return false;
+            }
+            if (x > rightCoordinate) {
+                return false;
+            }
+            if (y < topCoordinate) {
+                return false;
+            }
+            if (y > bottomCoordinate) {
+                return false;
+            }
+            return true;
+        }
     }
 
 }

@@ -61,7 +61,7 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
-            tv.setText(game.getAwayTeamInGame().getBattingOrder().get(batter - 1).getLastName());
+//            tv.setText(game.getAwayTeamInGame().getBattingOrder().get(batter - 1).getLastName());
 
             tv.setTextSize(16);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);

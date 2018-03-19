@@ -17,8 +17,6 @@ import java.util.Date;
 
 import javax.net.ssl.HandshakeCompletedListener;
 
-import static com.example.david.scorecardpro.ScoringActivity.secondBasePosition;
-
 /**
  * Created by david on 10/3/2017.
  */
@@ -36,13 +34,23 @@ public class Game extends AppCompatActivity
     static Player player8 = new Player("Matt", "Tanneberger", 8, 21);
     static Player player9 = new Player("Jake", "Morrill", 9, 22);
 
+    static PositionsInGame pitcherPosition = new PositionsInGame(player1, Positions.PITCHER);
+    static PositionsInGame catcherPosition = new PositionsInGame(player2, Positions.CATCHER);
+    static PositionsInGame firstBasePosition = new PositionsInGame(player3, Positions.FIRSTBASE);
+    static PositionsInGame secondBasePosition = new PositionsInGame(player4, Positions.SECONDBASE);
+    static PositionsInGame thirdBasePosition = new PositionsInGame(player5, Positions.THIRDBASE);
+    static PositionsInGame shortStopPosition = new PositionsInGame(player6, Positions.SHORTSTOP);
+    static PositionsInGame centerFieldPosition = new PositionsInGame(player7, Positions.LEFTFIELD);
+    static PositionsInGame rightFieldPosition = new PositionsInGame(player8, Positions.CENTERFIELD);
+    static PositionsInGame leftFieldPosition = new PositionsInGame(player9, Positions.RIGHTFIELD);
+
     ArrayList <Player> homeTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
     ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
 
-    Field field = new Field(ScoringActivity.firstBasePosition, ScoringActivity.secondBasePosition, ScoringActivity.thirdBasePosition, ScoringActivity.shortStopPosition, ScoringActivity.centerFieldPosition, ScoringActivity.leftFieldPosition, ScoringActivity.rightFieldPosition, ScoringActivity.catcherPosition, ScoringActivity.pitcherPosition);
+    Field field = new Field(firstBasePosition, secondBasePosition, thirdBasePosition, shortStopPosition, centerFieldPosition, leftFieldPosition, rightFieldPosition, catcherPosition, pitcherPosition);
 
-    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(ScoringActivity.pitcherPosition, ScoringActivity.firstBasePosition, ScoringActivity.catcherPosition, secondBasePosition, ScoringActivity.shortStopPosition, ScoringActivity.thirdBasePosition, ScoringActivity.centerFieldPosition, ScoringActivity.leftFieldPosition, ScoringActivity.rightFieldPosition));
-    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(ScoringActivity.pitcherPosition, ScoringActivity.firstBasePosition, ScoringActivity.catcherPosition, secondBasePosition, ScoringActivity.shortStopPosition, ScoringActivity.thirdBasePosition, ScoringActivity.centerFieldPosition, ScoringActivity.leftFieldPosition, ScoringActivity.rightFieldPosition));
+    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitcherPosition, firstBasePosition, catcherPosition, secondBasePosition, shortStopPosition, thirdBasePosition, centerFieldPosition, leftFieldPosition, rightFieldPosition));
+    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitcherPosition, firstBasePosition, catcherPosition, secondBasePosition, shortStopPosition, thirdBasePosition, centerFieldPosition, leftFieldPosition, rightFieldPosition));
 
 
     DatabaseHandler db = new DatabaseHandler(this);
@@ -244,6 +252,14 @@ public class Game extends AppCompatActivity
 
     public void advanceBase (Player player, Base currentBase, Base nextBase)
     {
+        System.out.println("=====================================");
+        System.out.println("We hit advanceBase");
+        System.out.println("The player is " + player.getFullName());
+        System.out.println("The currentBase is " + currentBase.getBaseNumber());
+        System.out.println("The nextBase is " + nextBase.getBaseNumber());
+        System.out.println("Does nextBase have a runner on it " + nextBase.doesBaseHaveRunner());
+        System.out.println("=====================================");
+
         if (nextBase.doesBaseHaveRunner())
         {
             advanceBase(nextBase.getRunnerOnBase(), nextBase , basePath.getNextBase(nextBase));
@@ -293,7 +309,7 @@ public class Game extends AppCompatActivity
     {
         if (getTopOrBottom() == 1)
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), ScoringActivity.pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, getPlays().size() + 1, out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, getPlays().size() + 1, out);
             currentPlay = newPlay;
             addPlay(newPlay);
             db.toDB(newPlay);
@@ -302,7 +318,7 @@ public class Game extends AppCompatActivity
 
         else
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), ScoringActivity.pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2, getPlays().size() + 1, out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2, getPlays().size() + 1, out);
             currentPlay = newPlay;
             addPlay(currentPlay);
             db.toDB(newPlay);
@@ -370,7 +386,7 @@ public class Game extends AppCompatActivity
     public void out ()
     {
         incrementOuts();
-        System.out.println("Out");
+        System.out.println("Out ");
         System.out.println("Current out count is " + getCurrentHalfInning().getOuts());
         if (getCurrentHalfInning().getOuts() == 1) {
             for (GameListener gl : gameListeners)

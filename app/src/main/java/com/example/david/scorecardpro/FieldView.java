@@ -35,11 +35,11 @@ public class FieldView extends AppCompatTextView {
     }
 
     public void flyBallTo(Game game) {
-        positions.flyBallTo(game);
+        positions.flyBallTo(game, false);
     }
 
     public void groundBallTo(Game game) {
-        positions.groundBallTo(game);
+        positions.groundBallTo(game, false);
     }
 
     public boolean containsPoint(double x, double y) {
