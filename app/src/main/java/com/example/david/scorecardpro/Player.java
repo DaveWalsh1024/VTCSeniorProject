@@ -47,7 +47,6 @@ public class Player
         }
 
         base = null;
-
     }
 
     public void nowOnBase(Base newBase) {

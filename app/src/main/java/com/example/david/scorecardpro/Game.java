@@ -289,7 +289,7 @@ public class Game extends AppCompatActivity
 
     }
 
-    public void createNewPlay (String pitch, boolean out)
+    public Play createNewPlay (String pitch, boolean out)
     {
         if (getTopOrBottom() == 1)
         {
@@ -297,6 +297,7 @@ public class Game extends AppCompatActivity
             currentPlay = newPlay;
             addPlay(newPlay);
             db.toDB(newPlay);
+            return newPlay;
         }
 
         else
@@ -305,6 +306,7 @@ public class Game extends AppCompatActivity
             currentPlay = newPlay;
             addPlay(currentPlay);
             db.toDB(newPlay);
+            return newPlay;
         }
     }
 

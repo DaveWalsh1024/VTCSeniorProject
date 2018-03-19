@@ -42,7 +42,7 @@ public class PositionsInGame
     }
 
     public boolean containsPoint(double x, double y) {
-        Log.i("Gestures", "Checking Contains " + this.getPosition() + " for " + x + ", " + y);
+        //Log.i("Gestures", "Checking Contains " + this.getPosition() + " for " + x + ", " + y);
         if (x < leftCoordinate) {
             return false;
         }

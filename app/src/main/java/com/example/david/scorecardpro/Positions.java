@@ -7,13 +7,13 @@ package com.example.david.scorecardpro;
 public enum Positions
 {
     PITCHER("Pitcher"),
+    CATCHER("Catcher"),
     FIRSTBASE("First Base"),
     SECONDBASE("Second Base"),
-    SHORTSTOP("Short Stop"),
     THIRDBASE("Third Base"),
-    CATCHER("Catcher"),
-    CENTERFIELD("Center Field"),
+    SHORTSTOP("Short Stop"),
     LEFTFIELD("Left Field"),
+    CENTERFIELD("Center Field"),
     RIGHTFIELD("Right Field");
 
 
@@ -31,10 +31,18 @@ public enum Positions
 
     public void flyBallTo(Game game)
     {
+        Play play = game.createNewPlay("INPLAY", true);
+        play.setPlayText("F" + getPositionNumber());
 
     }
 
     public void groundBallTo(Game game) {
 
     }
+
+    public int getPositionNumber() {
+        return ordinal() + 1;
+    }
+
+
 }
