@@ -71,16 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <Button
-                    android:id="@+id/startGame_Button"
-                    android:name="startGame"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
-                    android:onClick="startGame"
-                    android:text="Start Game" />
-
             </TableRow>
 
             <TableRow>
