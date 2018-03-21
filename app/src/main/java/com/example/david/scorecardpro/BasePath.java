@@ -50,7 +50,7 @@ public class BasePath
 
     public void setRunnerOnBase (Base base, Player player)
     {
-        if (base.getBaseNumber() == 1)
+        /*if (base.getBaseNumber() == 1)
         {
             firstBase.setRunnerOnBase(player);
         }
@@ -63,7 +63,8 @@ public class BasePath
         else if (base.getBaseNumber() == 3)
         {
             thirdBase.setRunnerOnBase(player);
-        }
+        }*/
+        base.setRunnerOnBase(player);
     }
 
     public Base getBaseFromNumber (int number)

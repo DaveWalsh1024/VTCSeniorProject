@@ -262,7 +262,7 @@ public class Game extends AppCompatActivity
 
         if (nextBase.doesBaseHaveRunner())
         {
-            advanceBase(nextBase.getRunnerOnBase(), nextBase , basePath.getNextBase(nextBase));
+            advanceBase(nextBase.getRunnerOnBase(), nextBase, basePath.getNextBase(nextBase));
         }
 
         if (nextBase == basePath.getHomeBase())
@@ -278,6 +278,7 @@ public class Game extends AppCompatActivity
             newRunnerAction(false, currentBase, nextBase, player, false);
             removeRunnerFromBase(currentBase);
             basePath.setRunnerOnBase(nextBase, player);
+            Log.i("AdvanceBase", "Someone is on base " + nextBase.doesBaseHaveRunner() + " " + nextBase.getBaseNumber());
         }
     }
 
@@ -767,8 +768,8 @@ public class Game extends AppCompatActivity
         this.innings = new ArrayList<>();
         this.topOrBottom = 1;
         this.currentInningCount = 1;
-        homeTeamBattingOrderPosition = 1;
-        awayTeamBattingOrderPosition = 1;
+        homeTeamBattingOrderPosition = 0;
+        awayTeamBattingOrderPosition = 0;
         mostRecentGame = this;
         this.plays= new ArrayList<>();
         this.gameListeners = new ArrayList<>();

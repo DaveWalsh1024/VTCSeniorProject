@@ -29,11 +29,11 @@ public class Base
 
         if (player != null) {
             player.nowOnBase(this);
-
         }
         else {
 
         }
+        runnerOnBase = player;
         repOk();
     }
 

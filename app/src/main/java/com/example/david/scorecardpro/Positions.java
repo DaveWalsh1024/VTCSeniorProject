@@ -48,6 +48,17 @@ public enum Positions
 
     public void groundBallTo(Game game, boolean isHit) {
 
+        Play play = game.createNewPlay("INPLAY", !isHit);
+
+        if (isHit) {
+            game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
+            play.setPlayText("S" + getPositionNumber());
+            game.setNewBatter();
+        }
+        else {
+            play.setPlayText("G" + getPositionNumber());
+            game.out();
+        }
 
     }
 

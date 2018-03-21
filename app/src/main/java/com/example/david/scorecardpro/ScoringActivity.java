@@ -406,8 +406,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             Log.i("moveToBase", "Base Number out of bounds");
         }
 
-        game.advanceBase(rv.getPlayer(), oldBase, newBase);
-        rv.setBase(newBase);
+        //game.advanceBase(rv.getPlayer(), oldBase, newBase);
+        //rv.setBase(newBase);
     }
 
 
