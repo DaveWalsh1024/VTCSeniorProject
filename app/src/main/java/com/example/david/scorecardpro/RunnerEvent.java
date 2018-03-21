@@ -41,6 +41,7 @@ public class RunnerEvent
 
         if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 1)
         {
+            System.out.println("scorecardBox = " + scorecardBox);
             scorecardBox.drawBaseLine(0,1);
         }
 

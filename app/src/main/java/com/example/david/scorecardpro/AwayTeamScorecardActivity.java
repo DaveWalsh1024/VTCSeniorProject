@@ -61,7 +61,8 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
-//            tv.setText(game.getAwayTeamInGame().getBattingOrder().get(batter - 1).getLastName());
+  //          tv.setText(game.getAwayTeamInGame().getBattingOrder().get(batter - 1).getLastName());
+            tv.setText(game.getAwayTeamBattingOrder().get(batter-1).getLastName());
 
             tv.setTextSize(16);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -82,7 +83,7 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             System.out.println("Top or bottom = " + game.getPlays().get(k).getTopOrBottom());
             if (game.getPlays().get(k).getTopOrBottom() == 1)
             {
-                ScorecardBox newScorecardBox = findScoreCardBox(game.getPlays().get(k).getInningNumber(), game.getPlays().get(k).getLineupNumber());
+                ScorecardBox newScorecardBox = findScoreCardBox(game.getPlays().get(k).getInningNumber(), game.getPlays().get(k).getLineupNumber() + 1);
 
                 System.out.println("NewScoreCardBox = " + newScorecardBox);
                 System.out.println("Inning number = " + game.getPlays().get(k).getInningNumber());
@@ -116,7 +117,7 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
 
                 for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
                 {
-                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton() - 1));
+                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton()));
                 }
             }
         }
