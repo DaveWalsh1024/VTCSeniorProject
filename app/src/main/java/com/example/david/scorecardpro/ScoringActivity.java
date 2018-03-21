@@ -255,7 +255,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     public void snapToBase(RunnerView rv)
     {
-        initGestureCoordinates();
+        if (screenHeight == 0.0) {
+            initGestureCoordinates();
+        }
 
         int left = rv.getLeft();
         int top = rv.getTop();
@@ -337,6 +339,11 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     }
 
     public void addToBase(RunnerView rv, Base base) {
+
+        if (screenHeight == 0.0) {
+            initGestureCoordinates();
+        }
+
         int[] homePlateCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY)};;
         int[] firstBaseCoords = {(int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1};
         int[] secondBaseCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY)};
@@ -373,6 +380,11 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     }
 
     public void moveToBase(RunnerView rv, Base oldBase, Base newBase) {
+
+        if (screenHeight == 0.0) {
+            initGestureCoordinates();
+        }
+
         int[] homePlateCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY)};;
         int[] firstBaseCoords = {(int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1};
         int[] secondBaseCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY)};
@@ -398,7 +410,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         else if (newBase.getBaseNumber() == 4) {
             layout.setMargins(homePlateCoords[0], homePlateCoords[1], homePlateCoords[2], homePlateCoords[3]);
             fieldLayout.updateViewLayout(rv, layout);
-            game.incrementRunsScored();
             rv.removePlayer();
             removeFromBase(rv);
         }

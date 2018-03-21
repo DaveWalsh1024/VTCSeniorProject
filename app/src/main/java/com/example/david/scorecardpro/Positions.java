@@ -1,5 +1,7 @@
 package com.example.david.scorecardpro;
 
+import android.util.Log;
+
 /**
  * Created by david on 12/31/2017.
  */
@@ -41,6 +43,7 @@ public enum Positions
         }
         else {
             play.setPlayText("F" + getPositionNumber());
+            Log.i("flyBallTo", "Out reached");
             game.out();
         }
 
@@ -57,6 +60,7 @@ public enum Positions
         }
         else {
             play.setPlayText("G" + getPositionNumber());
+            Log.i("groundBallTo", "Out reached");
             game.out();
         }
 
