@@ -33,6 +33,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     private FrameLayout fieldLayout;
     private FrameLayout strikeLayout;
     private FrameLayout ballLayout;
+    private boolean inPlay;
+    FieldView fielder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +66,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             @Override
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
+
                 hitGesture(gestureOverlayView, gesture);
+                inPlay = true;
+                Log.i("inPlay", "true");
+
+                if (inPlay) {
+
+                }
             }
         });
+
 
         gestureOverlayView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
             @Override
@@ -75,8 +85,13 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                     initGestureCoordinates();
                 }
 
+                if (motionEvent.getY() > catcherY1 && motionEvent.getY() < catcherY2 && motionEvent.getX() > middleBaseX1 && motionEvent.getX() < middleBaseX2) {
+                }
+
                 else {
                     gestureOverlayView.cancelGesture();
+                    Log.i("inPlay", "false");
+                    inPlay = false;
                 }
             }
 
@@ -179,67 +194,66 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     private void hitGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
 
-        ArrayList<GestureStroke> strokes = gesture.getStrokes();
-        GestureStroke stroke = strokes.get(strokes.size() - 1);
-        boolean isFlyBall = true;
+                ArrayList<GestureStroke> strokes = gesture.getStrokes();
+                GestureStroke stroke = strokes.get(strokes.size() - 1);
+                boolean isFlyBall = true;
 
-        if (stroke.computeOrientedBoundingBox().height > 50) {
-            _gestureName.setText("Groundball");
-            isFlyBall = false;
-        }
-        else {
-            _gestureName.setText("Fly ball");
-        }
-
-        double topStroke = stroke.boundingBox.top;
-        double leftStroke = stroke.boundingBox.left;
-        double rightStroke = stroke.boundingBox.right;
-        double strokeX = leftStroke;
-
-        int[] homePlateCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY)};;
-        int[] firstBaseCoords = {(int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1};
-        int[] secondBaseCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY)};
-        int[] thirdBaseCoords = {(int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2)};
-
-        if ((centerWidth - leftStroke) < (rightStroke - centerWidth)) {
-            strokeX = rightStroke;
-        }
-
-        FieldView[] fieldViews = {pitcherFieldView, catcherFieldView, firstBaseFieldView, secondBaseFieldView, thirdBaseFieldView, shortStopFieldView, leftFieldView, centerFieldView, rightFieldView};
-
-        Log.i("hitGesture", "Processing Gesture");
-
-        boolean handled = false;
-
-        for (FieldView fv : fieldViews) {
-            if (fv.containsPoint(strokeX, topStroke)) {
-                if (isFlyBall) {
-                    fv.flyBallTo(game);
+                if (stroke.computeOrientedBoundingBox().height > 50) {
+                    _gestureName.setText("Groundball");
+                    isFlyBall = false;
                 }
                 else {
-                    fv.groundBallTo(game);
+                    _gestureName.setText("Fly ball");
                 }
-                _gestureName.append(" to " + fv.getPlayer().getFullName());
-                handled = true;
-                break;
-            }
-        }
 
-        if (!handled) {
-            for (FieldRegion reg : regions) {
-                if (reg.containsPoint(strokeX, topStroke)) {
-                    if (isFlyBall) {
-                        reg.getPosition().flyBallTo(game, true);
+                double topStroke = stroke.boundingBox.top;
+                double leftStroke = stroke.boundingBox.left;
+                double rightStroke = stroke.boundingBox.right;
+                double strokeX = leftStroke;
+
+                int[] homePlateCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY)};;
+                int[] firstBaseCoords = {(int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1};
+                int[] secondBaseCoords = {(int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY)};
+                int[] thirdBaseCoords = {(int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2)};
+
+                if ((centerWidth - leftStroke) < (rightStroke - centerWidth)) {
+                    strokeX = rightStroke;
+                }
+
+                FieldView[] fieldViews = {pitcherFieldView, catcherFieldView, firstBaseFieldView, secondBaseFieldView, thirdBaseFieldView, shortStopFieldView, leftFieldView, centerFieldView, rightFieldView};
+
+                boolean handled = false;
+
+                for (FieldView fv : fieldViews) {
+                    if (fv.containsPoint(strokeX, topStroke)) {
+                        if (isFlyBall) {
+                            fv.flyBallTo(game);
+                        }
+                        else {
+                            fv.groundBallTo(game);
+                        }
+                        _gestureName.append(" to " + fv.getPlayer().getFullName());
+                        handled = true;
+                        fielder = fv;
+                        break;
                     }
-                    else {
-                        reg.getPosition().groundBallTo(game, true);
+                }
+
+                if (!handled) {
+                    for (FieldRegion reg : regions) {
+                        if (reg.containsPoint(strokeX, topStroke)) {
+                            if (isFlyBall) {
+                                reg.getPosition().flyBallTo(game, true);
+                            }
+                            else {
+                                reg.getPosition().groundBallTo(game, true);
+                            }
+                            _gestureName.append(" to " + reg.getPosition().toString());
+                            break;
+                        }
                     }
-                    _gestureName.append(" to " + reg.getPosition().toString());
-                    break;
                 }
             }
-        }
-    }
 
     public boolean runnerMove(RunnerView rv, int dx, int dy) {
         int left = rv.getLeft() + dx;
