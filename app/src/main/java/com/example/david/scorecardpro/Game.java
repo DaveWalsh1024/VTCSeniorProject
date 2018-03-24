@@ -1,11 +1,7 @@
 package com.example.david.scorecardpro;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,9 +9,6 @@ import com.example.david.GameListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-
-import javax.net.ssl.HandshakeCompletedListener;
 
 /**
  * Created by david on 10/3/2017.
@@ -252,13 +245,13 @@ public class Game extends AppCompatActivity
 
     public void advanceBase (Player player, Base currentBase, Base nextBase)
     {
-        /*System.out.println("=====================================");
-        System.out.println("We hit advanceBase");
-        System.out.println("The player is " + player.getFullName());
-        System.out.println("The currentBase is " + currentBase.getBaseNumber());
-        System.out.println("The nextBase is " + nextBase.getBaseNumber());
-        System.out.println("Does nextBase have a runner on it " + nextBase.doesBaseHaveRunner());
-        System.out.println("=====================================");*/
+        /*System.batterOut.println("=====================================");
+        System.batterOut.println("We hit advanceBase");
+        System.batterOut.println("The player is " + player.getFullName());
+        System.batterOut.println("The currentBase is " + currentBase.getBaseNumber());
+        System.batterOut.println("The nextBase is " + nextBase.getBaseNumber());
+        System.batterOut.println("Does nextBase have a runner on it " + nextBase.doesBaseHaveRunner());
+        System.batterOut.println("=====================================");*/
 
         if (nextBase.doesBaseHaveRunner())
         {
@@ -277,9 +270,8 @@ public class Game extends AppCompatActivity
         else
         {
             newRunnerAction(false, currentBase, nextBase, player, false);
-            removeRunnerFromBase(currentBase);
-            basePath.setRunnerOnBase(nextBase, player);
-            //Log.i("AdvanceBase", "Someone is on base " + nextBase.doesBaseHaveRunner() + " " + nextBase.getBaseNumber());
+            nextBase.setRunnerOnBase(player);
+            Log.i("AdvanceBase", "Someone is on base " + nextBase.getBaseNumber() + " " + player.getFullName());
         }
     }
 
@@ -358,7 +350,7 @@ public class Game extends AppCompatActivity
             currentPlay.setPlayText("K");
             System.out.println("Strike");
             System.out.println("3 Strikes, increment outs and set new current batter");
-            out();
+            batterOut();
         }
     }
 
@@ -385,11 +377,22 @@ public class Game extends AppCompatActivity
         }
     }
 
-    public void out ()
+    public void runnerOut(Base base, Player player) {
+        newRunnerAction(true, basePath.getPreviousBase(base), base, player, false);
+        outOccurred();
+        base.removeRunnerOnBase();
+    }
+
+    public void batterOut()
     {
+        outOccurred();
+        setNewBatter();
+    }
+
+    private void outOccurred() {
         incrementOuts();
         System.out.println("Out ");
-        System.out.println("Current out count is " + getCurrentHalfInning().getOuts());
+        System.out.println("Current batterOut count is " + getCurrentHalfInning().getOuts());
         if (getCurrentHalfInning().getOuts() == 1) {
             for (GameListener gl : gameListeners)
             {
@@ -408,7 +411,6 @@ public class Game extends AppCompatActivity
                 gl.inningEnded();
             }
         }
-        setNewBatter();
     }
 
     public void setNewBatter ()
@@ -456,7 +458,7 @@ public class Game extends AppCompatActivity
 
         if (getCurrentBatter().getHalfInning().getOuts() < 2)
         {
-            System.out.println("Current out count is " + getCurrentBatter().getHalfInning().getOuts());
+            System.out.println("Current batterOut count is " + getCurrentBatter().getHalfInning().getOuts());
             getCurrentHalfInning().incrementOuts();
             setCurrentBatter( new AtBat(getCurrentHalfInning(), currentBattingOrder.get(getCurrentBattingOrderPosition())));
         }
@@ -567,16 +569,16 @@ public class Game extends AppCompatActivity
         }
     }
 
-    public void newRunnerAction (Boolean out, Base startingBase, Base endingBase, Player runner, boolean scored)
+    public void newRunnerAction (boolean out, Base startingBase, Base endingBase, Player runner, boolean scored)
     {
         if (getTopOrBottom() == 1) {
             RunnerEvent newRunnerEvent = new RunnerEvent(getCurrentInningCount(), getCurrentBattingOrderPosition(), getCurrentBatter(), out, startingBase, endingBase, runner, awayTeamBattingOrder.indexOf(runner) + 1, scored);
 
-            /*System.out.println("=====================================");
-            System.out.println("Batting Order Position = " + getCurrentBattingOrderPosition() + " Current Batter is = " + getCurrentBatter().getPlayer().getFullName());
-            System.out.println("Starting Base = " + startingBase.getBaseNumber() + " Ending Base = " + endingBase.getBaseNumber());
-            System.out.println("Runner is " + runner.getFullName() + " Current Batting Order Position = " + awayTeamBattingOrder.indexOf(runner) + 1);
-            System.out.println("=====================================");*/
+            /*System.batterOut.println("=====================================");
+            System.batterOut.println("Batting Order Position = " + getCurrentBattingOrderPosition() + " Current Batter is = " + getCurrentBatter().getPlayer().getFullName());
+            System.batterOut.println("Starting Base = " + startingBase.getBaseNumber() + " Ending Base = " + endingBase.getBaseNumber());
+            System.batterOut.println("Runner is " + runner.getFullName() + " Current Batting Order Position = " + awayTeamBattingOrder.indexOf(runner) + 1);
+            System.batterOut.println("=====================================");*/
 
             currentPlay.addRunnerEvent(newRunnerEvent);
         }
@@ -585,7 +587,7 @@ public class Game extends AppCompatActivity
             RunnerEvent newRunnerEvent = new RunnerEvent(getCurrentInningCount(), getCurrentBattingOrderPosition(), getCurrentBatter(), out, startingBase, endingBase, runner, getHomeTeamBattingOrder().indexOf(runner) + 1, scored);
             currentPlay.addRunnerEvent(newRunnerEvent);
         }
-        //     System.out.println("A new runner action has been created!");
+        //     System.batterOut.println("A new runner action has been created!");
     }
 
     public void repOk() {

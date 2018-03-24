@@ -31,12 +31,12 @@ public enum Positions
         return stringValue;
     }
 
-    public void flyBallTo(Game game, boolean isHit)
+    public void flyBallTo(Game game, boolean inPlay)
     {
 
-        Play play = game.createNewPlay("INPLAY", !isHit);
+        Play play = game.createNewPlay("INPLAY", !inPlay);
 
-        if (isHit) {
+        if (inPlay) {
             game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
             play.setPlayText("S" + getPositionNumber());
             game.setNewBatter();
@@ -44,26 +44,24 @@ public enum Positions
         else {
             play.setPlayText("F" + getPositionNumber());
             Log.i("flyBallTo", "Out reached");
-            game.out();
+            game.batterOut();
         }
 
     }
 
-    public void groundBallTo(Game game, boolean isHit) {
+    public void groundBallTo(Game game, boolean inPlay) {
 
-        Play play = game.createNewPlay("INPLAY", !isHit);
+        Play play = game.createNewPlay("INPLAY", !inPlay);
 
-        if (isHit) {
-            game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
+        game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
+
+        if (inPlay) {
             play.setPlayText("S" + getPositionNumber());
-            game.setNewBatter();
         }
         else {
             play.setPlayText("G" + getPositionNumber());
-            Log.i("groundBallTo", "Out reached");
-            game.out();
         }
-
+        game.setNewBatter();
     }
 
     public int getPositionNumber() {

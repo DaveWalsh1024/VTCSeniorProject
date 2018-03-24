@@ -39,6 +39,9 @@ public class Base
 
     public void removeRunnerOnBase ()
     {
+        if (runnerOnBase != null) {
+            runnerOnBase.noLongerOnBase(this);
+        }
         runnerOnBase = null;
         repOk();
     }

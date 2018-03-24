@@ -48,6 +48,31 @@ public class BasePath
             return null;
     }
 
+    public Base getPreviousBase (Base base)
+    {
+        if (base.getBaseNumber() == 1)
+        {
+            return homeBase;
+        }
+
+        if (base.getBaseNumber() == 2)
+        {
+            return firstBase;
+        }
+
+        if (base.getBaseNumber() == 3)
+        {
+            return secondBase;
+        }
+
+        if (base.getBaseNumber() == 4)
+        {
+            return thirdBase;
+        }
+
+        return null;
+    }
+
     public void setRunnerOnBase (Base base, Player player)
     {
         base.setRunnerOnBase(player);
