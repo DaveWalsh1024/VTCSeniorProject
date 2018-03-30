@@ -473,8 +473,6 @@ public class Game extends AppCompatActivity
                 gl.inningEnded();
             }
 
-            basePath = new BasePath();
-
             if (getCurrentHalfInning().topOrBottom() == 1) //currently the top of the inning
             {
                 setCurrentlyBottomOfInning();

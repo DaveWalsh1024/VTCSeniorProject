@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,22 +22,9 @@ public class RosterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roster);
 
+        initializeViews();
 
         team = new Team("The Awesome Team");
-
-        Player player1 = new Player("David", "Walsh", 1, 22);
-        Player player2 = new Player("Jack", "Lavallee", 2, 24);
-        Player player3 = new Player("Joe", "Russell", 3, 35);
-        Player player4 = new Player("Craig", "Damon", 4, 55);
-        Player player5 = new Player("Leslie", "Damon", 5, 50);
-        Player player6 = new Player("Peter", "Chapin", 6, 55);
-        Player player7 = new Player("Mike", "Hall", 7, 22);
-        Player player8 = new Player("Matt", "Tanneberger", 8, 21);
-        Player player9 = new Player("Jake", "Morrill", 9, 22);
-        Player player10 = new Player("Travis", "Hart", 10, 23);
-        Player player11 = new Player("Jen", "Russell", 11, 34);
-        Player player12 = new Player("Elias", "Carter", 12, 24);
-        Player player13 = new Player("Donald", "Trump", 13, 75);
 
         team.addPlayerToTeam(player1);
         team.addPlayerToTeam(player2);
@@ -57,7 +45,7 @@ public class RosterActivity extends AppCompatActivity {
         System.out.println("We have reached onCreate in RosterActivity");
 
         playerListView = (ListView) findViewById(R.id.player_List_View);
-        final ArrayAdapter<Player> adapter = new ArrayAdapter <Player> (this, android.R.layout.simple_list_item_1, team.getPlayers());
+        ArrayAdapter<Player> adapter = new ArrayAdapter <Player> (this, android.R.layout.simple_list_item_1, team.getPlayers());
         playerListView.setAdapter(adapter);
 
         Intent arrived = getIntent();
@@ -67,28 +55,134 @@ public class RosterActivity extends AppCompatActivity {
 
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                parent.requestFocusFromTouch();
+                parent.setSelection(position);
+                System.out.println(parent.getSelectedItemPosition());
 
-                addPlayerToBattingOrder((Player)playerListView.getSelectedItem());
+                System.out.println("Get selected item position " + position);
 
-                String s = String.valueOf(playerListView.getItemAtPosition(i));
+                currentPlayer = (Player)parent.getItemAtPosition(position);
+
+                addPlayerToBattingOrder((Player)parent.getItemAtPosition(position));
+
+                String s = String.valueOf(parent.getItemAtPosition(position));
 
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    Player player1 = new Player("David", "Walsh", 1, 22);
+    Player player2 = new Player("Jack", "Lavallee", 2, 24);
+    Player player3 = new Player("Joe", "Russell", 3, 35);
+    Player player4 = new Player("Craig", "Damon", 4, 55);
+    Player player5 = new Player("Leslie", "Damon", 5, 50);
+    Player player6 = new Player("Peter", "Chapin", 6, 55);
+    Player player7 = new Player("Mike", "Hall", 7, 22);
+    Player player8 = new Player("Matt", "Tanneberger", 8, 21);
+    Player player9 = new Player("Jake", "Morrill", 9, 22);
+    Player player10 = new Player("Travis", "Hart", 10, 23);
+    Player player11 = new Player("Jen", "Russell", 11, 34);
+    Player player12 = new Player("Elias", "Carter", 12, 24);
+    Player player13 = new Player("Donald", "Trump", 13, 75);
 
+    TextView pitcherFieldView;
+    TextView catcherFieldView;
+    TextView firstBaseFieldView;
+    TextView secondBaseFieldView;
+    TextView thirdBaseFieldView;
+    TextView shortStopFieldView;
+    TextView leftFieldView;
+    TextView centerFieldView;
+    TextView rightFieldView;
+
+    public void initializeViews ()
+    {
+        pitcherFieldView = (TextView)findViewById(R.id.pitcherFieldViewRoster);
+        catcherFieldView = (TextView)findViewById(R.id.catcherFieldViewRoster);
+        firstBaseFieldView = (TextView)findViewById(R.id.firstBaseFieldViewRoster);
+        secondBaseFieldView = (TextView)findViewById(R.id.secondBaseFieldViewRoster);
+        thirdBaseFieldView = (TextView)findViewById(R.id.thirdBaseFieldViewRoster);
+        shortStopFieldView = (TextView)findViewById(R.id.shortStopFieldViewRoster);
+        leftFieldView = (TextView)findViewById(R.id.leftFieldViewRoster);
+        centerFieldView = (TextView)findViewById(R.id.centerFieldViewRoster);
+        rightFieldView = (TextView)findViewById(R.id.rightFieldViewRoster);
+    }
 
     Team team;
 
+    public void selectedPosition (View b)
+    {
+        System.out.println("We reached selectedPosition");
+        TextView local =  (TextView)b;
+
+        String s = local.getText().toString();
+        System.out.println(s);
+    //    Player player = (Player)playerListView.getSelectedItem();
+    //    System.out.println("Player = " + player);
+
+
+        local.setText(currentPlayer.getLastName());
+
+        PositionsInGame newPositionsInGameToAdd;
+        switch (s)
+        {
+            case "Catcher" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.CATCHER);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "Pitcher" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.PITCHER);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "FirstBase" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.FIRSTBASE);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "SecondBase" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.SECONDBASE);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "ThirdBase" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.THIRDBASE);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "ShortStop" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.SHORTSTOP);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "CenterField" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.CENTERFIELD);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "LeftField" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.LEFTFIELD);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+            case "RightField" : newPositionsInGameToAdd = new PositionsInGame(currentPlayer, Positions.RIGHTFIELD);
+                positionsInGameToSend.add(newPositionsInGameToAdd);
+                break;
+        }
+
+        int counter = 0;
+        System.out.println("Size of positionsInGameToSend = " + positionsInGameToSend.size());
+        for (PositionsInGame p : positionsInGameToSend )
+        {
+            System.out.println("p.getPlayer() = " + p.getPlayer());
+            System.out.println("currentPlayer = " + currentPlayer);
+
+            if (p.getPlayer() != currentPlayer)
+            {
+                System.out.println("Size of positionsInGameToSend = " + positionsInGameToSend.size());
+                local.setText(positionsInGameToSend.get(counter).getPosition().toString());
+                positionsInGameToSend.remove(p);
+            }
+            counter ++;
+        }
+    }
+
     public void addPlayerToBattingOrder(Player player)
     {
+        System.out.println("Player = " + player);
         battingOrderToSend.add(player);
 
-        rosterListView = (ListView) findViewById(R.id.roster_List_View);
-        ArrayAdapter<Player> rosterAdapter = new ArrayAdapter <Player> (this, android.R.layout.simple_list_item_1, battingOrderToSend);
-        playerListView.setAdapter(rosterAdapter);
+     //   rosterListView = (ListView) findViewById(R.id.roster_List_View);
+     //   ArrayAdapter<Player> rosterAdapter = new ArrayAdapter <Player> (this, android.R.layout.simple_list_item_1, battingOrderToSend);
+      //  playerListView.setAdapter(adapter);
     }
 
     public void removePlayerFromBattingOrder(Player player, int position) {
@@ -117,6 +211,7 @@ public class RosterActivity extends AppCompatActivity {
     }
 
     private ArrayList<Player> battingOrderToSend;
+    private ArrayList <PositionsInGame> positionsInGameToSend = new ArrayList<>();
     private ListView playerListView;
-    private ListView rosterListView;
+    private Player currentPlayer;
 }
