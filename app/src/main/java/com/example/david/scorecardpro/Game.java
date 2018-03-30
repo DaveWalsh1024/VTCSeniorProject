@@ -303,7 +303,7 @@ public class Game extends AppCompatActivity
     {
         if (getTopOrBottom() == 1)
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, getPlays().size() + 1, out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, out);
             currentPlay = newPlay;
             addPlay(newPlay);
             db.toDB(newPlay);
@@ -312,7 +312,7 @@ public class Game extends AppCompatActivity
 
         else
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2, getPlays().size() + 1, out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2,  out);
             currentPlay = newPlay;
             addPlay(currentPlay);
             db.toDB(newPlay);

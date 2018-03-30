@@ -49,7 +49,7 @@ public class Play
 
     public ArrayList<RunnerEvent> getRunnerEvents () {return runnerEvents;}
 
-    public Play(Player batter, Player pitcher, Pitch playPitch, AtBat atBat, int inningNumber, int lineupNumber, int topOrBottom, int playId, boolean out )
+    public Play(Player batter, Player pitcher, Pitch playPitch, AtBat atBat, int inningNumber, int lineupNumber, int topOrBottom, boolean out )
     {
         this.batter = batter;
         this.pitcher = pitcher;
@@ -59,7 +59,7 @@ public class Play
         this.inningNumber = inningNumber;
         this.lineupNumber = lineupNumber;
         this.topOrBottom = topOrBottom;
-        this.playId = playId;
+        this.playId = this.playId + 1;
         this.out = out;
         this.runnerEvents = new ArrayList<>();
         repOk();
@@ -81,7 +81,7 @@ public class Play
     private int lineupNumber;
     private int topOrBottom;
     private boolean out;
-    private int playId;
+    private static int playId;
     private ArrayList <RunnerEvent> runnerEvents;
 
 }
