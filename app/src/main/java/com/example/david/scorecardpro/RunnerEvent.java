@@ -42,62 +42,62 @@ public class RunnerEvent
         if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 1)
         {
             System.out.println("scorecardBox = " + scorecardBox);
-            scorecardBox.drawBaseLine(0,1);
+            scorecardBox.drawBaseLine(0,1, out);
         }
 
         else if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 2)
         {
-            scorecardBox.drawBaseLine(0,1);
-            scorecardBox.drawBaseLine(1,2);
+            scorecardBox.drawBaseLine(0,1, out);
+            scorecardBox.drawBaseLine(1,2, out);
         }
 
         else if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 3)
         {
-            scorecardBox.drawBaseLine(0,1);
-            scorecardBox.drawBaseLine(1,2);
-            scorecardBox.drawBaseLine(2,3);
+            scorecardBox.drawBaseLine(0,1, out);
+            scorecardBox.drawBaseLine(1,2, out);
+            scorecardBox.drawBaseLine(2,3, out);
         }
 
         else if (startingBase.getBaseNumber() == 4 && endingBase.getBaseNumber() == 4)
         {
-            scorecardBox.drawBaseLine(0,1);
-            scorecardBox.drawBaseLine(1,2);
-            scorecardBox.drawBaseLine(2,3);
-            scorecardBox.drawBaseLine(3,0);
+            scorecardBox.drawBaseLine(0,1, out);
+            scorecardBox.drawBaseLine(1,2, out);
+            scorecardBox.drawBaseLine(2,3, out);
+            scorecardBox.drawBaseLine(3,0, out);
         }
 
         else if (startingBase.getBaseNumber() == 1 && endingBase.getBaseNumber() == 2)
         {
-            scorecardBox.drawBaseLine(1,2);
+            scorecardBox.drawBaseLine(1,2, out);
         }
 
         else if (startingBase.getBaseNumber() == 1 && endingBase.getBaseNumber() == 3)
         {
-            scorecardBox.drawBaseLine(1,2);
-            scorecardBox.drawBaseLine(2,3);
+            scorecardBox.drawBaseLine(1,2, out);
+            scorecardBox.drawBaseLine(2,3, out);
         }
 
         else if (startingBase.getBaseNumber() == 1 && endingBase.getBaseNumber() == 4)
         {
-            scorecardBox.drawBaseLine(1,2);
-            scorecardBox.drawBaseLine(2,3);
-            scorecardBox.drawBaseLine(3,0);
+            scorecardBox.drawBaseLine(1,2, out);
+            scorecardBox.drawBaseLine(2,3, out);
+            scorecardBox.drawBaseLine(3,0, out);
         }
 
         else if (startingBase.getBaseNumber() == 2 && endingBase.getBaseNumber() == 3)
         {
-            scorecardBox.drawBaseLine(2,3);
+            scorecardBox.drawBaseLine(2,3, out);
         }
 
         else if (startingBase.getBaseNumber() == 2 && endingBase.getBaseNumber() == 4)
         {
-            scorecardBox.drawBaseLine(2,3);
-            scorecardBox.drawBaseLine(3,0);
+            scorecardBox.drawBaseLine(2,3, out);
+            scorecardBox.drawBaseLine(3,0, out);
         }
 
         else if (startingBase.getBaseNumber() == 3 && endingBase.getBaseNumber() == 4)
         {
-            scorecardBox.drawBaseLine(3,0);
+            scorecardBox.drawBaseLine(3,0, out);
         }
 
     }

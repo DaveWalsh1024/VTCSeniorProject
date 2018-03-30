@@ -39,6 +39,10 @@ public class ScorecardBox extends View
         linePaint.setColor(0xffff0000);
         linePaint.setStrokeWidth(10);
 
+        linePaintOut = new Paint();
+        linePaintOut.setColor(0xff000000);
+        linePaintOut.setStrokeWidth(10);
+
         bgLinePaint = new Paint();
         bgLinePaint.setColor(0xff808080);
         bgLinePaint.setStrokeWidth(6);
@@ -140,75 +144,150 @@ public class ScorecardBox extends View
         }
     }
 
-    public void drawBaseLine (int startingBase, int endingBase)
+    public void drawBaseLine (int startingBase, int endingBase, boolean out)
     {
-        if (startingBase == 0)
+        if (out == false)
         {
-            if (endingBase == 1)
+            if (startingBase == 0)
             {
-                homeFirst = true;
+                if (endingBase == 1)
+                {
+                    homeFirst = true;
+                }
+
+                else if (endingBase == 2)
+                {
+                    homeFirst = true;
+                    firstSecond = true;
+                }
+
+                else if (endingBase == 3)
+                {
+                    homeFirst = true;
+                    firstSecond = true;
+                    secondThird = true;
+                }
+
+                else if (endingBase == 0)
+                {
+                    homeFirst = true;
+                    firstSecond = true;
+                    secondThird = true;
+                    thirdHome = true;
+                }
             }
 
-            else if (endingBase == 2)
+            else if (startingBase == 1)
             {
-                homeFirst = true;
-                firstSecond = true;
+                if (endingBase == 2)
+                {
+                    firstSecond = true;
+                }
+
+                else if (endingBase == 3)
+                {
+                    firstSecond = true;
+                    secondThird = true;
+                }
+
+                else if (endingBase == 0)
+                {
+                    firstSecond = true;
+                    secondThird = true;
+                    thirdHome = true;
+                }
             }
 
-            else if (endingBase == 3)
+            else if (startingBase == 2)
             {
-                homeFirst = true;
-                firstSecond = true;
-                secondThird = true;
+                if (endingBase == 3)
+                {
+                    secondThird = true;
+                }
+
+                else if (endingBase == 0)
+                {
+                    secondThird = true;
+                    thirdHome = true;
+                }
             }
 
-            else if (endingBase == 0)
+            else if (startingBase == 3)
             {
-                homeFirst = true;
-                firstSecond = true;
-                secondThird = true;
                 thirdHome = true;
             }
         }
 
-        else if (startingBase == 1)
+        else if (out)
         {
-            if (endingBase == 2)
+            if (startingBase == 0)
             {
-                firstSecond = true;
+                if (endingBase == 1)
+                {
+                    homeFirstOut = true;
+                }
+
+                else if (endingBase == 2)
+                {
+                    homeFirstOut = true;
+                    firstSecondOut  = true;
+                }
+
+                else if (endingBase == 3)
+                {
+                    homeFirstOut  = true;
+                    firstSecondOut  = true;
+                    secondThirdOut  = true;
+                }
+
+                else if (endingBase == 0)
+                {
+                    homeFirstOut  = true;
+                    firstSecondOut  = true;
+                    secondThirdOut  = true;
+                    thirdHomeOut  = true;
+                }
             }
 
-            else if (endingBase == 3)
+            else if (startingBase == 1)
             {
-                firstSecond = true;
-                secondThird = true;
+                if (endingBase == 2)
+                {
+                    firstSecondOut  = true;
+                }
+
+                else if (endingBase == 3)
+                {
+                    firstSecondOut  = true;
+                    secondThirdOut  = true;
+                }
+
+                else if (endingBase == 0)
+                {
+                    firstSecondOut  = true;
+                    secondThirdOut  = true;
+                    thirdHomeOut  = true;
+                }
             }
 
-            else if (endingBase == 0)
+            else if (startingBase == 2)
             {
-                firstSecond = true;
-                secondThird = true;
-                thirdHome = true;
-            }
-        }
+                if (endingBase == 3)
+                {
+                    secondThirdOut  = true;
+                }
 
-        else if (startingBase == 2)
-        {
-            if (endingBase == 3)
+                else if (endingBase == 0)
+                {
+                    secondThirdOut  = true;
+                    thirdHomeOut  = true;
+                }
+            }
+
+            else if (startingBase == 3)
             {
-                secondThird = true;
+                thirdHomeOut  = true;
             }
-
-            else if (endingBase == 0)
-            {
-                secondThird = true;
-                thirdHome = true;
-            }
-        }
-
-        else if (startingBase == 3)
-        {
-            thirdHome = true;
         }
     }
 
@@ -300,6 +379,26 @@ public class ScorecardBox extends View
             canvas.drawLine(pad, h / 2, w / 2, h - pad, linePaint);
         }
 
+        if (homeFirstOut)
+        {
+            canvas.drawLine(w - pad, h / 2, w / 2, h - pad, linePaintOut);
+        }
+
+        if (firstSecondOut)
+        {
+            canvas.drawLine(w / 2, pad, w - pad, h / 2, linePaintOut);
+        }
+
+        if (secondThirdOut)
+        {
+            canvas.drawLine(w / 2, pad, pad, h / 2, linePaintOut);
+        }
+
+        if (thirdHomeOut)
+        {
+            canvas.drawLine(pad, h / 2, w / 2, h - pad, linePaintOut);
+        }
+
         if (ball1)
         {
             ballBoxPaint1.setStyle(Paint.Style.FILL);
@@ -340,6 +439,12 @@ public class ScorecardBox extends View
     private boolean secondThird;
     private boolean thirdHome;
     private Paint linePaint;
+
+    private boolean homeFirstOut;
+    private boolean firstSecondOut;
+    private boolean secondThirdOut;
+    private boolean thirdHomeOut;
+    private Paint linePaintOut;
 
     private Paint bgLinePaint;
 

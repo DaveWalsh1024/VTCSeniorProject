@@ -34,6 +34,10 @@ public class Play
 
     public boolean getOut () { return out; }
 
+    public int getPlayId () { return playId; }
+
+    public void setPlayId (int newId) { playId = newId; }
+
     public boolean areThereRunnerEvents ()
     {
         if (runnerEvents.size() == 0)

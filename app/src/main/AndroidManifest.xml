@@ -20,6 +20,10 @@
             android:name=".AwayTeamScorecardActivity"
             android:label="ScorecardPro">
         </activity>
+        <activity
+            android:name=".RosterActivity"
+            android:label="ScorecardPro">
+        </activity>
         <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

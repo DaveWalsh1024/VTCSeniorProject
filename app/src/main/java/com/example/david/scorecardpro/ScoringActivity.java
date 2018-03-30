@@ -129,11 +129,11 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         ballLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent ev) {
-                Log.i("Strike Coordinate", "Left = " + strikeLayout.getLeft());
-                Log.i("Strike Coordinate", "Right = " + strikeLayout.getRight());
-                Log.i("Strike Coordinate", "Top = " + strikeLayout.getTop());
-                Log.i("Strike Coordinate", "Left = " + strikeLayout.getBottom());
-                Log.i("Pitch", "Location " + ev.getX() + ", " + ev.getY());
+ //               Log.i("Strike Coordinate", "Left = " + strikeLayout.getLeft());
+ //               Log.i("Strike Coordinate", "Right = " + strikeLayout.getRight());
+ //               Log.i("Strike Coordinate", "Top = " + strikeLayout.getTop());
+  //              Log.i("Strike Coordinate", "Left = " + strikeLayout.getBottom());
+  //              Log.i("Pitch", "Location " + ev.getX() + ", " + ev.getY());
 
                 switch (ev.getActionMasked()) {
                     case MotionEvent.ACTION_UP: {
@@ -202,11 +202,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         Intent go;
         switch(item.getItemId())
         {
-            case R.id.login:
-                go = new Intent(this,LoginActivity.class);
-                startActivity(go);
-                return true;
-
             case R.id.activity_scoring:
                 go = new Intent(this,ScoringActivity.class);
                 startActivity(go);
@@ -675,7 +670,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         game.setCurrentHalfInning( new HalfInning(getAwayTeam(), getHomeTeam(), 1, 1));
 
-        setCurrentBattingOrder();
+        game.setCurrentBattingOrder(game.getAwayTeamBattingOrder());
 
         setFieldTextViews();
 
@@ -878,35 +873,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         }
     }
 
-
-    public void setCurrentBattingOrder ()
-    {
-        if (game.getTopOrBottom() == 1)
-        {
-            game.setHomeTeamBattingOrderPosition(getCurrentBattingOrderPosition());
-            game.setCurrentBattingOrder(game.getAwayTeamBattingOrder());
-            game.setCurrentBattingOrderPosition(getAwayTeamBattingOrderPosition());
-        }
-        else
-        {
-            game.setAwayTeamBattingOrderPosition(getCurrentBattingOrderPosition());
-            game.setCurrentBattingOrder(game.getHomeTeamBattingOrder());
-            game.setCurrentBattingOrderPosition(game.getHomeTeamBattingOrderPosition());
-        }
-    }
-
-    private int getAwayTeamBattingOrderPosition() {
-        return game.getAwayTeamBattingOrderPosition();
-    }
-
-    private ArrayList<Player> getHomeTeamBattingOrder() {
-        return game.getHomeTeamBattingOrder();
-    }
-
-    private ArrayList<Player> getAwayTeamBattingOrder() {
-        return game.getAwayTeamBattingOrder();
-    }
-
     public void incrementBattingOrderPosition (int oldPosition)
     {
         if (oldPosition < 8)
@@ -922,19 +888,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             game.setCurrentBattingOrderPosition(0);
             System.out.println("New position is " + getCurrentBattingOrderPosition());
         }
-    }
-
-
-
-    public void endGame ()
-    {
-        Context context = getApplicationContext();
-        System.out.println("The winner of the game is " + game.getGameWinner().toString());
-        CharSequence text = "The winner of the game is " + game.getGameWinner().toString();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast gameWinnerToast = Toast.makeText(context, text, duration);
-        gameWinnerToast.show();
     }
 
     @Override

@@ -26,11 +26,6 @@ public class About extends AppCompatActivity {
         Intent go;
         switch(item.getItemId())
         {
-            case R.id.login:
-                go = new Intent(this,LoginActivity.class);
-                startActivity(go);
-                return true;
-
             case R.id.activity_scoring:
                 go = new Intent(this,ScoringActivity.class);
                 startActivity(go);

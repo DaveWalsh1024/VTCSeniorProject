@@ -13,10 +13,9 @@ public class StartupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
     }
-
     public void startGame (View b)
     {
-        Intent i = new Intent(this, ScoringActivity.class);
+        Intent i = new Intent(this, RosterActivity.class);
 
         String homeTeamName = "Home Team123";
         String awayTeamName = "Away Team123";
@@ -26,4 +25,5 @@ public class StartupActivity extends AppCompatActivity {
 
         startActivity(i);
     }
+
 }
