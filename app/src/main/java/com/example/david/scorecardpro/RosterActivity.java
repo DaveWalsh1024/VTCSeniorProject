@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by david on 3/21/2018.
@@ -158,20 +159,18 @@ public class RosterActivity extends AppCompatActivity {
                 break;
         }
 
-        int counter = 0;
         System.out.println("Size of positionsInGameToSend = " + positionsInGameToSend.size());
-        for (PositionsInGame p : positionsInGameToSend )
+       // for (PositionsInGame p : positionsInGameToSend)
+        for (int i = 0; i < positionsInGameToSend.size(); i ++)
         {
-            System.out.println("p.getPlayer() = " + p.getPlayer());
+            System.out.println("p.getPlayer() = " + positionsInGameToSend.get(i).getPlayer());
             System.out.println("currentPlayer = " + currentPlayer);
 
-            if (p.getPlayer() != currentPlayer)
+            if (positionsInGameToSend.get(i).getPlayer() == currentPlayer)
             {
                 System.out.println("Size of positionsInGameToSend = " + positionsInGameToSend.size());
-                local.setText(positionsInGameToSend.get(counter).getPosition().toString());
-                positionsInGameToSend.remove(p);
+                local.setText(positionsInGameToSend.get(i).getPosition().toString());
             }
-            counter ++;
         }
     }
 
