@@ -28,7 +28,6 @@ public class TeamInGame
         repOk();
     }
 
-
     public ArrayList<Player> getBattingOrder ()
     {
         return battingOrder;

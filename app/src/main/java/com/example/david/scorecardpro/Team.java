@@ -23,17 +23,6 @@ public class Team
         return name;
     }
 
-    public int getSizeofPlayers ()
-    {
-        return players.size();
-    }
-
-    public Player getPlayerFromNumber (int i)
-    {
-        return players.get(i);
-    }
-
-
     public Season getCurrentSeason () {return currentSeason; }
 
     public void addPlayerToTeam (Player player)
