@@ -1,12 +1,13 @@
 package com.example.david.scorecardpro;
 
+import java.io.Serializable;
 import java.text.FieldPosition;
 
 /**
  * Created by david on 10/3/2017.
  */
 
-public class Player
+public class Player implements Serializable
 {
     public String getFullName ()
     {
@@ -46,7 +47,7 @@ public class Player
             rv = null;
         }
 
-        base = null;
+        this.base = null;
     }
 
     public void nowOnBase(Base newBase) {
@@ -57,23 +58,19 @@ public class Player
         base = newBase;
     }
 
-    public String toString()
-    {
-        String fullName = new StringBuilder().append(fName).append(" ").append(lName).toString();
-        return fullName;
-    }
-
     public Base getCurrentBase() {
         return base;
     }
 
-    public void setRv(RunnerView newRv) {
-        this.rv = newRv;
+    public RunnerView getRv() {
+        return rv;
     }
 
     public int getNumber() {
         return number;
     }
+
+    public String toString() { return getFullName(); };
 
     private String fName;
     private String lName;

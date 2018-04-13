@@ -14,5 +14,5 @@
 
     <solid
         android:width="40dp"
-        android:color="@color/gestureColor" />
+        android:color="@color/colorPrimary" />
 </shape>

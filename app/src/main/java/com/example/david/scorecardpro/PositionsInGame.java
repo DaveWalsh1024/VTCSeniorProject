@@ -2,11 +2,13 @@ package com.example.david.scorecardpro;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by david on 12/31/2017.
  */
 
-public class PositionsInGame
+public class PositionsInGame implements Serializable
 {
     public Player getPlayer () {return player; }
     public Positions getPosition () {return position; }

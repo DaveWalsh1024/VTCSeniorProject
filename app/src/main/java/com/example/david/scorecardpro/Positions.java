@@ -34,7 +34,7 @@ public enum Positions
     public void flyBallTo(Game game, boolean inPlay)
     {
 
-        Play play = game.createNewPlay("INPLAY", !inPlay);
+        Play play = game.createNewPlay("INPLAY", false);
 
         if (inPlay) {
             game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
@@ -51,7 +51,7 @@ public enum Positions
 
     public void groundBallTo(Game game, boolean inPlay) {
 
-        Play play = game.createNewPlay("INPLAY", !inPlay);
+        Play play = game.createNewPlay("INPLAY", false);
 
         game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
 

@@ -45,10 +45,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         setContentView(R.layout.scoring);
 
         Intent arrived = getIntent();
-        if (arrived.hasExtra("Home Team"))
-        {
-            startGame(arrived);
-        }
+
+        homeTeamName = arrived.getStringExtra("homeTeamName");
+        awayTeamName = arrived.getStringExtra("awayTeamName");
+        System.out.println("homeTeamName = " + homeTeamName);
+        System.out.println("awayTeamName = " + awayTeamName);
+        homeTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("homeTeamPositions");
+        awayTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("awayTeamPositions");
+        homeTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("homeTeamLineup");
+        awayTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("awayTeamLineup");
+
+        startGame(arrived);
 
         initializeViews();
 
@@ -455,10 +462,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             initGestureCoordinates();
         }
 
-        Player baseRunner = getCurrentBatter().getPlayer();
-        rv.setPlayer(baseRunner);
-        baseRunner.setRv(rv);
-
         Log.i("addToBase", "adding " + rv.getPlayer().toString() + " to " + base.getBaseNumber());
 
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
@@ -581,9 +584,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     TextView homeTeamTitleTextView;
     TextView awayTeamTitleTextView;
-    TextView currentBattingTeamTextView;
-    TextView currentInningTextView;
-    TextView currentBatterTextView;
     RadioButton ball1Button;
     RadioButton ball2Button;
     RadioButton ball3Button;
@@ -660,13 +660,13 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     public void startGame (Intent i)
     {
         initializeViews();
-        Log.i("scorecard", "Start game was called");
-        homeTeamName = i.getStringExtra("Home Team");
-        awayTeamName = i.getStringExtra("Away Team");
 
         GameType gameType = new GameType("Little League", 6);
 
-        game = new Game(new Team(homeTeamName), new Team(awayTeamName), gameType);
+        homeTeamTitleTextView.setText(homeTeamName);
+        awayTeamTitleTextView.setText(awayTeamName);
+
+        game = new Game(new Team(homeTeamName), homeTeamLineup, homeTeamPositions, new Team(awayTeamName), awayTeamLineup, awayTeamPositions, gameType);
 
         game.addListener(this);
 
@@ -1035,6 +1035,14 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         out2Button.setChecked(false);
     }
 
+    public void runnerTagged(RunnerView runnerView) {
+        Player p = runnerView.getPlayer();
+        Log.i("fieldingGesture", "tagged " + p + " @ " + runnerView.getBase().getBaseNumber());
+        if (p != null) {
+            game.runnerOut(runnerView.getBase(), p);
+        }
+    }
+
     private static class FieldRegion {
         private double topCoordinate;
         private double rightCoordinate;
@@ -1112,5 +1120,10 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         }
 
     }
+
+    private ArrayList<Player> homeTeamLineup = new ArrayList<>();
+    private ArrayList<Player> awayTeamLineup = new ArrayList<>();
+    private ArrayList<PositionsInGame> homeTeamPositions = new ArrayList<>();
+    private ArrayList<PositionsInGame> awayTeamPositions = new ArrayList<>();
 
 }

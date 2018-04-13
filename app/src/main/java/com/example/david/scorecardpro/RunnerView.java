@@ -46,6 +46,7 @@ public class RunnerView extends AppCompatTextView implements View.OnTouchListene
 
         switch (e.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                totalDrag = 0;
                 lastX = (int) e.getX();
                 lastY = (int) e.getY();
                 viewLastLeft = view.getLeft();
@@ -56,10 +57,14 @@ public class RunnerView extends AppCompatTextView implements View.OnTouchListene
             case MotionEvent.ACTION_MOVE:
                 newX = (int) e.getX();
                 newY = (int) e.getY();
+                totalDrag += Math.abs(newX - lastX);
                 scoringActivity.runnerMove(this,newX - lastX, newY - lastY);
                 break;
             case MotionEvent.ACTION_UP:
                 scoringActivity.snapToBase(this);
+                if (totalDrag < 10) {
+                    scoringActivity.runnerTagged(this);
+                }
                 break;
         }
         return true;
@@ -120,6 +125,7 @@ public class RunnerView extends AppCompatTextView implements View.OnTouchListene
 
     public int lastX;
     public int lastY;
+    public int totalDrag;
     public int viewLastLeft;
     public int viewLastTop;
     public int viewLastRight;

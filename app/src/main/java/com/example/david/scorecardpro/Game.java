@@ -16,35 +16,11 @@ import java.util.Arrays;
 
 public class Game extends AppCompatActivity
 {
+    ArrayList <Player> homeTeamBattingOrder = new ArrayList<>();
+    ArrayList <Player> awayTeamBattingOrder = new ArrayList<>();
 
-    static Player player1 = new Player("David", "Walsh", 1, 22);
-    static Player player2 = new Player("Jack", "Lavallee", 2, 24);
-    static Player player3 = new Player("Joe", "Russell", 3, 35);
-    static Player player4 = new Player("Craig", "Damon", 4, 55);
-    static Player player5 = new Player("Leslie", "Damon", 5, 50);
-    static Player player6 = new Player("Peter", "Chapin", 6, 55);
-    static Player player7 = new Player("Mike", "Hall", 7, 22);
-    static Player player8 = new Player("Matt", "Tanneberger", 8, 21);
-    static Player player9 = new Player("Jake", "Morrill", 9, 22);
-
-    static PositionsInGame pitcherPosition = new PositionsInGame(player1, Positions.PITCHER);
-    static PositionsInGame catcherPosition = new PositionsInGame(player2, Positions.CATCHER);
-    static PositionsInGame firstBasePosition = new PositionsInGame(player3, Positions.FIRSTBASE);
-    static PositionsInGame secondBasePosition = new PositionsInGame(player4, Positions.SECONDBASE);
-    static PositionsInGame thirdBasePosition = new PositionsInGame(player5, Positions.THIRDBASE);
-    static PositionsInGame shortStopPosition = new PositionsInGame(player6, Positions.SHORTSTOP);
-    static PositionsInGame centerFieldPosition = new PositionsInGame(player7, Positions.LEFTFIELD);
-    static PositionsInGame rightFieldPosition = new PositionsInGame(player8, Positions.CENTERFIELD);
-    static PositionsInGame leftFieldPosition = new PositionsInGame(player9, Positions.RIGHTFIELD);
-
-    ArrayList <Player> homeTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
-    ArrayList <Player> awayTeamBattingOrder = new ArrayList<>(Arrays.asList(player1, player2, player3, player4, player5, player6, player7, player8, player9));
-
-    Field field = new Field(firstBasePosition, secondBasePosition, thirdBasePosition, shortStopPosition, centerFieldPosition, leftFieldPosition, rightFieldPosition, catcherPosition, pitcherPosition);
-
-    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>(Arrays.asList(pitcherPosition, firstBasePosition, catcherPosition, secondBasePosition, shortStopPosition, thirdBasePosition, centerFieldPosition, leftFieldPosition, rightFieldPosition));
-    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>(Arrays.asList(pitcherPosition, firstBasePosition, catcherPosition, secondBasePosition, shortStopPosition, thirdBasePosition, centerFieldPosition, leftFieldPosition, rightFieldPosition));
-
+    ArrayList <PositionsInGame> homeTeamPositions = new ArrayList<>();
+    ArrayList <PositionsInGame> awayTeamPositions = new ArrayList<>();
 
     DatabaseHandler db = new DatabaseHandler(this);
 
@@ -299,11 +275,24 @@ public class Game extends AppCompatActivity
 
     }
 
+    public Player findCurrentPitcher ()
+    {
+        for (int i = 0; i < currentFieldingPositions.size(); i++)
+        {
+            if (currentFieldingPositions.get(i).getPosition() == Positions.PITCHER)
+            {
+                return currentFieldingPositions.get(i).getPlayer();
+            }
+        }
+        return null;
+    }
+
+
     public Play createNewPlay (String pitch, boolean out)
     {
         if (getTopOrBottom() == 1)
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), findCurrentPitcher(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 1, out);
             currentPlay = newPlay;
             addPlay(newPlay);
             db.toDB(newPlay);
@@ -312,7 +301,7 @@ public class Game extends AppCompatActivity
 
         else
         {
-            Play newPlay = new Play(getCurrentBatter().getPlayer(), pitcherPosition.getPlayer(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2,  out);
+            Play newPlay = new Play(getCurrentBatter().getPlayer(), findCurrentPitcher(), Pitch.valueOf(pitch), getCurrentBatter(), getCurrentInningCount(), getCurrentBattingOrderPosition(), 2,  out);
             currentPlay = newPlay;
             addPlay(currentPlay);
             db.toDB(newPlay);
@@ -513,12 +502,11 @@ public class Game extends AppCompatActivity
     {
         if (getTopOrBottom() == 1)
         {
-            awayTeamPositions = currentFieldingPositions;
+            System.out.println("awayTeamPositions =" + awayTeamPositions);
             currentFieldingPositions = homeTeamPositions;
         }
         else
         {
-            homeTeamPositions = currentFieldingPositions;
             currentFieldingPositions = awayTeamPositions;
         }
     }
@@ -596,8 +584,13 @@ public class Game extends AppCompatActivity
         assert innings != null;
     }
 
-    public Game(Team homeTeamInGame, Team awayTeamInGame, GameType gameType)
+    public Game(Team homeTeamInGame, ArrayList<Player> homeTeamBattingOrder, ArrayList<PositionsInGame> homeTeamPositions,
+                Team awayTeamInGame, ArrayList<Player> awayTeamBattingOrder, ArrayList<PositionsInGame>awayTeamPositions, GameType gameType)
     {
+        this.homeTeamBattingOrder = homeTeamBattingOrder;
+        this.awayTeamBattingOrder = awayTeamBattingOrder;
+        this.homeTeamPositions = homeTeamPositions;
+        this.awayTeamPositions = awayTeamPositions;
         this.homeTeamInGame = new TeamInGame(homeTeamInGame);
         this.awayTeamInGame = new TeamInGame(awayTeamInGame);
         this.gameType = gameType;
@@ -610,6 +603,7 @@ public class Game extends AppCompatActivity
         this.plays= new ArrayList<>();
         this.gameListeners = new ArrayList<>();
         this.currentBattingOrder = new ArrayList<>();
+        setCurrentFieldingPositions();
         repOk();
     }
 

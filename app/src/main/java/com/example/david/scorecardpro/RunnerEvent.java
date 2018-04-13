@@ -17,6 +17,14 @@ public class RunnerEvent
 
     public boolean wasOut () { return out; }
 
+    public void setOut(boolean out) {
+        this.out = out;
+    }
+
+    public void setScored(boolean scored) {
+        this.scored = scored;
+    }
+
     public Player getRunner () { return runner; }
 
     public Base getStartingBase () { return startingBase; }

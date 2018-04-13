@@ -52,6 +52,10 @@ public class Base
         repOk();
     }
 
+    public String toString() {
+        return String.valueOf(baseNumber);
+    }
+
     public void repOk()
     {
         assert baseNumber > 0 && baseNumber < 5;
