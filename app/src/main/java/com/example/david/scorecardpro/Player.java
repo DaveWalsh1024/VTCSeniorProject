@@ -57,6 +57,12 @@ public class Player
         base = newBase;
     }
 
+    public String toString()
+    {
+        String fullName = new StringBuilder().append(fName).append(" ").append(lName).toString();
+        return fullName;
+    }
+
     public Base getCurrentBase() {
         return base;
     }

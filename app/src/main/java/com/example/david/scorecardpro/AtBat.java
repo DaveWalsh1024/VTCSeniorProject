@@ -24,12 +24,11 @@ public class AtBat
     }
 
 
-
-
     public AtBat (HalfInning halfInning, Player batter)
     {
         this.batter = batter;
         this.halfInning = halfInning;
+        this.id = this.id + 1;
         repOk();
     }
 
@@ -43,4 +42,5 @@ public class AtBat
     Player batter;
     private int strikeCount;
     private int ballCount;
+    public static int id;
 }
