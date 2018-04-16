@@ -2,6 +2,7 @@ package com.example.david.scorecardpro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -46,8 +47,16 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         Intent arrived = getIntent();
 
-        homeTeamName = arrived.getStringExtra("homeTeamName");
-        awayTeamName = arrived.getStringExtra("awayTeamName");
+        if (arrived.hasExtra("Home Team"))
+        {
+            awayTeamName = arrived.getStringExtra("Away Team").toString();
+            homeTeamName = arrived.getStringExtra("Home Team").toString();
+            inningNum = arrived.getIntExtra("Number of Innings", 9);
+            gameTypeName = arrived.getStringExtra("Game Type").toString();
+
+            startGame(arrived);
+        }
+
         System.out.println("homeTeamName = " + homeTeamName);
         System.out.println("awayTeamName = " + awayTeamName);
         homeTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("homeTeamPositions");
@@ -76,6 +85,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         gestureOverlayView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             @Override
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
+
                 if (currentFielder == null) {
                     hitGesture(gestureOverlayView, gesture);
                     inPlay = true;
@@ -97,6 +107,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 }
 
                 if (motionEvent.getY() > catcherY1 && motionEvent.getY() < catcherY2 && motionEvent.getX() > middleBaseX1 && motionEvent.getX() < middleBaseX2) {
+
+                    pitcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    catcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    firstBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    secondBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    thirdBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    shortStopFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    leftFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    centerFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                    rightFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+
                     currentFielder = null;
                 }
 
@@ -154,6 +175,18 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                         }
                     }
                 }
+
+                pitcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                catcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                firstBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                secondBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                thirdBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                shortStopFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                leftFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                centerFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                rightFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+
+                Log.i("inPlay", "true");
                 return true;
             }
         });
@@ -170,9 +203,12 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 new FieldRegion(Positions.SECONDBASE, outfieldY, infieldX2, infieldY2, centerWidth),
                 new FieldRegion(Positions.SHORTSTOP, outfieldY, centerWidth, infieldY2, infieldX1),
                 new FieldRegion(Positions.THIRDBASE, outfieldY, infieldX1, infieldY1, 0.0),
-                new FieldRegion(Positions.CENTERFIELD, 0.0, outfieldX2, outfieldY, outfieldX1),
-                new FieldRegion(Positions.RIGHTFIELD, 0.0, screenWidth, outfieldY, outfieldX2),
-                new FieldRegion(Positions.LEFTFIELD, 0.0, outfieldX1, outfieldY, 0.0)
+                new FieldRegion(Positions.CENTERFIELD, homeRunY, outfieldX2, outfieldY, outfieldX1),
+                new FieldRegion(Positions.RIGHTFIELD, homeRunY, screenWidth, outfieldY, outfieldX2),
+                new FieldRegion(Positions.LEFTFIELD, homeRunY, outfieldX1, outfieldY, 0.0),
+                new FieldRegion(null, 0.0, screenWidth, homeRunY, 0.0),
+                new FieldRegion(null, infieldY1, outfieldX1, screenHeight, 0.0),
+                new FieldRegion(null, infieldY1, screenWidth, screenHeight, outfieldX2)
         };
 
         firstBaseRegion = new BaseRegion(game.basePath.getFirstBase(), (int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1);
@@ -235,61 +271,99 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             initGestureCoordinates();
         }
 
-            ArrayList<GestureStroke> strokes = gesture.getStrokes();
-            GestureStroke stroke = strokes.get(strokes.size() - 1);
-            boolean isFlyBall = true;
+        ArrayList<GestureStroke> strokes = gesture.getStrokes();
+        GestureStroke stroke = strokes.get(strokes.size() - 1);
+        boolean isFlyBall = true;
 
-            if (stroke.computeOrientedBoundingBox().height > 50) {
-                _gestureName.setText("Groundball");
-                isFlyBall = false;
-            }
-            else {
-                _gestureName.setText("Fly ball");
-            }
+        if (stroke.computeOrientedBoundingBox().height > 60) {
+            _gestureName.setText("Groundball");
+            isFlyBall = false;
+        }
+        else {
+            _gestureName.setText("Fly ball");
+        }
 
-            double topStroke = stroke.boundingBox.top;
-            double leftStroke = stroke.boundingBox.left;
-            double rightStroke = stroke.boundingBox.right;
-            double strokeX = leftStroke;
+        double topStroke = stroke.boundingBox.top;
+        double leftStroke = stroke.boundingBox.left;
+        double rightStroke = stroke.boundingBox.right;
+        double strokeX = leftStroke;
 
-            if ((centerWidth - leftStroke) < (rightStroke - centerWidth)) {
-                strokeX = rightStroke;
-            }
+        if ((centerWidth - leftStroke) < (rightStroke - centerWidth)) {
+            strokeX = rightStroke;
+        }
 
-            FieldView[] fieldViews = {pitcherFieldView, catcherFieldView, firstBaseFieldView, secondBaseFieldView, thirdBaseFieldView, shortStopFieldView, leftFieldView, centerFieldView, rightFieldView};
+        FieldView[] fieldViews = {pitcherFieldView, catcherFieldView, firstBaseFieldView, secondBaseFieldView, thirdBaseFieldView, shortStopFieldView, leftFieldView, centerFieldView, rightFieldView};
 
-            boolean handled = false;
+        boolean handled = false;
 
-            for (FieldView fv : fieldViews) {
-                if (fv.containsPoint(strokeX, topStroke)) {
-                    if (isFlyBall) {
-                        fv.flyBallTo(game);
-                    }
-                    else {
-                        fv.groundBallTo(game);
-                    }
-                    _gestureName.append(" to " + fv.getPlayer().getFullName());
-                    handled = true;
+        for (FieldView fv : fieldViews) {
+            if (fv.containsPoint(strokeX, topStroke)) {
+                if (isFlyBall) {
+                    fv.flyBallTo(game);
                     currentFielder = fv;
-                    break;
+                    currentFielder.setBackgroundColor(Color.BLUE);
                 }
+                else {
+                    fv.groundBallTo(game);
+                    currentFielder = fv;
+                    currentFielder.setBackgroundColor(Color.CYAN);
+                }
+                _gestureName.append(" to " + fv.getPlayer().getFullName());
+                handled = true;
+                if (fv != currentFielder) {
+                    currentFielder.setBackgroundColor(Color.argb(255, 144, 144, 144));
+                }
+                break;
             }
+        }
 
-            if (!handled) {
-                for (FieldRegion reg : fieldRegions) {
-                    if (reg.containsPoint(strokeX, topStroke)) {
+        if (!handled) {
+            for (FieldRegion reg : fieldRegions) {
+                if (reg.containsPoint(strokeX, topStroke)) {
+
+                    Log.i("reg", "" + reg);
+                    if (reg.getPosition() == null && reg.topCoordinate == 0.0) {
+                        if (isFlyBall) {
+                            Play play = game.createNewPlay("INPLAY", false);
+                            play.setPlayText("HR");
+                            game.homeRun();
+                            game.setNewBatter();
+                            _gestureName.setText("HomeRun!");
+                            break;
+                        } else {
+                            Play play = game.createNewPlay("INPLAY", false);
+                            play.setPlayText("GR2B");
+                            game.groundRuleDouble();
+                            game.setNewBatter();
+                            _gestureName.setText("GroundRule Double!");
+                            break;
+                        }
+                    }
+
+                    else if (reg.getPosition() == null) {
+                        game.foul();
+                        _gestureName.setText("Foul Ball!");
+                        break;
+                    }
+
+                    else {
                         if (isFlyBall) {
                             reg.getPosition().flyBallTo(game, true);
-                        }
-                        else {
+                        } else {
                             reg.getPosition().groundBallTo(game, true);
                         }
                         _gestureName.append(" to " + reg.getPosition().toString());
-                        break;
                     }
+                    break;
                 }
             }
         }
+        Log.i("BasePath", "First Base -> " + game.basePath.getFirstBase().getRunnerOnBase());
+        Log.i("BasePath", "Second Base -> " + game.basePath.getSecondBase().getRunnerOnBase());
+        Log.i("BasePath", "Third Base -> " + game.basePath.getThirdBase().getRunnerOnBase());
+        Log.i("BasePath", "Home Plate -> " + game.basePath.getHomeBase().getRunnerOnBase());
+
+    }
 
 
     private void fieldingGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
@@ -326,6 +400,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         boolean assisted = false;
 
+
         for (FieldView fv : fieldViews) {
             if (fv == currentFielder) {
                 continue;
@@ -333,23 +408,26 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             if (fv.containsPoint((double) endThrowX, (double) endThrowY)) {
                 Log.i("fieldingGesture", fv.getPlayer().getFullName() + " caught the ball");
                 currentFielder = fv;
+                currentFielder.setBackgroundColor(Color.argb(255, 255, 0, 0));
                 String playText = game.currentPlay.getPlayText();
                 game.currentPlay.setPlayText(playText + fv.getPositions().getPositionNumber());
                 break;
             }
+
             assisted = true;
+
+            if (currentFielder != fv) {
+                currentFielder.setBackgroundColor(Color.argb(255, 166, 0, 166));
+            }
+
         }
 
         if (assisted) {
             for (BaseRegion br : baseRegions) {
                 if (br.containsPoint((double) endThrowX, (double) endThrowY)) {
                     currentBase = br;
-                    Player p = br.getBase().getRunnerOnBase();
-                    /*Log.i("fieldingGesture", "tagged " + p.getFullName() + " @ " + br.getBase().getBaseNumber());
-                    Log.i("BaseRegion", "leftCoordinate = " + br.leftCoordinate);
-                    Log.i("BaseRegion", "topCoordinate = " + br.topCoordinate);
-                    Log.i("BaseRegion", "rightCoordinate = " + br.rightCoordinate);
-                    Log.i("BaseRegion", "bottomCoordinate = " + br.bottomCoordinate);*/
+                    Player p = currentBase.getBase().getRunnerOnBase();
+                    Log.i("fieldingGesture", "tagged " + p + " @ " + currentBase.getBase().getBaseNumber());
                     if (p != null) {
                         game.runnerOut(br.getBase(), p);
                     }
@@ -358,6 +436,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             }
         }
     }
+
 
 
     public boolean runnerMove(RunnerView rv, int dx, int dy) {
@@ -389,10 +468,15 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height, Gravity.TOP | Gravity.LEFT);
 
+        Base currentBase = rv.getBase();
+        Base newBase;
+
         if (top > catcherY1 && top < catcherY2 && right > middleBaseX1 && left < middleBaseX2) {
             Log.i("snapToBase", rv.getPlayer().getFullName() + " reached HomePlate");
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY));
             fieldLayout.updateViewLayout(rv, layout);
+            newBase = game.basePath.getHomeBase();
+            game.advanceBase(rv.getPlayer(), currentBase, newBase);
             fieldLayout.removeView(rv);
             getCurrentHalfInning().incrementRunsScored();
         }
@@ -401,18 +485,16 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             Log.i("snapToBase", rv.getPlayer().getFullName() + " reached SecondBase");
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
             fieldLayout.updateViewLayout(rv, layout);
+            newBase = game.basePath.getSecondBase();
+            game.advanceBase(rv.getPlayer(), currentBase, newBase);
         }
 
         else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .20 && left < gestureOverlayView.getWidth() * .30) {
             Log.i("snapToBase", rv.getPlayer().getFullName() + " reached ThirdBase");
             layout.setMargins((int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2));
             fieldLayout.updateViewLayout(rv, layout);
-        }
-
-        else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .70 && left < gestureOverlayView.getWidth() * .80) {
-            Log.i("snapToBase", rv.getPlayer().getFullName() + " reached FirstBase");
-            layout.setMargins((int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1);
-            fieldLayout.updateViewLayout(rv, layout);
+            newBase = game.basePath.getThirdBase();
+            game.advanceBase(rv.getPlayer(), currentBase, newBase);
         }
 
         else {
@@ -428,15 +510,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             Log.i("snapToBase", "Last Right: " + lastRight);
             Log.i("snapToBase", "Last Bottom: " + lastBottom);
 
-            if (lastTop > catcherY1 && lastTop < catcherY2 && lastRight > middleBaseX1 && lastLeft < middleBaseX2) {
-                Log.i("snapToBase", "HomePlate");
-                layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY));
-                fieldLayout.updateViewLayout(rv, layout);
-                getCurrentHalfInning().incrementRunsScored();
-                fieldLayout.removeView(rv);
-            }
 
-            else if (lastTop > outfieldY && lastTop < secondBaseY && lastRight > middleBaseX1 && lastLeft < middleBaseX2) {
+            if (lastTop > outfieldY && lastTop < secondBaseY && lastRight > middleBaseX1 && lastLeft < middleBaseX2) {
                 Log.i("snapToBase", "SecondBase");
                 layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
                 fieldLayout.updateViewLayout(rv, layout);
@@ -493,9 +568,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             initGestureCoordinates();
         }
 
-        Log.i("moveToBase", "moving " + rv + " from " + oldBase + " to " + newBase);
-
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(RunnerView.width, RunnerView.height,Gravity.TOP | Gravity.LEFT);
+
+        Log.i("moveToBase", "moving " + rv + " from " + oldBase + " to " + newBase);
 
         if (newBase.getBaseNumber() == 1) {
             layout.setMargins((int) firstBaseRegion.leftCoordinate, (int) firstBaseRegion.topCoordinate, (int) firstBaseRegion.rightCoordinate, (int) firstBaseRegion.bottomCoordinate);
@@ -555,6 +630,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         firstBaseX = gestureOverlayView.getWidth() * .83;
         outfieldX1 = gestureOverlayView.getWidth() * (1 / 3.0);
         outfieldX2 = gestureOverlayView.getWidth() * (2 / 3.0);
+        homeRunY = gestureOverlayView.getHeight() * .1;
 
         initRegions();
     }
@@ -581,6 +657,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     double firstBaseX;
     double outfieldX1;
     double outfieldX2;
+    double homeRunY;
 
     TextView homeTeamTitleTextView;
     TextView awayTeamTitleTextView;
@@ -591,11 +668,10 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     RadioButton strike2Button;
     RadioButton out1Button;
     RadioButton out2Button;
-    TextView bottomOrTopTextView;
+    TextView gameTypeTextView;
     TextView homeTeamScoreTextView;
     TextView awayTeamScoreTextView;
-    TextView lastPlayTextView;
-    TextView playTextView;
+    TextView inningTextView;
     FieldView pitcherFieldView;
     FieldView catcherFieldView;
     FieldView firstBaseFieldView;
@@ -608,9 +684,12 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     private String awayTeamName;
     private String homeTeamName;
+    private int inningNum;
+    private String gameTypeName;
 
     public void initializeViews ()
     {
+        gameTypeTextView = (TextView) findViewById(R.id.gameTypeView);
         homeTeamTitleTextView = (TextView) findViewById(R.id.homeScore_View);
         awayTeamTitleTextView = (TextView) findViewById(R.id.awayScore_View);
         ball1Button = (RadioButton)findViewById(R.id.ball1);
@@ -622,6 +701,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         out2Button = (RadioButton)findViewById(R.id.out2);
         homeTeamScoreTextView = (TextView)findViewById(R.id.homeScoreNumber_View);
         awayTeamScoreTextView = (TextView)findViewById(R.id.awayScoreNumber_View);
+        inningTextView = (TextView)findViewById(R.id.inning_View);
         ballLayout = (FrameLayout)findViewById(R.id.ballZoneLayout);
         strikeLayout = (FrameLayout)findViewById(R.id.strikeZoneLayout);
         pitcherFieldView = (FieldView)findViewById(R.id.pitcherFieldView);
@@ -660,8 +740,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     public void startGame (Intent i)
     {
         initializeViews();
+        Log.i("scorecard", "Start game was called");
 
-        GameType gameType = new GameType("Little League", 6);
+        GameType gameType = new GameType(gameTypeName, inningNum);
 
         homeTeamTitleTextView.setText(homeTeamName);
         awayTeamTitleTextView.setText(awayTeamName);
@@ -674,6 +755,10 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         game.setAwayTeam(getAwayTeam());
 
         game.setCurrentHalfInning( new HalfInning(getAwayTeam(), getHomeTeam(), 1, 1));
+
+        gameTypeTextView.setText(gameTypeName);
+
+        inningTextView.setText("Top of the 1st");
 
         setCurrentBattingOrder();
 
@@ -1022,6 +1107,51 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         strike2Button.setChecked(false);
         out1Button.setChecked(false);
         out2Button.setChecked(false);
+
+        if (game.basePath.areThereAnyRunnersOnBase()) {
+            if (game.basePath.getFirstBase().doesBaseHaveRunner()) {
+                game.basePath.getFirstBase().removeRunnerOnBase();
+            }
+            if (game.basePath.getSecondBase().doesBaseHaveRunner()) {
+                game.basePath.getSecondBase().removeRunnerOnBase();
+            }
+            if (game.basePath.getThirdBase().doesBaseHaveRunner()) {
+                game.basePath.getThirdBase().removeRunnerOnBase();
+            }
+        }
+
+        pitcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        catcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        firstBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        secondBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        thirdBaseFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        shortStopFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        leftFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        centerFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+        rightFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+
+        if (game.getCurrentHalfInning().topOrBottom() == 1) {
+            inningTextView.setText("Top of the ");
+        }
+        else {
+            inningTextView.setText("Bottom of the ");
+        }
+
+        if (game.getCurrentInningCount() == 1) {
+            inningTextView.append("1st");
+        }
+
+        else if (game.getCurrentInningCount() == 2) {
+            inningTextView.append("2nd");
+        }
+
+        else if (game.getCurrentInningCount() == 3) {
+            inningTextView.append("3rd");
+        }
+
+        else {
+            inningTextView.append(game.getCurrentInningCount() + "th");
+        }
     }
 
     public void gameEnded ()
@@ -1096,6 +1226,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             this.rightCoordinate = rightCoordinate;
             this.bottomCoordinate = bottomCoordinate;
         }
+
 
         public Base getBase() { return base; }
 

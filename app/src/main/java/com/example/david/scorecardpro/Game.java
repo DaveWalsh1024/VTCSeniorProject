@@ -219,15 +219,35 @@ public class Game extends AppCompatActivity
         advanceBase(getCurrentBatter().getPlayer(), basePath.getHomeBase(), basePath.getFirstBase());
     }
 
+    public void homeRun () {
+        if (basePath.getThirdBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getThirdBase().getRunnerOnBase(), basePath.getThirdBase(), basePath.getHomeBase());
+        }
+        if (basePath.getSecondBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getSecondBase().getRunnerOnBase(), basePath.getSecondBase(), basePath.getHomeBase());
+        }
+        if (basePath.getFirstBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getFirstBase().getRunnerOnBase(), basePath.getFirstBase(), basePath.getHomeBase());
+        }
+
+        advanceBase(getCurrentBatter().getPlayer(), basePath.getHomeBase(), basePath.getHomeBase());
+    }
+
+    public void groundRuleDouble () {
+        if (basePath.getThirdBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getThirdBase().getRunnerOnBase(), basePath.getThirdBase(), basePath.getHomeBase());
+        }
+        if (basePath.getSecondBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getSecondBase().getRunnerOnBase(), basePath.getSecondBase(), basePath.getHomeBase());
+        }
+        if (basePath.getFirstBase().doesBaseHaveRunner()) {
+            advanceBase(basePath.getFirstBase().getRunnerOnBase(), basePath.getFirstBase(), basePath.getThirdBase());
+        }
+        advanceBase(getCurrentBatter().getPlayer(), basePath.getHomeBase(), basePath.getSecondBase());
+    }
+
     public void advanceBase (Player player, Base currentBase, Base nextBase)
     {
-        /*System.batterOut.println("=====================================");
-        System.batterOut.println("We hit advanceBase");
-        System.batterOut.println("The player is " + player.getFullName());
-        System.batterOut.println("The currentBase is " + currentBase.getBaseNumber());
-        System.batterOut.println("The nextBase is " + nextBase.getBaseNumber());
-        System.batterOut.println("Does nextBase have a runner on it " + nextBase.doesBaseHaveRunner());
-        System.batterOut.println("=====================================");*/
 
         if (nextBase.doesBaseHaveRunner())
         {
@@ -240,15 +260,35 @@ public class Game extends AppCompatActivity
             getCurrentHalfInning().incrementRunsScored();
             currentBase.removeRunnerOnBase();
             incrementRunsScored();
-            Log.i("advanceBase", "Run Scored by: " + player.getFullName());
         }
 
         else
         {
             newRunnerAction(false, currentBase, nextBase, player, false);
+            currentBase.removeRunnerOnBase();
             nextBase.setRunnerOnBase(player);
-            Log.i("AdvanceBase", "Someone is on base " + nextBase.getBaseNumber() + " " + player.getFullName());
         }
+        dumpBaseInfo(basePath.getFirstBase());
+        dumpBaseInfo(basePath.getSecondBase());
+        dumpBaseInfo(basePath.getThirdBase());
+    }
+
+    private void dumpBaseInfo(Base base) {
+
+        Player runnerOnBase = base.getRunnerOnBase();
+        if (runnerOnBase != null) {
+            RunnerView rv = runnerOnBase.getRv();
+            if (rv != null) {
+                Log.i("BasePath", " Base -> " + runnerOnBase + " " + runnerOnBase.getCurrentBase() + " rv = " + rv + " " + rv.getBase());
+            }
+            else {
+                Log.i("BasePath", " Base -> " + runnerOnBase + " " + runnerOnBase.getCurrentBase());
+            }
+        }
+        else {
+            Log.i("BasePath", " Base -> " + runnerOnBase);
+        }
+
     }
 
     public void removeRunnerFromBase (Base base)
@@ -367,7 +407,10 @@ public class Game extends AppCompatActivity
     }
 
     public void runnerOut(Base base, Player player) {
-        newRunnerAction(true, basePath.getPreviousBase(base), base, player, false);
+        if (base == basePath.getFirstBase() && currentPlay.getBatter() == player) {
+            currentPlay.setOut(true);
+        }
+        updateRunnerAction(true, basePath.getPreviousBase(base), base, player, false);
         outOccurred();
         base.removeRunnerOnBase();
     }
@@ -575,6 +618,18 @@ public class Game extends AppCompatActivity
         }
         //     System.batterOut.println("A new runner action has been created!");
     }
+
+    public void updateRunnerAction (boolean out, Base startingBase, Base endingBase, Player runner, boolean scored)
+    {
+        for (RunnerEvent re : currentPlay.getRunnerEvents()) {
+            if (re.getStartingBase() == startingBase) {
+                re.setScored(scored);
+                re.setOut(out);
+                break;
+            }
+        }
+    }
+
 
     public void repOk() {
         assert homeTeam != null;

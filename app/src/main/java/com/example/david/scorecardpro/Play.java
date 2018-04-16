@@ -34,6 +34,10 @@ public class Play
 
     public boolean getOut () { return out; }
 
+    public void setOut(boolean out) {
+        this.out = out;
+    }
+
     public boolean areThereRunnerEvents ()
     {
         if (runnerEvents.size() == 0)

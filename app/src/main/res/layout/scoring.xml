@@ -257,6 +257,7 @@
             android:gestureColor="@color/gestureColor"
             android:gestureStrokeWidth="24"
             android:orientation="horizontal"
+            android:fadeDuration="20"
             android:eventsInterceptionEnabled="true">
 
             <android.support.constraint.ConstraintLayout
