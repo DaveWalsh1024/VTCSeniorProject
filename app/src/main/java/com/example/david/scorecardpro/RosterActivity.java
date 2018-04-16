@@ -67,12 +67,12 @@ public class RosterActivity extends AppCompatActivity {
             awayTeamPositionsInGameToSend = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("awayTeamPositions");
         }
 
-        homeTeamName = arrived.getStringExtra("homeTeamName");
-        awayTeamName = arrived.getStringExtra("awayTeamName");
+        homeTeamName = arrived.getStringExtra("homeTeam");
+        awayTeamName = arrived.getStringExtra("awayTeam");
 
         setTeamNameTextField();
 
-        System.out.println("awayTeamName = " + awayTeamName + " hasExtra = " + arrived.hasExtra("homeTeamName"));
+        System.out.println("awayTeam = " + awayTeamName + " hasExtra = " + arrived.hasExtra("homeTeam"));
 
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

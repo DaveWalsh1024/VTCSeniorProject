@@ -74,8 +74,8 @@ public class StartupActivity extends AppCompatActivity {
         Log.i("StartupActivity", "" + homeTeamName);*/
 
 
-        i.putExtra("Away Team", awayTeamName);
-        i.putExtra("Home Team", homeTeamName);
+        i.putExtra("awayTeam", awayTeamName);
+        i.putExtra("homeTeam", homeTeamName);
         i.putExtra("Number of Innings", inningNum);
         i.putExtra("Game Type", gameTypeName);
 

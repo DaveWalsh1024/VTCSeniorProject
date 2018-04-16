@@ -49,16 +49,16 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         if (arrived.hasExtra("Home Team"))
         {
-            awayTeamName = arrived.getStringExtra("Away Team").toString();
-            homeTeamName = arrived.getStringExtra("Home Team").toString();
+            awayTeamName = arrived.getStringExtra("awayTeam").toString();
+            homeTeamName = arrived.getStringExtra("homeTeam").toString();
             inningNum = arrived.getIntExtra("Number of Innings", 9);
             gameTypeName = arrived.getStringExtra("Game Type").toString();
 
             startGame(arrived);
         }
 
-        System.out.println("homeTeamName = " + homeTeamName);
-        System.out.println("awayTeamName = " + awayTeamName);
+        System.out.println("homeTeam = " + homeTeamName);
+        System.out.println("awayTeam = " + awayTeamName);
         homeTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("homeTeamPositions");
         awayTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("awayTeamPositions");
         homeTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("homeTeamLineup");
@@ -476,8 +476,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getHomeBase();
-            game.advanceBase(rv.getPlayer(), currentBase, newBase);
-            fieldLayout.removeView(rv);
+            if (rv.getBase() != newBase) {
+                game.advanceBase(rv.getPlayer(), currentBase, newBase);
+            }
             getCurrentHalfInning().incrementRunsScored();
         }
 
@@ -486,7 +487,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getSecondBase();
-            game.advanceBase(rv.getPlayer(), currentBase, newBase);
+            if (rv.getBase() != newBase) {
+                game.advanceBase(rv.getPlayer(), currentBase, newBase);
+            }
         }
 
         else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .20 && left < gestureOverlayView.getWidth() * .30) {
@@ -494,7 +497,9 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getThirdBase();
-            game.advanceBase(rv.getPlayer(), currentBase, newBase);
+            if (rv.getBase() != newBase) {
+                game.advanceBase(rv.getPlayer(), currentBase, newBase);
+            }
         }
 
         else {
