@@ -39,7 +39,8 @@ public enum Positions
         if (inPlay) {
             game.advanceBase(game.getCurrentBatter().getPlayer(), game.basePath.getHomeBase(), game.basePath.getFirstBase());
             play.setPlayText("S" + getPositionNumber());
-            game.setNewBatter();
+
+            //game.setNewBatter();
         }
         else {
             play.setPlayText("F" + getPositionNumber());
@@ -61,7 +62,7 @@ public enum Positions
         else {
             play.setPlayText("G" + getPositionNumber());
         }
-        game.setNewBatter();
+        //game.setNewBatter();
     }
 
     public int getPositionNumber() {

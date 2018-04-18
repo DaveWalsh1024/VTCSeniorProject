@@ -134,8 +134,8 @@ public class RunnerView extends AppCompatTextView implements View.OnTouchListene
     private static ScoringActivity currentActivity;
     private Player player;
     private Base base;
-    public static final int width = 100;
-    public static final int height = 100;
+    public static final int width = 125;
+    public static final int height = 125;
 
 
 }

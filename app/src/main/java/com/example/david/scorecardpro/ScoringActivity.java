@@ -40,6 +40,12 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     FieldView currentFielder;
     BaseRegion currentBase;
 
+    public enum ScoringState {
+        pitching, fielding
+    };
+
+    private ScoringState state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,18 +53,14 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         Intent arrived = getIntent();
 
-        if (arrived.hasExtra("Home Team"))
-        {
-            awayTeamName = arrived.getStringExtra("awayTeam").toString();
-            homeTeamName = arrived.getStringExtra("homeTeam").toString();
-            inningNum = arrived.getIntExtra("Number of Innings", 9);
-            gameTypeName = arrived.getStringExtra("Game Type").toString();
+        awayTeamName = arrived.getStringExtra("awayTeamName");
+        homeTeamName = arrived.getStringExtra("homeTeamName");
+        inningNum = arrived.getIntExtra("numberOfInnings", 9);
+        gameTypeName = arrived.getStringExtra("gameType");
 
-            startGame(arrived);
-        }
 
-        System.out.println("homeTeam = " + homeTeamName);
-        System.out.println("awayTeam = " + awayTeamName);
+        System.out.println("homeTeamName = " + homeTeamName);
+        System.out.println("awayTeamName = " + awayTeamName);
         homeTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("homeTeamPositions");
         awayTeamPositions = (ArrayList<PositionsInGame>)arrived.getSerializableExtra("awayTeamPositions");
         homeTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("homeTeamLineup");
@@ -165,12 +167,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
                 switch (ev.getActionMasked()) {
                     case MotionEvent.ACTION_UP: {
+                        if (state == ScoringState.fielding) {
+                            game.setNewBatter();
+                        }
                         if (ev.getX() > strikeLayout.getLeft() && ev.getX() < strikeLayout.getRight() && ev.getY() > strikeLayout.getTop() && ev.getY() < strikeLayout.getBottom()) {
                             _pitchName.setText("Strike!");
+                            state = ScoringState.pitching;
                             game.strike();
                         }
                         else {
                             _pitchName.setText("Ball!");
+                            state = ScoringState.pitching;
                             game.ball();
                         }
                     }
@@ -234,42 +241,18 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         initGestureCoordinates();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        Intent go;
-        switch(item.getItemId())
-        {
-            case R.id.login:
-                go = new Intent(this,LoginActivity.class);
-                startActivity(go);
-                return true;
-
-            case R.id.activity_scoring:
-                go = new Intent(this,ScoringActivity.class);
-                startActivity(go);
-                return true;
-
-            case R.id.about:
-                go = new Intent(this,About.class);
-                startActivity(go);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void hitGesture(GestureOverlayView gestureOverlayView, Gesture gesture) {
 
         if (screenHeight == 0.0) {
             initGestureCoordinates();
         }
+
+        if (state == ScoringState.fielding) {
+            game.setNewBatter();
+        }
+
+        state = ScoringState.fielding;
 
         ArrayList<GestureStroke> strokes = gesture.getStrokes();
         GestureStroke stroke = strokes.get(strokes.size() - 1);
@@ -328,6 +311,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                             play.setPlayText("HR");
                             game.homeRun();
                             game.setNewBatter();
+                            state = ScoringState.pitching;
                             _gestureName.setText("HomeRun!");
                             break;
                         } else {
@@ -335,6 +319,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                             play.setPlayText("GR2B");
                             game.groundRuleDouble();
                             game.setNewBatter();
+                            state = ScoringState.pitching;
                             _gestureName.setText("GroundRule Double!");
                             break;
                         }
@@ -358,6 +343,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 }
             }
         }
+
         Log.i("BasePath", "First Base -> " + game.basePath.getFirstBase().getRunnerOnBase());
         Log.i("BasePath", "Second Base -> " + game.basePath.getSecondBase().getRunnerOnBase());
         Log.i("BasePath", "Third Base -> " + game.basePath.getThirdBase().getRunnerOnBase());
@@ -476,10 +462,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) homePlateY, (int) middleBaseX2, (int) (screenHeight - homePlateY));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getHomeBase();
-            if (rv.getBase() != newBase) {
-                game.advanceBase(rv.getPlayer(), currentBase, newBase);
-            }
-            getCurrentHalfInning().incrementRunsScored();
         }
 
         else if (top > outfieldY && top < secondBaseY && right > middleBaseX1 && left < middleBaseX2) {
@@ -487,9 +469,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) (gestureOverlayView.getWidth() * .46), (int) (gestureOverlayView.getHeight() * .32), (int) middleBaseX2, (int) (screenHeight - outfieldY));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getSecondBase();
-            if (rv.getBase() != newBase) {
-                game.advanceBase(rv.getPlayer(), currentBase, newBase);
-            }
         }
 
         else if (top < cornerBaseY1 && top > cornerBaseY2 && right > gestureOverlayView.getWidth() * .20 && left < gestureOverlayView.getWidth() * .30) {
@@ -497,9 +476,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             layout.setMargins((int) thirdBaseX, (int) (gestureOverlayView.getHeight() * .54), (int) (screenWidth - thirdBaseX), (int) (screenHeight - cornerBaseY2));
             fieldLayout.updateViewLayout(rv, layout);
             newBase = game.basePath.getThirdBase();
-            if (rv.getBase() != newBase) {
-                game.advanceBase(rv.getPlayer(), currentBase, newBase);
-            }
         }
 
         else {
@@ -515,6 +491,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             Log.i("snapToBase", "Last Right: " + lastRight);
             Log.i("snapToBase", "Last Bottom: " + lastBottom);
 
+            newBase = null;
 
             if (lastTop > outfieldY && lastTop < secondBaseY && lastRight > middleBaseX1 && lastLeft < middleBaseX2) {
                 Log.i("snapToBase", "SecondBase");
@@ -533,6 +510,25 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 layout.setMargins((int) (gestureOverlayView.getWidth() * .74), (int) (gestureOverlayView.getHeight() * .54), (int) (gestureOverlayView.getWidth() * .80), (int) cornerBaseY1);
                 fieldLayout.updateViewLayout(rv, layout);
             }
+        }
+
+        if (newBase != null && rv.getBase() != newBase) {
+            if (rv.getPlayer() == game.getCurrentBatter().getPlayer()) {
+                Play play = game.currentPlay;
+                String playText = play.getPlayText().substring(1);
+                if (newBase.getBaseNumber() == 2) {
+                    play.setPlayText("D" + playText);
+                }
+
+                else if (newBase.getBaseNumber() == 3) {
+                    play.setPlayText("T" + playText);
+                }
+
+                else if (newBase.getBaseNumber() == 4) {
+                    play.setPlayText("IPHR" + playText);
+                }
+            }
+            game.advanceBase(rv.getPlayer(), currentBase, newBase);
         }
     }
 
@@ -1096,6 +1092,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     @Override
     public void atBatEnded()
     {
+        state = ScoringState.pitching;
+
         ball1Button.setChecked(false);
         ball2Button.setChecked(false);
         ball3Button.setChecked(false);
@@ -1113,6 +1111,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         out1Button.setChecked(false);
         out2Button.setChecked(false);
 
+        state = ScoringState.pitching;
+
         if (game.basePath.areThereAnyRunnersOnBase()) {
             if (game.basePath.getFirstBase().doesBaseHaveRunner()) {
                 game.basePath.getFirstBase().removeRunnerOnBase();
@@ -1124,6 +1124,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                 game.basePath.getThirdBase().removeRunnerOnBase();
             }
         }
+
+        setFieldTextViews();
 
         pitcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
         catcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
@@ -1137,6 +1139,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         if (game.getCurrentHalfInning().topOrBottom() == 1) {
             inningTextView.setText("Top of the ");
+
+
         }
         else {
             inningTextView.setText("Bottom of the ");
@@ -1157,6 +1161,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         else {
             inningTextView.append(game.getCurrentInningCount() + "th");
         }
+
+
     }
 
     public void gameEnded ()

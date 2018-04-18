@@ -404,6 +404,41 @@ public class RosterActivity extends AppCompatActivity {
             awayTeamPositionsInGameToSend = positionsInGameToSend;
             awayTeamBattingOrderToSend= battingOrderToSend;
             isHomeTeam = true;
+
+            team.removePlayerFromTeam(player1);
+            team.removePlayerFromTeam(player2);
+            team.removePlayerFromTeam(player3);
+            team.removePlayerFromTeam(player4);
+            team.removePlayerFromTeam(player5);
+            team.removePlayerFromTeam(player6);
+            team.removePlayerFromTeam(player7);
+            team.removePlayerFromTeam(player8);
+            team.removePlayerFromTeam(player9);
+            team.removePlayerFromTeam(player10);
+            team.removePlayerFromTeam(player11);
+            team.removePlayerFromTeam(player12);
+            team.removePlayerFromTeam(player13);
+
+            Player player14 = new Player ("Mookie", "Betts", 50, 29);
+            Player player15 = new Player ("Chris", "Sale", 41, 30);
+            Player player16 = new Player ("Dustin", "Pedroia", 15, 28);
+            Player player17 = new Player ("JD", "Martinez" , 28, 31);
+            Player player18 = new Player ("Andrew", "Benintendi", 16, 27);
+            Player player19 = new Player ("Hanley", "Ramirez", 13, 26);
+            Player player20 = new Player ("Xander", "Bogaerts", 2, 25);
+            Player player21 = new Player ("Jackie", "Bradley", 19, 31);
+            Player player22 = new Player ("Blake", "Swihart", 23, 32);
+
+            team.addPlayerToTeam(player14);
+            team.addPlayerToTeam(player15);
+            team.addPlayerToTeam(player16);
+            team.addPlayerToTeam(player17);
+            team.addPlayerToTeam(player18);
+            team.addPlayerToTeam(player19);
+            team.addPlayerToTeam(player20);
+            team.addPlayerToTeam(player21);
+            team.addPlayerToTeam(player22);
+
             setTeamNameTextField();
             positionsInGameToSend.clear();
             battingOrderToSend.clear();
@@ -416,6 +451,11 @@ public class RosterActivity extends AppCompatActivity {
             battingOrderToSend.add(null);
             battingOrderToSend.add(null);
             battingOrderToSend.add(null);
+
+            playerListView = (ListView) findViewById(R.id.player_List_View);
+            ArrayAdapter<Player> adapter = new ArrayAdapter <Player> (this, android.R.layout.simple_list_item_1, team.getPlayers());
+            playerListView.setAdapter(adapter);
+
             return;
         }
         else
