@@ -12,18 +12,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Welcome to SCORECARD PRO"
-        android:textSize="64dp"
+        android:textSize="64sp"
         android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16sp"/>
 
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/roster_button"
-        android:padding="32dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:layout_marginBottom="32dp"
+        android:padding="32sp"
+        android:paddingLeft="32sp"
+        android:paddingRight="32sp"
+        android:layout_marginBottom="32sp"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -33,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Game Type"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
@@ -44,31 +49,31 @@
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:orientation="horizontal"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="32sp">
 
             <RadioButton
                 android:id="@+id/littleLeague"
-                android:layout_width="0dp"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:text="Little League"
-                android:textSize="32dp"
-                android:padding="8dp"
+                android:textSize="32sp"
+                android:padding="8sp"
                 android:layout_weight="1"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8sp"
+                android:layout_marginLeft="8sp"
                 android:background="@color/white"
                 android:buttonTintMode="@color/white"/>
 
             <RadioButton
                 android:id="@+id/mlb"
-                android:layout_width="0dp"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:text="MLB"
-                android:textSize="32dp"
-                android:padding="8dp"
+                android:textSize="32sp"
+                android:padding="8sp"
                 android:layout_weight="1"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8sp"
+                android:layout_marginLeft="8sp"
                 android:background="@color/white"
                 android:buttonTintMode="@color/white"/>
 
@@ -79,24 +84,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:padding="8dp"
             android:hint="Away Team"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="@color/blackColor"
+            android:background="@drawable/gametypebutton"
+            android:layout_marginBottom="16sp"/>
 
         <EditText
             android:id="@+id/homeTeamEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:padding="8dp"
             android:hint="Home Team"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:layout_marginBottom="32dp"/>
+            android:textColor="@color/blackColor"
+            android:background="@drawable/gametypebutton"
+            android:layout_marginBottom="32sp"/>
 
     </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/startGame"
@@ -104,13 +114,13 @@
         android:layout_height="wrap_content"
         android:onClick="startGame"
         android:text="Start Game"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/roster_button"
-        android:padding="16dp"
+        android:padding="16sp"
         android:textColor="@color/white"
-        tools:layout_editor_absoluteX="339dp"
-        tools:layout_editor_absoluteY="463dp"/>
+        tools:layout_editor_absoluteX="339sp"
+        tools:layout_editor_absoluteY="463sp"/>
 
 </LinearLayout>

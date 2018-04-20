@@ -5,10 +5,12 @@
     <color name ="colorPrimaryDark">#AA8739</color>
     <color name ="colorAccent">#FF0000</color>
     <color name ="fieldColor">#2D882D</color>
+    <color name ="fieldColorLite">#B1CA88</color>
     <color name ="infieldColor">#AA8739</color>
     <color name ="baseWhite">#FFFFFF</color>
     <color name ="gestureColor">#FF0000</color>
     <color name ="ballZoneColor">#999999</color>
+    <color name ="blackColor">#000000</color>
 
     <string-array name = "colorBackground">
         <item name="blue" type="color" value="0xFF85C6F1">Blue</item>
@@ -19,7 +21,6 @@
         <item name="purple" type="color" value="0xFFE482F7">Purple</item>
         <item name="black" type="color" value="0xff000000">Black</item>
         <item name="brown" type="color" value="0xFF6F5040">Brown</item>
-
     </string-array>
 
     <string-array name = "colorText">

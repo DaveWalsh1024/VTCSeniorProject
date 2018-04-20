@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="0">
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gametypebutton"
+        android:shape="rectangle">
+        <padding
+            android:left="30dp"
+            android:top="30dp"
+            android:right="30dp"
+            android:bottom="30dp" />
+        <solid android:color="#B1CA88" />
+        <corners android:radius="6dp" />
+    </shape>
+</rotate>

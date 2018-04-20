@@ -18,7 +18,7 @@
         android:name="com.example.david.scorecardpro.PitchFragment"
         android:orientation="vertical"
         android:id="@+id/pitch_fragment"
-        android:layout_width="0px"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
         android:layout_weight="35">
 
@@ -34,7 +34,7 @@
                     android:id="@+id/gameTypeView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Game Type"/>
 
             </TableRow>
@@ -45,15 +45,15 @@
 
                 <TextView
                     android:id="@+id/awayScore_View"
-                    android:layout_width="0px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Away Team:"/>
 
                 <TextView
                     android:id="@+id/awayScoreNumber_View"
-                    android:layout_width="0px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="24dp"
@@ -67,18 +67,18 @@
 
                 <TextView
                     android:id="@+id/homeScore_View"
-                    android:layout_width="0px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Home Team:"/>
 
                 <TextView
                     android:id="@+id/homeScoreNumber_View"
-                    android:layout_width="0px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="0"/>
 
             </TableRow>
@@ -90,10 +90,10 @@
 
                 <TextView
                     android:id="@+id/inning_View"
-                    android:layout_width="0px"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text=""/>
 
             </TableRow>
@@ -106,20 +106,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:text="Strike Zone" />
 
         <FrameLayout
             android:id="@+id/ballZoneLayout"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="250sp"
+            android:layout_height="250sp"
             android:background="@color/ballZoneColor"
             android:layout_gravity="center_horizontal">
 
             <FrameLayout
                 android:id="@+id/strikeZoneLayout"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="150sp"
+                android:layout_height="150sp"
                 android:background="@drawable/strikezone"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal">
@@ -139,7 +139,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Balls: "/>
 
                 <RadioButton
@@ -167,7 +167,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Strikes: "/>
 
                 <RadioButton
@@ -188,7 +188,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:text="Outs: "/>
 
                 <RadioButton
@@ -213,14 +213,14 @@
 
                 <Button
                     android:id="@+id/homeScorecard_Button"
-                    android:layout_width="175dp"
+                    android:layout_width="175sp"
                     android:layout_height="wrap_content"
                     android:onClick="viewHomeScorecard"
                     android:text="Home Scorecard" />
 
                 <Button
                     android:id="@+id/awayScorecard_Button"
-                    android:layout_width="175dp"
+                    android:layout_width="175sp"
                     android:layout_height="wrap_content"
                     android:onClick="viewAwayScorecard"
                     android:text="Away Scorecard" />
@@ -234,10 +234,10 @@
     <FrameLayout
         android:name="com.example.david.scorecardpro.FieldFragment"
         android:id="@+id/field_fragment"
-        android:layout_width="0px"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
         android:layout_weight="65"
-        android:paddingTop="16dp"
+        android:paddingTop="16sp"
         tools:context="com.example.david.scorecardpro.FieldFragment"
         android:background="@drawable/ballfield"
         tools:showIn="@layout/scoring">
@@ -246,7 +246,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gestureName"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:text="Gesture Type"/>
 
         <android.gesture.GestureOverlayView
@@ -268,17 +268,17 @@
                     android:id="@+id/catcherFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="12sp"
                     android:text="Catcher"
                     android:textColor="@color/white"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -289,17 +289,17 @@
                     android:id="@+id/pitcherFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="12sp"
                     android:text="Pitcher"
                     android:textColor="@color/white"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -309,14 +309,14 @@
                     android:id="@+id/firstBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="12sp"
                     android:text="FirstBase"
                     android:textColor="@color/white"
                     android:textSize="24dp"
@@ -331,16 +331,16 @@
                     android:id="@+id/secondBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="12dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
+                    android:padding="12sp"
                     android:text="SecondBase"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -353,17 +353,17 @@
                     android:id="@+id/thirdBaseFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="12sp"
                     android:text="ThirdBase"
                     android:textColor="@color/white"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.12"
@@ -375,16 +375,16 @@
                     android:id="@+id/shortStopFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="12dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
+                    android:padding="12sp"
                     android:text="ShortStop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -397,15 +397,15 @@
                     android:id="@+id/leftFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="12dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginTop="8sp"
+                    android:padding="12sp"
                     android:text="LeftField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -418,16 +418,16 @@
                     android:id="@+id/centerFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="12dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
+                    android:padding="12sp"
                     android:text="CenterField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -439,16 +439,16 @@
                     android:id="@+id/rightFieldView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:background="@color/ballZoneColor"
                     android:minEms="4"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="12dp"
+                    android:layout_marginBottom="8sp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginStart="8sp"
+                    android:layout_marginTop="8sp"
+                    android:padding="12sp"
                     android:text="RightField"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
