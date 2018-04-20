@@ -199,21 +199,24 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:weightSum="2">
 
             <TableRow>
 
                 <Button
                     android:id="@+id/homeScorecard_Button"
-                    android:layout_width="175sp"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="viewHomeScorecard"
                     android:text="Home Scorecard" />
 
                 <Button
                     android:id="@+id/awayScorecard_Button"
-                    android:layout_width="175sp"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
                     android:onClick="viewAwayScorecard"
                     android:text="Away Scorecard" />
 
