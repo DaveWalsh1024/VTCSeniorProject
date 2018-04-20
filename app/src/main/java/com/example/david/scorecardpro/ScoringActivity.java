@@ -34,7 +34,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     private FrameLayout fieldLayout;
     private FrameLayout strikeLayout;
     private FrameLayout ballLayout;
-    private boolean inPlay;
     private float startThrowX;
     private float startThrowY;
     FieldView currentFielder;
@@ -90,7 +89,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
                 if (currentFielder == null) {
                     hitGesture(gestureOverlayView, gesture);
-                    inPlay = true;
+
                     Log.i("inPlay", "true");
                 }
                 else {
@@ -135,8 +134,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
                 else {
                     gestureOverlayView.cancelGesture();
-                    Log.i("inPlay", " currentFielder = " + currentFielder + " currentBase = " + currentBase);
-                    inPlay = false;
                 }
             }
 
@@ -669,7 +666,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
     RadioButton strike2Button;
     RadioButton out1Button;
     RadioButton out2Button;
-    TextView gameTypeTextView;
     TextView homeTeamScoreTextView;
     TextView awayTeamScoreTextView;
     TextView inningTextView;
@@ -690,7 +686,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     public void initializeViews ()
     {
-        gameTypeTextView = (TextView) findViewById(R.id.gameTypeView);
         homeTeamTitleTextView = (TextView) findViewById(R.id.homeScore_View);
         awayTeamTitleTextView = (TextView) findViewById(R.id.awayScore_View);
         ball1Button = (RadioButton)findViewById(R.id.ball1);
@@ -756,8 +751,6 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         game.setAwayTeam(getAwayTeam());
 
         game.setCurrentHalfInning( new HalfInning(getAwayTeam(), getHomeTeam(), 1, 1));
-
-        gameTypeTextView.setText(gameTypeName);
 
         inningTextView.setText("Top of the 1st");
 

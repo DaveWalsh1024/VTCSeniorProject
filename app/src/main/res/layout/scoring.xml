@@ -28,14 +28,15 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" >
 
                 <TextView
-                    android:id="@+id/gameTypeView"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/inning_View"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
                     android:textSize="24sp"
-                    android:text="Game Type"/>
+                    android:text=""/>
 
             </TableRow>
 
@@ -84,21 +85,6 @@
             </TableRow>
 
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:id="@+id/inning_View"
-                    android:layout_width="0sp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textSize="24sp"
-                    android:text=""/>
-
-            </TableRow>
-
-
         </TableLayout>
 
         <TextView
@@ -129,11 +115,12 @@
         </FrameLayout>
 
         <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -161,7 +148,7 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -182,7 +169,7 @@
 
             </TableRow>
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -246,8 +233,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gestureName"
+            android:layout_gravity="center_horizontal"
             android:textSize="32sp"
-            android:text="Gesture Type"/>
+            android:text="Play"/>
 
         <android.gesture.GestureOverlayView
             android:id="@+id/gestures"
