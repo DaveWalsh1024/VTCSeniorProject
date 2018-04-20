@@ -14,6 +14,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:name="com.example.david.scorecardpro.PitchFragment"
         android:orientation="vertical"
@@ -217,6 +220,8 @@
         </TableLayout>
 
     </LinearLayout>
+
+    </ScrollView>
 
     <FrameLayout
         android:name="com.example.david.scorecardpro.FieldFragment"
