@@ -15,15 +15,15 @@
 
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="35">
     <LinearLayout
         android:name="com.example.david.scorecardpro.PitchFragment"
         android:orientation="vertical"
         android:id="@+id/pitch_fragment"
-        android:layout_width="0sp"
-        android:layout_height="match_parent"
-        android:layout_weight="35">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TableLayout
             android:layout_width="match_parent"
