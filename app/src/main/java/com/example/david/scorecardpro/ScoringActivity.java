@@ -65,6 +65,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         homeTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("homeTeamLineup");
         awayTeamLineup = (ArrayList<Player>)arrived.getSerializableExtra("awayTeamLineup");
 
+        Log.i("Lineups", "Home Leadoff = " + homeTeamLineup.get(0) + " Away Leadoff = " + awayTeamLineup.get(0));
+
         startGame(arrived);
 
         initializeViews();
@@ -278,17 +280,17 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
         for (FieldView fv : fieldViews) {
             if (fv.containsPoint(strokeX, topStroke)) {
+                _gestureName.append(" to " + fv.getPlayer().getFullName());
                 if (isFlyBall) {
-                    fv.flyBallTo(game);
                     currentFielder = fv;
                     currentFielder.setBackgroundColor(Color.BLUE);
+                    fv.flyBallTo(game);
                 }
                 else {
-                    fv.groundBallTo(game);
                     currentFielder = fv;
                     currentFielder.setBackgroundColor(Color.CYAN);
+                    fv.groundBallTo(game);
                 }
-                _gestureName.append(" to " + fv.getPlayer().getFullName());
                 handled = true;
                 if (fv != currentFielder) {
                     currentFielder.setBackgroundColor(Color.argb(255, 144, 144, 144));
@@ -329,12 +331,12 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
                     }
 
                     else {
+                        _gestureName.append(" to " + reg.getPosition().toString());
                         if (isFlyBall) {
                             reg.getPosition().flyBallTo(game, true);
                         } else {
                             reg.getPosition().groundBallTo(game, true);
                         }
-                        _gestureName.append(" to " + reg.getPosition().toString());
                     }
                     break;
                 }
@@ -1119,6 +1121,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         }
 
         setFieldTextViews();
+        setCurrentBattingOrder();
+        _gestureName.setText("Play");
 
         pitcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
         catcherFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
@@ -1129,6 +1133,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
         leftFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
         centerFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
         rightFieldView.setBackgroundColor(Color.argb(255, 144, 144, 144));
+
 
         if (game.getCurrentHalfInning().topOrBottom() == 1) {
             inningTextView.setText("Top of the ");

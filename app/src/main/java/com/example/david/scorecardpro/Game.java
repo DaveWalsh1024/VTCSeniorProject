@@ -507,6 +507,7 @@ public class Game extends AppCompatActivity
 
             if (getCurrentHalfInning().topOrBottom() == 1) //currently the top of the inning
             {
+                setCurrentBattingOrder(homeTeamBattingOrder);
                 setCurrentlyBottomOfInning();
                 System.out.println("The new half inning will be the bottom of the " + getCurrentInning().getInningCount());
                 getCurrentInning().setTopInning(getCurrentHalfInning());
@@ -524,6 +525,7 @@ public class Game extends AppCompatActivity
                 }
                 else
                 {
+                    setCurrentBattingOrder(awayTeamBattingOrder);
                     System.out.println("New Inning. Setting up top of the new inning. The inning number is " + getCurrentInning().getInningCount());
                     getCurrentInning().setBottomInning(getCurrentHalfInning());
                     setCurrentInningCount(getCurrentInningCount() + 1);
@@ -537,7 +539,6 @@ public class Game extends AppCompatActivity
             }
 
             setCurrentFieldingPositions();
-            setCurrentBattingOrder(currentBattingOrder);
         }
     }
 

@@ -402,7 +402,7 @@ public class RosterActivity extends AppCompatActivity {
         if (!isHomeTeam)
         {
             awayTeamPositionsInGameToSend = positionsInGameToSend;
-            awayTeamBattingOrderToSend= battingOrderToSend;
+            awayTeamBattingOrderToSend = battingOrderToSend;
             isHomeTeam = true;
 
             team.removePlayerFromTeam(player1);
@@ -440,8 +440,8 @@ public class RosterActivity extends AppCompatActivity {
             team.addPlayerToTeam(player22);
 
             setTeamNameTextField();
-            positionsInGameToSend.clear();
-            battingOrderToSend.clear();
+            positionsInGameToSend = new ArrayList<>();
+            battingOrderToSend = new ArrayList<>();
             battingOrderToSend.add(null);
             battingOrderToSend.add(null);
             battingOrderToSend.add(null);
