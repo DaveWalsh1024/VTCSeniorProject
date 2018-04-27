@@ -151,11 +151,23 @@ public class Game extends AppCompatActivity
         this.awayTeamBattingOrderPosition = awayTeamBattingOrderPosition;
     }
 
-    public int getCurrentBattingOrderPosition () { return currentBattingOrderPosition; }
+    public int getCurrentBattingOrderPosition () {
+        if (getTopOrBottom() == 1) {
+            return awayTeamBattingOrderPosition;
+        }
+        else {
+            return homeTeamBattingOrderPosition;
+        }
+    }
 
     public void setCurrentBattingOrderPosition (int currentBattingOrderPosition)
     {
-        this.currentBattingOrderPosition = currentBattingOrderPosition;
+        if (getTopOrBottom() == 1) {
+            this.awayTeamBattingOrderPosition = currentBattingOrderPosition;
+        }
+        else {
+            this.homeTeamBattingOrderPosition = currentBattingOrderPosition;
+        }
     }
 
     public int getCurrentInningCount () { return currentInningCount; }
@@ -508,6 +520,8 @@ public class Game extends AppCompatActivity
             if (getCurrentHalfInning().topOrBottom() == 1) //currently the top of the inning
             {
                 setCurrentBattingOrder(homeTeamBattingOrder);
+                /*awayTeamBattingOrderPosition = getCurrentBattingOrderPosition() + 1;
+                setCurrentBattingOrderPosition(homeTeamBattingOrderPosition);*/
                 setCurrentlyBottomOfInning();
                 System.out.println("The new half inning will be the bottom of the " + getCurrentInning().getInningCount());
                 getCurrentInning().setTopInning(getCurrentHalfInning());
@@ -526,6 +540,8 @@ public class Game extends AppCompatActivity
                 else
                 {
                     setCurrentBattingOrder(awayTeamBattingOrder);
+                    /*homeTeamBattingOrderPosition = getCurrentBattingOrderPosition() + 1;
+                    setCurrentBattingOrderPosition(awayTeamBattingOrderPosition);*/
                     System.out.println("New Inning. Setting up top of the new inning. The inning number is " + getCurrentInning().getInningCount());
                     getCurrentInning().setBottomInning(getCurrentHalfInning());
                     setCurrentInningCount(getCurrentInningCount() + 1);
@@ -557,6 +573,12 @@ public class Game extends AppCompatActivity
 
     public void startHalfInning (HalfInning currentHalfInning)
     {
+        if (getTopOrBottom() == 1) {
+            setCurrentBattingOrder(getAwayTeamBattingOrder());
+        }
+        else {
+            setCurrentBattingOrder(getHomeTeamBattingOrder());
+        }
         setCurrentBatter(new AtBat(currentHalfInning, getCurrentBattingOrder().get(getCurrentBattingOrderPosition())));
     //    setFieldTextViews();
     }
@@ -695,7 +717,7 @@ public class Game extends AppCompatActivity
     private Inning currentInning;
     private int homeTeamBattingOrderPosition;
     private int awayTeamBattingOrderPosition;
-    private int currentBattingOrderPosition;
+    //private int currentBattingOrderPosition;
     private int currentInningCount;
     private ArrayList<GameListener> gameListeners;
     private ArrayList<Player> currentBattingOrder;

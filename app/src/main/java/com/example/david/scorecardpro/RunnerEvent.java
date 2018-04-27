@@ -31,7 +31,7 @@ public class RunnerEvent
 
     public Base getEndingBase () { return endingBase; }
 
-    public int getRunnerBattingOrderPosiiton () { return runnerBattingOrderPosiiton; }
+    public int getRunnerBattingOrderPosition() { return runnerBattingOrderPosiiton; }
 
     public boolean scored () { return scored; }
 

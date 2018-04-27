@@ -962,7 +962,7 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
 
     public void setCurrentBattingOrder ()
     {
-        if (game.getTopOrBottom() == 1)
+        /*if (game.getTopOrBottom() == 1)
         {
             game.setHomeTeamBattingOrderPosition(getCurrentBattingOrderPosition());
             game.setCurrentBattingOrder(game.getAwayTeamBattingOrder());
@@ -973,7 +973,8 @@ public class ScoringActivity extends AppCompatActivity implements GameListener {
             game.setAwayTeamBattingOrderPosition(getCurrentBattingOrderPosition());
             game.setCurrentBattingOrder(game.getHomeTeamBattingOrder());
             game.setCurrentBattingOrderPosition(game.getHomeTeamBattingOrderPosition());
-        }
+        }*/
+
     }
 
     private int getAwayTeamBattingOrderPosition() {

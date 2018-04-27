@@ -62,7 +62,7 @@ public enum Positions
         else {
             play.setPlayText("G" + getPositionNumber());
         }
-        //game.setNewBatter();
+        game.setNewBatter();
     }
 
     public int getPositionNumber() {

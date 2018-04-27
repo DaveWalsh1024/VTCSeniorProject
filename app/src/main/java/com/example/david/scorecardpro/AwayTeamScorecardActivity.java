@@ -61,7 +61,6 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
             tl.addView(tr);
 
             TextView tv = new TextView(this);
-  //          tv.setText(game.getAwayTeamInGame().getBattingOrder().get(batter - 1).getLastName());
             tv.setText(game.getAwayTeamBattingOrder().get(batter-1).getLastName());
 
             tv.setTextSize(16);
@@ -117,7 +116,7 @@ public class AwayTeamScorecardActivity extends AppCompatActivity {
 
                 for (RunnerEvent re : game.getPlays().get(k).getRunnerEvents())
                 {
-                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosiiton()));
+                    re.updateScorecardBox(findScoreCardBox(re.getCurrentInning(), re.getRunnerBattingOrderPosition()));
                 }
             }
         }
